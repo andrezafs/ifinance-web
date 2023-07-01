@@ -3,6 +3,7 @@ import { Dashboard } from "../pages/Dashboard";
 import { Categories } from "../pages/Categories";
 import { CreditCads } from "../pages/CreditCads";
 import { Planning } from "../pages/Planning";
+import { Report } from "../pages/Report";
 
 export function AppRoutes() {
   return (
@@ -11,6 +12,7 @@ export function AppRoutes() {
       <Route path="/categories" element={<Categories />} />
       <Route path="/creditcards" element={<CreditCads />} />
       <Route path="/planning" element={<Planning />} />
+      <Route path="/report" element={<Report />} />
     </Routes>
   );
 }
