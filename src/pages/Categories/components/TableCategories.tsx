@@ -1,6 +1,6 @@
 import { Row, Table } from "antd";
 
-import { useCategoriesData } from "./hooks/useCategoriesData";
+import { useCategoriesData } from "../hooks/useCategoriesData";
 
 export function TableCategories() {
   const { columns, data } = useCategoriesData();
@@ -14,7 +14,6 @@ export function TableCategories() {
               margin: 0,
               display: "flex",
               flexDirection: "column",
-              background: "red",
             }}
           >
             {record.subcategory}
@@ -24,7 +23,6 @@ export function TableCategories() {
       }}
       columns={columns}
       dataSource={data}
-      bordered
     />
   );
 }
