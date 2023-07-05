@@ -46,6 +46,7 @@ export function useCategoriesData() {
         title: "Color",
         dataIndex: "color",
         key: "color",
+        align: "center",
         render: (color) => (
           <Tag
             color={color}
@@ -61,9 +62,15 @@ export function useCategoriesData() {
       {
         title: "Actions",
         key: "actions",
-        align: "center",
+        align: "right",
         render: (_, record) => (
-          <Space size="middle">
+          <Space
+            size="middle"
+            style={{
+              width: "100%",
+              justifyContent: "flex-end",
+            }}
+          >
             <ButtonAction
               tooltipAction="Relatório"
               icon={<ReadOutlined />}

@@ -14,40 +14,32 @@ export function ModalCreateCategory() {
         open={modalCreateCategoryIsOpen}
         onOk={() => toggleModalCreateCategory()}
         onCancel={() => toggleModalCreateCategory()}
+        width={350}
         footer={[
           <Button key="submit" onClick={() => toggleModalCreateCategory()}>
             Salvar
           </Button>,
         ]}
       >
-        <Typography.Title level={3}>Create Category</Typography.Title>
-        <Input
-          placeholder="Name"
-          bordered={false}
-          size="middle"
-          style={{
-            borderBottom: "1px solid #ccc",
-          }}
-        />
+        <Typography.Title level={4}>Create Category</Typography.Title>
+        <Input placeholder="Name" size="middle" />
         <Row
           style={{
-            alignItems: "center",
-            gap: 8,
-            paddingTop: 8,
-            paddingBottom: 8,
+            marginTop: 10,
+            justifyContent: "space-between",
           }}
         >
-          <BgColorsOutlined width={40} height={40} />
-          <Title
-            level={5}
+          <Row
             style={{
-              margin: 0,
+              gap: 10,
+              alignItems: "center",
             }}
           >
-            Cor da Categoria
-          </Title>
+            <BgColorsOutlined width={40} height={40} />
+            <Title level={5}>Color</Title>
+          </Row>
+          <ColorPicker allowClear onOpenChange={toggleModalCreateCategory} />
         </Row>
-        <ColorPicker allowClear onOpenChange={toggleModalCreateCategory} />
       </Modal>
     </>
   );
