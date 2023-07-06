@@ -1,8 +1,9 @@
-import { Button, Col, Row, Select, Space, Tag } from "antd";
-import { ModalCreateCategory } from "./components/ModalCreateCategory";
+import { Col } from "antd";
 import { Header } from "antd/es/layout/layout";
-import { TableCategories } from "./components/TableCategories";
 import { HeaderActions } from "./components/HeaderActions";
+import { ModalCreateCategory } from "./components/ModalCreateCategory";
+import { ModalDeleteCategory } from "./components/ModalDeleteCategory";
+import { TableCategories } from "./components/TableCategories";
 
 export function Categories() {
   return (
@@ -29,6 +30,7 @@ export function Categories() {
       </Col>
 
       <ModalCreateCategory />
+      <ModalDeleteCategory />
     </>
   );
 }

@@ -10,6 +10,8 @@ import {
 type CategoriesActionsContextProps = {
   modalCreateCategoryIsOpen: boolean;
   toggleModalCreateCategory: (value?: boolean) => void;
+  modalDeleteCategoryIsOpen: boolean;
+  toggleModalDeleteCategory: (value?: boolean) => void;
 };
 
 type CategoriesActionsContextProviderProps = {
@@ -25,17 +27,30 @@ export function CategoriesActionsContextProvider({
 }: CategoriesActionsContextProviderProps) {
   const [modalCreateCategoryIsOpen, setModalCreateCategoryIsOpen] =
     useState(false);
+  const [modalDeleteCategoryIsOpen, setModalDeleteCategoryIsOpen] =
+    useState(false);
 
   const toggleModalCreateCategory = useCallback((value?: boolean) => {
     setModalCreateCategoryIsOpen((state) => (value ? value : !state));
+  }, []);
+
+  const toggleModalDeleteCategory = useCallback((value?: boolean) => {
+    setModalDeleteCategoryIsOpen((state) => (value ? value : !state));
   }, []);
 
   const value = useMemo(
     () => ({
       modalCreateCategoryIsOpen,
       toggleModalCreateCategory,
+      modalDeleteCategoryIsOpen,
+      toggleModalDeleteCategory,
     }),
-    [modalCreateCategoryIsOpen, toggleModalCreateCategory]
+    [
+      modalCreateCategoryIsOpen,
+      modalDeleteCategoryIsOpen,
+      toggleModalCreateCategory,
+      toggleModalDeleteCategory,
+    ]
   );
 
   return (

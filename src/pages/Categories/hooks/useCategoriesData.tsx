@@ -33,7 +33,8 @@ const data: DataType[] = [
 ];
 
 export function useCategoriesData() {
-  const { toggleModalCreateCategory } = useCategoriesActions();
+  const { toggleModalCreateCategory, toggleModalDeleteCategory } =
+    useCategoriesActions();
 
   const columns = useMemo<ColumnsType<DataType>>(
     () => [
@@ -86,13 +87,13 @@ export function useCategoriesData() {
             <ButtonAction
               tooltipAction="Deletar"
               icon={<DeleteOutlined />}
-              onClick={() => console.log("Deletar")}
+              onClick={() => toggleModalDeleteCategory()}
             />
           </Space>
         ),
       },
     ],
-    [toggleModalCreateCategory]
+    [toggleModalCreateCategory, toggleModalDeleteCategory]
   );
 
   return {
