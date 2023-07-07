@@ -3,7 +3,7 @@ import { ColumnsType } from "antd/es/table";
 
 import { DeleteOutlined, EditOutlined, ReadOutlined } from "@ant-design/icons";
 import { useMemo } from "react";
-import { ButtonAction } from "../components/ButtonAction";
+import { ButtonAction } from "../../../components/ButtonAction";
 import { useCategoriesActions } from "../contexts/CategoriesActionsContext";
 
 type DataType = {

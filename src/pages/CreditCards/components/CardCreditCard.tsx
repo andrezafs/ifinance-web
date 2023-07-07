@@ -61,7 +61,12 @@ export function CardCreditCard({
           />
         </Row>
 
-        <Progress percent={progress} strokeColor={bank.color} showInfo />
+        <Progress
+          status="normal"
+          percent={progress}
+          strokeColor={bank.color}
+          showInfo
+        />
 
         <Row justify={"space-between"}>
           <Typography.Text>{`Vencimento em ${paymentDate}`}</Typography.Text>
