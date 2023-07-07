@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { Dashboard } from "../pages/Dashboard";
-import { Categories } from "../pages/Categories";
-import { CreditCads } from "../pages/CreditCads";
+import Categories from "../pages/Categories";
+import CreditCads from "../pages/CreditCards";
 import { Planning } from "../pages/Planning";
 import { Report } from "../pages/Report";
 
