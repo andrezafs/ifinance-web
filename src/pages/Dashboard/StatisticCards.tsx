@@ -6,15 +6,16 @@ import {
   CreditCardOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { CSSProperties, ReactNode } from "react";
 
-const cardStyle: React.CSSProperties = {
+const cardStyle: CSSProperties = {
   borderRadius: 24,
 };
 
 interface CardStatisticProps {
   route: string;
   title: string;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
   avatarColor?: string;
   value?: number;
 }

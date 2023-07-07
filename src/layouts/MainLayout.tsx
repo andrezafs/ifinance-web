@@ -1,11 +1,11 @@
-import { SideMenu } from "./SideMenu";
-import { AppRoutes } from "./Routes";
 import { Layout } from "antd";
-import React from "react";
+import { CSSProperties } from "react";
+import { Outlet } from "react-router-dom";
+import { SideMenu } from "../components/SideMenu";
 
 const { Header, Footer, Content } = Layout;
 
-const headerStyle: React.CSSProperties = {
+const headerStyle: CSSProperties = {
   textAlign: "center",
   color: "#fff",
   height: 64,
@@ -14,23 +14,23 @@ const headerStyle: React.CSSProperties = {
   backgroundColor: "#7dbcea",
 };
 
-const footerStyle: React.CSSProperties = {
+const footerStyle: CSSProperties = {
   textAlign: "center",
   color: "#fff",
   backgroundColor: "#7dbcea",
 };
 
-export const PageContent = () => {
+export function MainLayout() {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <SideMenu />
       <Layout>
         <Header style={headerStyle}>Header</Header>
         <Content>
-          <AppRoutes />
+          <Outlet />
         </Content>
         <Footer style={footerStyle}>Footer</Footer>
       </Layout>
     </Layout>
   );
-};
+}

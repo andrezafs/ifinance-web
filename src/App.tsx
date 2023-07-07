@@ -1,11 +1,11 @@
 import "antd/dist/reset.css";
 import { BrowserRouter } from "react-router-dom";
-import { PageContent } from "./components/PageContent";
+import { AppRoutes } from "./routes/Routes";
 
 function App() {
   return (
     <BrowserRouter>
-      <PageContent />
+      <AppRoutes />
     </BrowserRouter>
   );
 }

@@ -1,7 +1,8 @@
 import { Row, Select, Input } from "antd";
-import { ButtonAction } from "./ButtonAction";
+
 import { PlusOutlined } from "@ant-design/icons";
 import { useCategoriesActions } from "../contexts/CategoriesActionsContext";
+import { ButtonAction } from "../../../components/ButtonAction";
 
 export function HeaderActions() {
   const onSearch = (value: string) => console.log(value);
@@ -55,5 +56,4 @@ export function HeaderActions() {
       </Row>
     </Row>
   );
-  [toggleModalCreateCategory];
 }
