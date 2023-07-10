@@ -22,12 +22,7 @@ const optionsBanks = [
   { value: "caixa", label: "Caixa" },
 ];
 
-// TODO: add form validation
-// TODO: add input inserir limite do cartão (limite total)
 export function FormCreateCardCredit() {
-  const onChange = (value: number | string) => {
-    console.log("changed", value);
-  };
   return (
     <Form>
       <Typography.Title level={4}>Dados do cartão</Typography.Title>
