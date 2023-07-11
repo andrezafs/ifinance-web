@@ -3,11 +3,7 @@ import { StatisticCards } from "./StatisticCards";
 
 export function Dashboard() {
   return (
-    <Layout.Content
-      style={{
-        padding: "24px",
-      }}
-    >
+    <Layout.Content>
       <StatisticCards />
     </Layout.Content>
   );
