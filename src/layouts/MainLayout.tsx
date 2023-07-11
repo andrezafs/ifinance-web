@@ -20,13 +20,17 @@ const footerStyle: CSSProperties = {
   backgroundColor: "#7dbcea",
 };
 
+const contentStyle: CSSProperties = {
+  margin: "24px 16px",
+};
+
 export function MainLayout() {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <SideMenu />
       <Layout>
         <Header style={headerStyle}>Header</Header>
-        <Content>
+        <Content style={contentStyle}>
           <Outlet />
         </Content>
         <Footer style={footerStyle}>Footer</Footer>

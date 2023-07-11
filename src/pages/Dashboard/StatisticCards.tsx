@@ -1,48 +1,11 @@
-import { Avatar, Card, Col, Row, Space, Statistic } from "antd";
+import { Row, Col } from "antd";
+import { CardStatistic } from "../../components/CardStatistic";
 import {
-  ArrowDownOutlined,
-  ArrowUpOutlined,
   BankOutlined,
+  ArrowUpOutlined,
+  ArrowDownOutlined,
   CreditCardOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import { CSSProperties, ReactNode } from "react";
-
-const cardStyle: CSSProperties = {
-  borderRadius: 24,
-};
-
-interface CardStatisticProps {
-  route: string;
-  title: string;
-  icon?: ReactNode;
-  avatarColor?: string;
-  value?: number;
-}
-function CardStatistic({
-  route,
-  icon,
-  title,
-  avatarColor,
-  value,
-}: CardStatisticProps) {
-  return (
-    <Link to={route}>
-      <Card style={cardStyle}>
-        <Space wrap size={16}>
-          <Avatar
-            size={48}
-            icon={icon}
-            style={{
-              backgroundColor: avatarColor,
-            }}
-          />
-          <Statistic title={title} value={value} precision={2} prefix="R$" />
-        </Space>
-      </Card>
-    </Link>
-  );
-}
 
 export function StatisticCards() {
   return (
@@ -59,6 +22,7 @@ export function StatisticCards() {
           title="Contas"
           route={"/accounts"}
           avatarColor="#1890ff"
+          prefix="R$"
           value={9.3}
         ></CardStatistic>
       </Col>
@@ -68,6 +32,7 @@ export function StatisticCards() {
           title="Receitas"
           route={"/revenues"}
           avatarColor="#23cf13"
+          prefix="R$"
           value={9.3}
         ></CardStatistic>
       </Col>
@@ -77,6 +42,7 @@ export function StatisticCards() {
           title="Despesas"
           route={"/expenses"}
           avatarColor="#cf1322"
+          prefix="R$"
           value={9.3}
         ></CardStatistic>
       </Col>
@@ -86,6 +52,7 @@ export function StatisticCards() {
           title="Cartões de Crédito"
           route={"/creditCards"}
           avatarColor="#1e5307"
+          prefix="R$"
           value={9.3}
         ></CardStatistic>
       </Col>
