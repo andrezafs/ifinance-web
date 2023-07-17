@@ -1,0 +1,24 @@
+overwrite: true
+
+schema: "https://finance-api-dev-aqke.onrender.com/graphql"
+
+generates:
+  src/graphql/generated/graphql.tsx:
+    documents: ["./src/**/*.graphql"]
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-query
+    config:
+      withHooks: true
+      exposeQueryKeys: true
+      exposeMutationKeys: true
+      fetcher: "../../configurations/reactQuery/fetcher#fetcherWithGraphQLClient"
+    hooks:
+      beforeAllFileWrite:
+        - yarn prettier --write src/graphql/generated/**
+  src/graphql/schema.graphql:
+    plugins:
+      - schema-ast
+    config:
+      includeDirectives: true

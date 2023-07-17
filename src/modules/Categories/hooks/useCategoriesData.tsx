@@ -5,7 +5,7 @@ import { DeleteOutlined, EditOutlined, ReadOutlined } from "@ant-design/icons";
 import { useMemo } from "react";
 import { ButtonAction } from "../../shared/components/ButtonAction";
 import { useCategoriesActions } from "../contexts/CategoriesActionsContext";
-import { Category } from "../services/getListCategories";
+import { Category } from "../../../graphql/generated/graphql";
 
 type DataType = {
   key: string;

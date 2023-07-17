@@ -1,15 +1,11 @@
 import { Row, Table } from "antd";
 
+import { useListCategoriesQuery } from "../../../graphql/generated/graphql";
 import { useCategoriesData } from "../hooks/useCategoriesData";
-import { useQuery } from "@tanstack/react-query";
-import { getListCategories } from "../services/getListCategories";
 
 export function TableCategories() {
-  const { data: categories, isLoading } = useQuery({
-    queryKey: ["categories"],
-    queryFn: getListCategories,
-  });
-  const { columns, data } = useCategoriesData(categories);
+  const { data: categories, isLoading } = useListCategoriesQuery();
+  const { columns, data } = useCategoriesData(categories?.listCategories);
 
   if (isLoading) {
     return <p>Carregando...</p>;
