@@ -5,6 +5,7 @@ import { DeleteOutlined, EditOutlined, ReadOutlined } from "@ant-design/icons";
 import { useMemo } from "react";
 import { ButtonAction } from "../../shared/components/ButtonAction";
 import { useCategoriesActions } from "../contexts/CategoriesActionsContext";
+import { Category } from "../services/getListCategories";
 
 type DataType = {
   key: string;
@@ -13,28 +14,19 @@ type DataType = {
   subcategory?: string[];
 };
 
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "Supermercado",
-    color: "red",
-    subcategory: ["Alimentos", "Limpeza"],
-  },
-  {
-    key: "2",
-    name: "Escritório",
-    color: "blue",
-  },
-  {
-    key: "3",
-    name: "Casa",
-    color: "green",
-  },
-];
-
-export function useCategoriesData() {
+export function useCategoriesData(categories?: Category[]) {
   const { toggleModalCreateCategory, toggleModalDeleteCategory } =
     useCategoriesActions();
+
+  const data = useMemo<DataType[]>(() => {
+    if (!categories) return [];
+
+    return categories.map((category) => ({
+      key: category.id,
+      name: category.name,
+      color: category.color,
+    }));
+  }, [categories]);
 
   const columns = useMemo<ColumnsType<DataType>>(
     () => [
@@ -64,7 +56,7 @@ export function useCategoriesData() {
         title: "Actions",
         key: "actions",
         align: "right",
-        render: (_, record) => (
+        render: () => (
           <Space
             size="middle"
             style={{

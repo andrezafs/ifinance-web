@@ -1,9 +1,19 @@
 import { Row, Table } from "antd";
 
 import { useCategoriesData } from "../hooks/useCategoriesData";
+import { useQuery } from "@tanstack/react-query";
+import { getListCategories } from "../services/getListCategories";
 
 export function TableCategories() {
-  const { columns, data } = useCategoriesData();
+  const { data: categories, isLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getListCategories,
+  });
+  const { columns, data } = useCategoriesData(categories);
+
+  if (isLoading) {
+    return <p>Carregando...</p>;
+  }
 
   return (
     <Table

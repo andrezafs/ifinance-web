@@ -5,7 +5,6 @@ import { HeaderActions } from "../components/HeaderActions";
 import { ModalCreateCategory } from "../components/ModalCreateCategory";
 import { ModalDeleteCategory } from "../components/ModalDeleteCategory";
 import { TableCategories } from "../components/TableCategories";
-
 export function Categories() {
   return (
     <>
