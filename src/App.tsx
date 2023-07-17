@@ -1,6 +1,6 @@
 import "antd/dist/reset.css";
 import { BrowserRouter } from "react-router-dom";
-import { AppRoutes } from "./routes/Routes";
+import { AppRoutes } from "./routes/AppRoutes";
 
 function App() {
   return (
