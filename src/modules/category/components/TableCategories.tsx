@@ -1,6 +1,6 @@
-import { Row, Table } from "antd";
+import { Row, Skeleton, Table } from "antd";
 
-import { useListCategoriesQuery } from "../../../graphql/generated/graphql";
+import { useListCategoriesQuery } from "../../../graphql";
 import { useCategoriesData } from "../hooks/useCategoriesData";
 
 export function TableCategories() {
@@ -8,7 +8,12 @@ export function TableCategories() {
   const { columns, data } = useCategoriesData(categories?.listCategories);
 
   if (isLoading) {
-    return <p>Carregando...</p>;
+    return (
+      <>
+        <p>Carregando ...</p>
+        <Skeleton active />
+      </>
+    );
   }
 
   return (

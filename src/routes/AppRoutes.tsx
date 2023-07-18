@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import { CategoriesRoutes } from "../modules/Categories/routes/CategoriesRoutes";
-import { DashboardRoutes } from "../modules/Dashboard/routes/DashboardRoutes";
-import { PlanningRoutes } from "../modules/Planning/routes/PlanningRoites";
-import { CreditCardRoutes } from "../modules/creditCard/routes/CreditCardRoutes";
+import { CategoriesRoutes } from "../modules/category/routes/CategoriesRoutes";
+import { DashboardRoutes } from "../modules/dashboard/routes/DashboardRoutes";
+import { PlanningRoutes } from "../modules/planning/routes/PlanningRoites";
+import { CreditCardRoutes } from "../modules/credit-card/routes/CreditCardRoutes";
 import { MainLayout } from "../modules/layouts/MainLayout";
 import { ReportsRoutes } from "../modules/report/routes/ReportsRoutes";
 import { routes } from "./routes";

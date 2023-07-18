@@ -128,7 +128,7 @@ export function useCreditCardDetailsData() {
         title: "Ações",
         dataIndex: "actions",
         key: "actions",
-        render: (_, record) => (
+        render: () => (
           <Space
             size="middle"
             style={{
