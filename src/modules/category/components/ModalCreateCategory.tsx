@@ -12,7 +12,7 @@ export function ModalCreateCategory() {
 
   const queryClient = useQueryClient();
 
-  useCreateCategoryMutation({
+  const { mutate } = useCreateCategoryMutation({
     onSuccess: () => {
       queryClient.invalidateQueries(useListCategoriesQuery.getKey());
       messageApi.open({
@@ -36,24 +36,33 @@ export function ModalCreateCategory() {
   return (
     <>
       {contextHolder}
+
       <Modal
+        title="Cadastrar Nova Categoria"
         centered
         open={modalCreateCategoryIsOpen}
         onOk={() => toggleModalCreateCategory()}
         onCancel={() => toggleModalCreateCategory()}
-        width={350}
+        width={400}
         footer={[
           <Button
             key="submit"
+            htmlType="submit"
+            form="create-category"
             onClick={() => {
               toggleModalCreateCategory();
             }}
           >
             Salvar
           </Button>,
+          <Button key="back">Cancelar</Button>,
         ]}
       >
-        <FormCreateCategory />
+        <FormCreateCategory
+          onSubmit={(data) => {
+            mutate({ data });
+          }}
+        />
       </Modal>
     </>
   );

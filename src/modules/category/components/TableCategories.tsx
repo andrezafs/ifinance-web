@@ -18,6 +18,7 @@ export function TableCategories() {
 
   return (
     <Table
+      pagination={false}
       expandable={{
         expandedRowRender: (record) => (
           <Row
