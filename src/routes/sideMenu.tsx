@@ -29,5 +29,5 @@ export const sideMenuRoutes: MenuItem[] = [
   mountItem("Categories", "/categories", <FlagOutlined />),
   mountItem("Credits Card", "/credit-cards", <CreditCardOutlined />),
   mountItem("Planning", "/planning", <BarChartOutlined />),
-  mountItem("Report", "/report", <PieChartOutlined />),
+  mountItem("Reports", "/reports", <PieChartOutlined />),
 ];

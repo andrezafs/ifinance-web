@@ -1,0 +1,4 @@
+name: "GraphQL Schema"
+schemaPath: "./src/graphql/schema.graphql"
+includes:
+  - "./src/**/*.graphql"

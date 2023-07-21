@@ -1,0 +1,8 @@
+query ListCategories {
+  listCategories {
+    color
+    id
+    name
+    userId
+  }
+}
