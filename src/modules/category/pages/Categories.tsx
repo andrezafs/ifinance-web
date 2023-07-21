@@ -4,6 +4,7 @@ import { HeaderActions } from "../components/HeaderActions";
 import { TableCategories } from "../components/TableCategories";
 import { ModalCreateCategory } from "../components/ModalCreateCategory";
 import { ModalDeleteCategory } from "../components/ModalDeleteCategory";
+import { ModalEditCategory } from "../components/ModalEditCategory";
 
 export function Categories() {
   return (
@@ -31,6 +32,7 @@ export function Categories() {
 
       <ModalCreateCategory />
       <ModalDeleteCategory />
+      <ModalEditCategory />
     </>
   );
 }

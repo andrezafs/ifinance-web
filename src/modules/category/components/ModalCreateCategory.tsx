@@ -18,6 +18,7 @@ export function ModalCreateCategory() {
 
   const { mutate, isLoading } = useCreateCategoryMutation({
     onSuccess: () => {
+      toggleModalCreateCategory();
       queryClient.invalidateQueries(useListCategoriesQuery.getKey());
       messageApi.open({
         type: "success",
@@ -37,29 +38,23 @@ export function ModalCreateCategory() {
   return (
     <>
       {contextHolder}
-
       <Modal
         title="Cadastrar Nova Categoria"
         centered
+        okButtonProps={{
+          htmlType: "submit",
+          form: "create-category",
+          loading: isLoading,
+        }}
+        okText="Salvar"
+        onCancel={() => toggleModalCreateCategory()}
+        cancelButtonProps={{
+          disabled: isLoading,
+        }}
+        cancelText="Cancelar"
         open={modalCreateCategoryIsOpen}
         maskClosable={false}
         width={400}
-        footer={[
-          <Button
-            key="submit"
-            htmlType="submit"
-            form="create-category"
-            onClick={() => {
-              toggleModalCreateCategory();
-            }}
-          >
-            Salvar
-          </Button>,
-
-          <Button key="back" onClick={() => toggleModalCreateCategory()}>
-            Cancelar
-          </Button>,
-        ]}
       >
         <FormCreateCategory
           onSubmit={(data) => {

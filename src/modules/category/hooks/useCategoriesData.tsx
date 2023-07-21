@@ -3,10 +3,9 @@ import { ColumnsType } from "antd/es/table";
 
 import { DeleteOutlined, EditOutlined, ReadOutlined } from "@ant-design/icons";
 import { useMemo } from "react";
+import { Category } from "../../../graphql";
 import { ButtonAction } from "../../shared/components/ButtonAction";
 import { useCategoriesActions } from "../contexts/CategoriesActionsContext";
-import { Category } from "../../../graphql";
-import { record } from "zod";
 
 type DataType = {
   key: string;
@@ -20,6 +19,7 @@ export function useCategoriesData(categories?: Category[]) {
   const {
     toggleModalCreateCategory,
     toggleModalDeleteCategory,
+    toggleModalEditCategory,
     handleSetCategory,
   } = useCategoriesActions();
 
@@ -79,7 +79,7 @@ export function useCategoriesData(categories?: Category[]) {
             <ButtonAction
               tooltipAction="Editar"
               icon={<EditOutlined />}
-              onClick={() => console.log("Editar")}
+              onClick={() => toggleModalEditCategory()}
             />
 
             <ButtonAction
@@ -97,7 +97,11 @@ export function useCategoriesData(categories?: Category[]) {
         ),
       },
     ],
-    [toggleModalCreateCategory, toggleModalDeleteCategory]
+    [
+      toggleModalCreateCategory,
+      toggleModalDeleteCategory,
+      toggleModalEditCategory,
+    ]
   );
 
   return useMemo(() => ({ columns, data }), [columns, data]);

@@ -5,7 +5,6 @@ import {
   useListCategoriesQuery,
 } from "../../../graphql";
 import { useCategoriesActions } from "../contexts/CategoriesActionsContext";
-import { Fragment } from "react";
 
 export function ModalDeleteCategory() {
   const [messageApi, contextHolder] = message.useMessage();
@@ -18,8 +17,9 @@ export function ModalDeleteCategory() {
     handleSetCategory,
   } = useCategoriesActions();
 
-  const { mutate } = useDeleteCategoryMutation({
+  const { mutate, isLoading } = useDeleteCategoryMutation({
     onSuccess: () => {
+      toggleModalDeleteCategory();
       useDeleteCategoryMutation.getKey();
       handleSetCategory(null);
       queryClient.invalidateQueries(useListCategoriesQuery.getKey());
@@ -38,41 +38,32 @@ export function ModalDeleteCategory() {
     },
   });
 
-  console.log(category);
-
   return (
     <>
       {contextHolder}
       <Modal
         centered
         open={modalDeleteCategoryIsOpen}
-        onOk={() => toggleModalDeleteCategory()}
+        okText="Deletar"
+        onOk={() => {
+          mutate({
+            deleteCategoryId: category?.id as string,
+          });
+        }}
+        okButtonProps={{
+          danger: true,
+          htmlType: "submit",
+          loading: isLoading,
+        }}
+        cancelText="Cancelar"
         onCancel={() => toggleModalDeleteCategory()}
+        cancelButtonProps={{
+          disabled: isLoading,
+          htmlType: "button",
+          danger: true,
+        }}
         maskClosable={false}
         width={350}
-        footer={[
-          <Button
-            type="text"
-            danger
-            key="submit"
-            onClick={() => {
-              mutate({
-                deleteCategoryId: category?.id as string,
-              });
-              toggleModalDeleteCategory();
-            }}
-          >
-            Deletar
-          </Button>,
-          <Button
-            type="primary"
-            danger
-            key="cancel"
-            onClick={() => toggleModalDeleteCategory()}
-          >
-            Cancelar
-          </Button>,
-        ]}
       >
         <Typography.Title level={4}>Delete Category</Typography.Title>
         <Alert

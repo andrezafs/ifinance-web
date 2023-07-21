@@ -13,6 +13,8 @@ type CategoriesActionsContextProps = {
   toggleModalCreateCategory: (value?: boolean) => void;
   modalDeleteCategoryIsOpen: boolean;
   toggleModalDeleteCategory: (value?: boolean) => void;
+  modalEditCategory: boolean;
+  toggleModalEditCategory: (value?: boolean) => void;
   category: Category | null;
   handleSetCategory: (value: Category | null) => void;
 };
@@ -32,6 +34,7 @@ export function CategoriesActionsContextProvider({
     useState(false);
   const [modalDeleteCategoryIsOpen, setModalDeleteCategoryIsOpen] =
     useState(false);
+  const [modalEditCategory, setModalEditCategoryIsOpen] = useState(false);
   const [category, setCategory] = useState<Category | null>(null);
 
   const toggleModalCreateCategory = useCallback((value?: boolean) => {
@@ -40,6 +43,10 @@ export function CategoriesActionsContextProvider({
 
   const toggleModalDeleteCategory = useCallback((value?: boolean) => {
     setModalDeleteCategoryIsOpen((state) => (value ? value : !state));
+  }, []);
+
+  const toggleModalEditCategory = useCallback((value?: boolean) => {
+    setModalEditCategoryIsOpen((state) => (value ? value : !state));
   }, []);
 
   const handleSetCategory = useCallback((value: Category | null) => {
@@ -52,14 +59,18 @@ export function CategoriesActionsContextProvider({
       toggleModalCreateCategory,
       modalDeleteCategoryIsOpen,
       toggleModalDeleteCategory,
+      modalEditCategory,
+      toggleModalEditCategory,
       category,
       handleSetCategory,
     }),
     [
       modalCreateCategoryIsOpen,
       modalDeleteCategoryIsOpen,
+      modalEditCategory,
       toggleModalCreateCategory,
       toggleModalDeleteCategory,
+      toggleModalEditCategory,
       category,
       handleSetCategory,
     ]
