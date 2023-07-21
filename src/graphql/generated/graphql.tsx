@@ -21,6 +21,7 @@ export type Category = {
   color: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  userId: Scalars['String']['output'];
 };
 
 export type CreateCategoryInput = {
@@ -28,9 +29,16 @@ export type CreateCategoryInput = {
   name: Scalars['String']['input'];
 };
 
+export type CreateUserInput = {
+  email: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createCategory: Category;
+  createUser: User;
   deleteCategory: Scalars['Boolean']['output'];
   updateCategory: Category;
 };
@@ -41,19 +49,36 @@ export type MutationCreateCategoryArgs = {
 };
 
 
+export type MutationCreateUserArgs = {
+  data: CreateUserInput;
+};
+
+
 export type MutationDeleteCategoryArgs = {
   id: Scalars['String']['input'];
 };
 
 
 export type MutationUpdateCategoryArgs = {
-  data: CreateCategoryInput;
+  data: UpdateCategoryInput;
   id: Scalars['String']['input'];
 };
 
 export type Query = {
   __typename?: 'Query';
   listCategories: Array<Category>;
+};
+
+export type UpdateCategoryInput = {
+  color: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+};
+
+export type User = {
+  __typename?: 'User';
+  email: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
 };
 
 export type CreateCategoryMutationVariables = Exact<{
@@ -63,10 +88,17 @@ export type CreateCategoryMutationVariables = Exact<{
 
 export type CreateCategoryMutation = { __typename?: 'Mutation', createCategory: { __typename?: 'Category', id: string } };
 
+export type DeleteCategoryMutationVariables = Exact<{
+  deleteCategoryId: Scalars['String']['input'];
+}>;
+
+
+export type DeleteCategoryMutation = { __typename?: 'Mutation', deleteCategory: boolean };
+
 export type ListCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ListCategoriesQuery = { __typename?: 'Query', listCategories: Array<{ __typename?: 'Category', color: string, id: string, name: string }> };
+export type ListCategoriesQuery = { __typename?: 'Query', listCategories: Array<{ __typename?: 'Category', color: string, id: string, name: string, userId: string }> };
 
 
 export const CreateCategoryDocument = `
@@ -87,12 +119,29 @@ export const useCreateCategoryMutation = <
     );
 useCreateCategoryMutation.getKey = () => ['CreateCategory'];
 
+export const DeleteCategoryDocument = `
+    mutation deleteCategory($deleteCategoryId: String!) {
+  deleteCategory(id: $deleteCategoryId)
+}
+    `;
+export const useDeleteCategoryMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteCategoryMutation, TError, DeleteCategoryMutationVariables, TContext>) =>
+    useMutation<DeleteCategoryMutation, TError, DeleteCategoryMutationVariables, TContext>(
+      ['deleteCategory'],
+      (variables?: DeleteCategoryMutationVariables) => fetcherWithGraphQLClient<DeleteCategoryMutation, DeleteCategoryMutationVariables>(DeleteCategoryDocument, variables)(),
+      options
+    );
+useDeleteCategoryMutation.getKey = () => ['deleteCategory'];
+
 export const ListCategoriesDocument = `
     query ListCategories {
   listCategories {
     color
     id
     name
+    userId
   }
 }
     `;

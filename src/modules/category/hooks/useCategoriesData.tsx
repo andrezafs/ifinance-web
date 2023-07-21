@@ -6,17 +6,22 @@ import { useMemo } from "react";
 import { ButtonAction } from "../../shared/components/ButtonAction";
 import { useCategoriesActions } from "../contexts/CategoriesActionsContext";
 import { Category } from "../../../graphql";
+import { record } from "zod";
 
 type DataType = {
   key: string;
   name: string;
   color: string;
+  userId: string;
   subcategory?: string[];
 };
 
 export function useCategoriesData(categories?: Category[]) {
-  const { toggleModalCreateCategory, toggleModalDeleteCategory } =
-    useCategoriesActions();
+  const {
+    toggleModalCreateCategory,
+    toggleModalDeleteCategory,
+    handleSetCategory,
+  } = useCategoriesActions();
 
   const data = useMemo<DataType[]>(() => {
     if (!categories) return [];
@@ -25,6 +30,7 @@ export function useCategoriesData(categories?: Category[]) {
       key: category.id,
       name: category.name,
       color: category.color,
+      userId: category.userId,
     }));
   }, [categories]);
 
@@ -56,7 +62,7 @@ export function useCategoriesData(categories?: Category[]) {
         title: "Actions",
         key: "actions",
         align: "right",
-        render: () => (
+        render: (_, record) => (
           <Space
             size="middle"
             style={{
@@ -79,7 +85,13 @@ export function useCategoriesData(categories?: Category[]) {
             <ButtonAction
               tooltipAction="Deletar"
               icon={<DeleteOutlined />}
-              onClick={() => toggleModalDeleteCategory()}
+              onClick={() => {
+                toggleModalDeleteCategory();
+                handleSetCategory({
+                  ...record,
+                  id: record.key,
+                });
+              }}
             />
           </Space>
         ),

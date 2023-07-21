@@ -6,13 +6,17 @@ import {
 } from "../../../graphql";
 import { useCategoriesActions } from "../contexts/CategoriesActionsContext";
 import { FormCreateCategory } from "./FormCreateCategory";
+import { useState } from "react";
 
 export function ModalCreateCategory() {
+  const { modalCreateCategoryIsOpen, toggleModalCreateCategory } =
+    useCategoriesActions();
+
   const [messageApi, contextHolder] = message.useMessage();
 
   const queryClient = useQueryClient();
 
-  const { mutate } = useCreateCategoryMutation({
+  const { mutate, isLoading } = useCreateCategoryMutation({
     onSuccess: () => {
       queryClient.invalidateQueries(useListCategoriesQuery.getKey());
       messageApi.open({
@@ -30,9 +34,6 @@ export function ModalCreateCategory() {
     },
   });
 
-  const { modalCreateCategoryIsOpen, toggleModalCreateCategory } =
-    useCategoriesActions();
-
   return (
     <>
       {contextHolder}
@@ -41,8 +42,7 @@ export function ModalCreateCategory() {
         title="Cadastrar Nova Categoria"
         centered
         open={modalCreateCategoryIsOpen}
-        onOk={() => toggleModalCreateCategory()}
-        onCancel={() => toggleModalCreateCategory()}
+        maskClosable={false}
         width={400}
         footer={[
           <Button
@@ -55,7 +55,10 @@ export function ModalCreateCategory() {
           >
             Salvar
           </Button>,
-          <Button key="back">Cancelar</Button>,
+
+          <Button key="back" onClick={() => toggleModalCreateCategory()}>
+            Cancelar
+          </Button>,
         ]}
       >
         <FormCreateCategory

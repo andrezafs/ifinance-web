@@ -3,5 +3,6 @@ query ListCategories {
     color
     id
     name
+    userId
   }
 }

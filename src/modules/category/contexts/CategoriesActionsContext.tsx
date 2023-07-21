@@ -6,12 +6,15 @@ import {
   useMemo,
   useState,
 } from "react";
+import { Category } from "../../../graphql";
 
 type CategoriesActionsContextProps = {
   modalCreateCategoryIsOpen: boolean;
   toggleModalCreateCategory: (value?: boolean) => void;
   modalDeleteCategoryIsOpen: boolean;
   toggleModalDeleteCategory: (value?: boolean) => void;
+  category: Category | null;
+  handleSetCategory: (value: Category | null) => void;
 };
 
 type CategoriesActionsContextProviderProps = {
@@ -29,6 +32,7 @@ export function CategoriesActionsContextProvider({
     useState(false);
   const [modalDeleteCategoryIsOpen, setModalDeleteCategoryIsOpen] =
     useState(false);
+  const [category, setCategory] = useState<Category | null>(null);
 
   const toggleModalCreateCategory = useCallback((value?: boolean) => {
     setModalCreateCategoryIsOpen((state) => (value ? value : !state));
@@ -38,18 +42,26 @@ export function CategoriesActionsContextProvider({
     setModalDeleteCategoryIsOpen((state) => (value ? value : !state));
   }, []);
 
+  const handleSetCategory = useCallback((value: Category | null) => {
+    setCategory(value);
+  }, []);
+
   const value = useMemo(
     () => ({
       modalCreateCategoryIsOpen,
       toggleModalCreateCategory,
       modalDeleteCategoryIsOpen,
       toggleModalDeleteCategory,
+      category,
+      handleSetCategory,
     }),
     [
       modalCreateCategoryIsOpen,
       modalDeleteCategoryIsOpen,
       toggleModalCreateCategory,
       toggleModalDeleteCategory,
+      category,
+      handleSetCategory,
     ]
   );
 
