@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build --base=./ && touch dist/.nojekyll",
     "lint": "yarn eslint --max-warnings=0 --fix src && yarn prettier --write src",
     "preview": "vite preview",
     "codegen": "graphql-codegen --config codegen.yml",
@@ -38,6 +38,7 @@
     "@typescript-eslint/parser": "^5.62.0",
     "@vitejs/plugin-react-swc": "^3.0.0",
     "axios": "^1.4.0",
+    "devmoji": "^2.3.0",
     "eslint": "^8.45.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.8.0",

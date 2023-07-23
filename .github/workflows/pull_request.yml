@@ -1,0 +1,26 @@
+name: Pull Request
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check-app:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-node@v3
+      with:
+         node-version: '16.x'
+         cache: 'yarn'
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Check linter
+      run: yarn eslint --max-warnings=0 src && yarn prettier --check src
+
+    - name: Build app
+      run: yarn build

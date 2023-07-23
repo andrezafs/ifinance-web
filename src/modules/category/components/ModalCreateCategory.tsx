@@ -1,4 +1,4 @@
-import { Modal, message } from 'antd';
+import { ButtonProps, Modal, message } from 'antd';
 
 import { useQueryClient } from '@tanstack/react-query';
 import { useCreateCategoryMutation, useListCategoriesQuery } from '@/graphql';
@@ -43,11 +43,13 @@ export function ModalCreateCategory() {
         width={400}
         open={modalCreateCategoryIsOpen}
         okText="Salvar"
-        okButtonProps={{
-          htmlType: 'submit',
-          form: 'create-category',
-          loading: isLoading,
-        }}
+        okButtonProps={
+          {
+            htmlType: 'submit',
+            form: 'create-category',
+            loading: isLoading,
+          } as ButtonProps
+        }
         cancelText="Cancelar"
         onCancel={() => toggleModalCreateCategory()}
         cancelButtonProps={{
