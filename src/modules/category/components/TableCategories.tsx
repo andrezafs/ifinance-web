@@ -10,12 +10,7 @@ export function TableCategories() {
   const { columns, data } = useCategoriesData(categories?.listCategories);
 
   if (isLoading) {
-    return (
-      <>
-        <p>Carregando ...</p>
-        <Skeleton active />
-      </>
-    );
+    return <Skeleton active />;
   }
 
   return (
