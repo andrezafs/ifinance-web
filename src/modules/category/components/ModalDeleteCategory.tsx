@@ -1,10 +1,9 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { Alert, Button, Modal, Typography, message } from "antd";
-import {
-  useDeleteCategoryMutation,
-  useListCategoriesQuery,
-} from "../../../graphql";
-import { useCategoriesActions } from "../contexts/CategoriesActionsContext";
+import { Alert, Modal, Typography, message } from 'antd';
+
+import { useQueryClient } from '@tanstack/react-query';
+import { useDeleteCategoryMutation, useListCategoriesQuery } from '@/graphql';
+
+import { useCategoriesActions } from '../contexts/CategoriesActionsContext';
 
 export function ModalDeleteCategory() {
   const [messageApi, contextHolder] = message.useMessage();
@@ -24,15 +23,15 @@ export function ModalDeleteCategory() {
       handleSetCategory(null);
       queryClient.invalidateQueries(useListCategoriesQuery.getKey());
       messageApi.open({
-        type: "success",
-        content: "Categoria deletada com sucesso!",
+        type: 'success',
+        content: 'Categoria deletada com sucesso!',
         duration: 2,
       });
     },
     onError: () => {
       messageApi.open({
-        type: "error",
-        content: "Erro ao deletar categoria!",
+        type: 'error',
+        content: 'Erro ao deletar categoria!',
         duration: 2,
       });
     },
@@ -52,14 +51,14 @@ export function ModalDeleteCategory() {
         }}
         okButtonProps={{
           danger: true,
-          htmlType: "submit",
+          htmlType: 'submit',
           loading: isLoading,
         }}
         cancelText="Cancelar"
         onCancel={() => toggleModalDeleteCategory()}
         cancelButtonProps={{
           disabled: isLoading,
-          htmlType: "button",
+          htmlType: 'button',
           danger: true,
         }}
         maskClosable={false}

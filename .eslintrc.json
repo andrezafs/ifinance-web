@@ -1,0 +1,108 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest": true
+  },
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "airbnb",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "react-hooks",
+    "prettier",
+    "import-helpers",
+    "eslint-plugin-import-helpers"
+  ],
+  "rules": {
+    "react/prop-types": "off",
+    "prettier/prettier": "off",
+    "react/react-in-jsx-scope": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "import/prefer-default-export": "off",
+    "react/jsx-filename-extension": [
+      "warn",
+      { "extensions": [".tsx", ".ts", ".js", ".jsx"] }
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "**/*.stories.jsx",
+          "**/*.stories.tsx",
+          "**/*.spec.jsx",
+          "**/*.spec.tsx",
+          "**/setupTests.ts"
+        ]
+      }
+    ],
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          ["/^react/", "/^antd/", "/^zod/", "/^@ant-design/", "/^@hookform/"],
+          "module",
+          "/^@/",
+          ["parent", "sibling"],
+          ["/.*style.css/"]
+        ],
+        "alphabetize": { "ignoreCase": true }
+      }
+    ],
+    "react/jsx-props-no-spreading": "off",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "react/require-default-props": "off",
+    "react/jsx-no-constructed-context-values": "off",
+    "no-shadow": "off",
+    "react/function-component-definition": "off",
+    "class-methods-use-this": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-param-reassign": "off",
+    "react/jsx-no-bind": "off"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "alias": {
+        "map": [["@", "./src"]],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  }
+}

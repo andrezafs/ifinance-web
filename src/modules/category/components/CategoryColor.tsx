@@ -1,6 +1,6 @@
-import { Button } from "antd";
-import { ComponentProps, useState } from "react";
-import { CheckOutlined } from "@ant-design/icons";
+import { ComponentProps } from 'react';
+import { Button } from 'antd';
+import { CheckOutlined } from '@ant-design/icons';
 
 type ButtonProps = ComponentProps<typeof Button>;
 
@@ -10,7 +10,7 @@ const categoryColor = {
   borderRadius: 15,
 };
 
-export function CategorieColor({
+export function CategoryColor({
   value,
   selectedColor,
   onColorSelected,
@@ -32,7 +32,7 @@ export function CategorieColor({
       shape="circle"
       style={{
         ...categoryColor,
-        backgroundColor: isSelected ? value : "transparent",
+        backgroundColor: isSelected ? value : 'transparent',
       }}
       onClick={handleColorSelected}
       {...props}
@@ -40,7 +40,7 @@ export function CategorieColor({
       {isSelected && (
         <CheckOutlined
           style={{
-            color: "white",
+            color: 'white',
           }}
         />
       )}

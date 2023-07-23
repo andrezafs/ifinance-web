@@ -1,10 +1,11 @@
-import "antd/dist/reset.css";
-import { BrowserRouter } from "react-router-dom";
-import { AppRoutes } from "./routes/AppRoutes";
-import { QueryClientProvider } from "@tanstack/react-query";
+import 'antd/dist/reset.css';
+import { BrowserRouter } from 'react-router-dom';
 
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { queryClient } from "./configurations/reactQuery/queryClient";
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+import { AppRoutes } from './routes/AppRoutes';
+import { queryClient } from './configurations/reactQuery/queryClient';
 
 function App() {
   return (

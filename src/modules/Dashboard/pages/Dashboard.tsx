@@ -1,4 +1,4 @@
-import { StatisticCards } from "../components/StatisticCards";
+import { StatisticCards } from '../components/StatisticCards';
 
 export function Dashboard() {
   return <StatisticCards />;

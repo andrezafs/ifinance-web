@@ -1,9 +1,10 @@
-import { Outlet, Route, Routes } from "react-router-dom";
-import { CreditCads } from "../pages/CreditCads";
+import { Outlet, Route, Routes } from 'react-router-dom';
 
-import { CreditCardDetails } from "../pages/CreditCardDetails";
-import { routes } from "../../../routes/routes";
-import { CreditCardsActionsContextProvider } from "../contexts/CreditCardsActionsContext";
+import { routes } from '@/routes/routes';
+
+import { CreditCads } from '../pages/CreditCads';
+import { CreditCardDetails } from '../pages/CreditCardDetails';
+import { CreditCardsActionsContextProvider } from '../contexts/CreditCardsActionsContext';
 
 export function CreditCardRoutes() {
   return (

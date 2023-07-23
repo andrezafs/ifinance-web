@@ -1,5 +1,6 @@
-import { Button, Modal } from "antd";
-import { useCreditCardActions } from "../contexts/CreditCardsActionsContext";
+import { Button, Modal } from 'antd';
+
+import { useCreditCardActions } from '../contexts/CreditCardsActionsContext';
 
 export function ModalCreateNewCreditCardExpense() {
   const {
@@ -21,6 +22,6 @@ export function ModalCreateNewCreditCardExpense() {
           Salvar
         </Button>,
       ]}
-    ></Modal>
+    />
   );
 }

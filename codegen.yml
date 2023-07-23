@@ -13,12 +13,12 @@ generates:
       withHooks: true
       exposeQueryKeys: true
       exposeMutationKeys: true
-      fetcher: "../../configurations/reactQuery/fetcher#fetcherWithGraphQLClient"
-    hooks:
-      beforeAllFileWrite:
-        - yarn prettier --write src/graphql/generated/**
+      fetcher: "@/configurations/reactQuery/fetcher#fetcherWithGraphQLClient"
   src/graphql/schema.graphql:
     plugins:
       - schema-ast
     config:
       includeDirectives: true
+hooks:
+  afterAllFileWrite:
+    - yarn prettier --write src/graphql/generated/**

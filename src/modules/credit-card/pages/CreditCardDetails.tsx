@@ -1,11 +1,13 @@
-import { PlusOutlined } from "@ant-design/icons";
-import { Col, Divider, Table } from "antd";
-import { Header } from "antd/es/layout/layout";
-import { ButtonAction } from "../../shared/components/ButtonAction";
-import { CreditCardStatistics } from "../components/CreditCardStatistics";
-import { ModalCreateNewCreditCardExpense } from "../components/ModalCreateNewCreditCardExpense";
-import { useCreditCardActions } from "../contexts/CreditCardsActionsContext";
-import { useCreditCardDetailsData } from "../hooks/useCreditCardDetailsData";
+import { Col, Divider, Table } from 'antd';
+import { Header } from 'antd/es/layout/layout';
+import { PlusOutlined } from '@ant-design/icons';
+
+import { ButtonAction } from '@/modules/shared/components/ButtonAction';
+
+import { CreditCardStatistics } from '../components/CreditCardStatistics';
+import { ModalCreateNewCreditCardExpense } from '../components/ModalCreateNewCreditCardExpense';
+import { useCreditCardActions } from '../contexts/CreditCardsActionsContext';
+import { useCreditCardDetailsData } from '../hooks/useCreditCardDetailsData';
 
 export function CreditCardDetails() {
   const { columns, data } = useCreditCardDetailsData();
@@ -17,7 +19,7 @@ export function CreditCardDetails() {
       <Col span={30}>
         <Header
           style={{
-            backgroundColor: "#fff",
+            backgroundColor: '#fff',
           }}
         >
           <ButtonAction

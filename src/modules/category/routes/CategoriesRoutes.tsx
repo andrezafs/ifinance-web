@@ -1,6 +1,7 @@
-import { Outlet, Route, Routes } from "react-router-dom";
-import { CategoriesActionsContextProvider } from "../contexts/CategoriesActionsContext";
-import { Categories } from "../pages/Categories";
+import { Outlet, Route, Routes } from 'react-router-dom';
+
+import { CategoriesActionsContextProvider } from '../contexts/CategoriesActionsContext';
+import { Categories } from '../pages/Categories';
 
 export function CategoriesRoutes() {
   return (

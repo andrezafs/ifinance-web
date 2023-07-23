@@ -1,6 +1,6 @@
-import { Avatar, Card, Space, Statistic } from "antd";
-import { CSSProperties, ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { CSSProperties, ReactNode } from 'react';
+import { Link } from 'react-router-dom';
+import { Avatar, Card, Space, Statistic } from 'antd';
 
 const cardStyle: CSSProperties = {
   borderRadius: 24,
@@ -23,7 +23,7 @@ export function CardStatistic({
   prefix,
 }: CardStatisticProps) {
   return (
-    <Link to={route ? route : "/"}>
+    <Link to={route || '/'}>
       <Card style={cardStyle}>
         <Space wrap size={16}>
           <Avatar

@@ -1,19 +1,38 @@
-import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from '@tanstack/react-query';
-import { fetcherWithGraphQLClient } from '../../configurations/reactQuery/fetcher';
+import {
+  useMutation,
+  useQuery,
+  UseMutationOptions,
+  UseQueryOptions,
+} from '@tanstack/react-query';
+import { fetcherWithGraphQLClient } from '@/configurations/reactQuery/fetcher';
+
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
+export type MakeEmpty<
+  T extends { [key: string]: unknown },
+  K extends keyof T,
+> = { [_ in K]?: never };
+export type Incremental<T> =
+  | T
+  | {
+      [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+    };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
 };
 
 export type Category = {
@@ -29,35 +48,55 @@ export type CreateCategoryInput = {
   name: Scalars['String']['input'];
 };
 
+export type CreateCreditCardInput = {
+  closingDay: Scalars['Float']['input'];
+  color: Scalars['String']['input'];
+  dueDay: Scalars['Float']['input'];
+  limit: Scalars['Float']['input'];
+  name: Scalars['String']['input'];
+};
+
 export type CreateUserInput = {
   email: Scalars['String']['input'];
   name: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
 
+export type CreditCard = {
+  __typename?: 'CreditCard';
+  closingDay: Scalars['Float']['output'];
+  color: Scalars['String']['output'];
+  dueDay: Scalars['Float']['output'];
+  id: Scalars['ID']['output'];
+  limit: Scalars['Float']['output'];
+  name: Scalars['String']['output'];
+  userId: Scalars['String']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createCategory: Category;
+  createCreditCard: CreditCard;
   createUser: User;
   deleteCategory: Scalars['Boolean']['output'];
   updateCategory: Category;
 };
 
-
 export type MutationCreateCategoryArgs = {
   data: CreateCategoryInput;
 };
 
+export type MutationCreateCreditCardArgs = {
+  data: CreateCreditCardInput;
+};
 
 export type MutationCreateUserArgs = {
   data: CreateUserInput;
 };
 
-
 export type MutationDeleteCategoryArgs = {
   id: Scalars['String']['input'];
 };
-
 
 export type MutationUpdateCategoryArgs = {
   data: UpdateCategoryInput;
@@ -67,6 +106,7 @@ export type MutationUpdateCategoryArgs = {
 export type Query = {
   __typename?: 'Query';
   listCategories: Array<Category>;
+  listCreditCards: Array<CreditCard>;
 };
 
 export type UpdateCategoryInput = {
@@ -85,21 +125,42 @@ export type CreateCategoryMutationVariables = Exact<{
   data: CreateCategoryInput;
 }>;
 
-
-export type CreateCategoryMutation = { __typename?: 'Mutation', createCategory: { __typename?: 'Category', id: string } };
+export type CreateCategoryMutation = {
+  __typename?: 'Mutation';
+  createCategory: { __typename?: 'Category'; id: string };
+};
 
 export type DeleteCategoryMutationVariables = Exact<{
   deleteCategoryId: Scalars['String']['input'];
 }>;
 
+export type DeleteCategoryMutation = {
+  __typename?: 'Mutation';
+  deleteCategory: boolean;
+};
 
-export type DeleteCategoryMutation = { __typename?: 'Mutation', deleteCategory: boolean };
+export type ListCategoriesQueryVariables = Exact<{ [key: string]: never }>;
 
-export type ListCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+export type ListCategoriesQuery = {
+  __typename?: 'Query';
+  listCategories: Array<{
+    __typename?: 'Category';
+    color: string;
+    id: string;
+    name: string;
+    userId: string;
+  }>;
+};
 
+export type UpdateCategoryMutationVariables = Exact<{
+  data: UpdateCategoryInput;
+  updateCategoryId: Scalars['String']['input'];
+}>;
 
-export type ListCategoriesQuery = { __typename?: 'Query', listCategories: Array<{ __typename?: 'Category', color: string, id: string, name: string, userId: string }> };
-
+export type UpdateCategoryMutation = {
+  __typename?: 'Mutation';
+  updateCategory: { __typename?: 'Category'; id: string };
+};
 
 export const CreateCategoryDocument = `
     mutation CreateCategory($data: CreateCategoryInput!) {
@@ -108,15 +169,28 @@ export const CreateCategoryDocument = `
   }
 }
     `;
-export const useCreateCategoryMutation = <
-      TError = unknown,
-      TContext = unknown
-    >(options?: UseMutationOptions<CreateCategoryMutation, TError, CreateCategoryMutationVariables, TContext>) =>
-    useMutation<CreateCategoryMutation, TError, CreateCategoryMutationVariables, TContext>(
-      ['CreateCategory'],
-      (variables?: CreateCategoryMutationVariables) => fetcherWithGraphQLClient<CreateCategoryMutation, CreateCategoryMutationVariables>(CreateCategoryDocument, variables)(),
-      options
-    );
+export const useCreateCategoryMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    CreateCategoryMutation,
+    TError,
+    CreateCategoryMutationVariables,
+    TContext
+  >,
+) =>
+  useMutation<
+    CreateCategoryMutation,
+    TError,
+    CreateCategoryMutationVariables,
+    TContext
+  >(
+    ['CreateCategory'],
+    (variables?: CreateCategoryMutationVariables) =>
+      fetcherWithGraphQLClient<
+        CreateCategoryMutation,
+        CreateCategoryMutationVariables
+      >(CreateCategoryDocument, variables)(),
+    options,
+  );
 useCreateCategoryMutation.getKey = () => ['CreateCategory'];
 
 export const DeleteCategoryDocument = `
@@ -124,15 +198,28 @@ export const DeleteCategoryDocument = `
   deleteCategory(id: $deleteCategoryId)
 }
     `;
-export const useDeleteCategoryMutation = <
-      TError = unknown,
-      TContext = unknown
-    >(options?: UseMutationOptions<DeleteCategoryMutation, TError, DeleteCategoryMutationVariables, TContext>) =>
-    useMutation<DeleteCategoryMutation, TError, DeleteCategoryMutationVariables, TContext>(
-      ['deleteCategory'],
-      (variables?: DeleteCategoryMutationVariables) => fetcherWithGraphQLClient<DeleteCategoryMutation, DeleteCategoryMutationVariables>(DeleteCategoryDocument, variables)(),
-      options
-    );
+export const useDeleteCategoryMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    DeleteCategoryMutation,
+    TError,
+    DeleteCategoryMutationVariables,
+    TContext
+  >,
+) =>
+  useMutation<
+    DeleteCategoryMutation,
+    TError,
+    DeleteCategoryMutationVariables,
+    TContext
+  >(
+    ['deleteCategory'],
+    (variables?: DeleteCategoryMutationVariables) =>
+      fetcherWithGraphQLClient<
+        DeleteCategoryMutation,
+        DeleteCategoryMutationVariables
+      >(DeleteCategoryDocument, variables)(),
+    options,
+  );
 useDeleteCategoryMutation.getKey = () => ['deleteCategory'];
 
 export const ListCategoriesDocument = `
@@ -146,17 +233,52 @@ export const ListCategoriesDocument = `
 }
     `;
 export const useListCategoriesQuery = <
-      TData = ListCategoriesQuery,
-      TError = unknown
-    >(
-      variables?: ListCategoriesQueryVariables,
-      options?: UseQueryOptions<ListCategoriesQuery, TError, TData>
-    ) =>
-    useQuery<ListCategoriesQuery, TError, TData>(
-      variables === undefined ? ['ListCategories'] : ['ListCategories', variables],
-      fetcherWithGraphQLClient<ListCategoriesQuery, ListCategoriesQueryVariables>(ListCategoriesDocument, variables),
-      options
-    );
+  TData = ListCategoriesQuery,
+  TError = unknown,
+>(
+  variables?: ListCategoriesQueryVariables,
+  options?: UseQueryOptions<ListCategoriesQuery, TError, TData>,
+) =>
+  useQuery<ListCategoriesQuery, TError, TData>(
+    variables === undefined
+      ? ['ListCategories']
+      : ['ListCategories', variables],
+    fetcherWithGraphQLClient<ListCategoriesQuery, ListCategoriesQueryVariables>(
+      ListCategoriesDocument,
+      variables,
+    ),
+    options,
+  );
 
-useListCategoriesQuery.getKey = (variables?: ListCategoriesQueryVariables) => variables === undefined ? ['ListCategories'] : ['ListCategories', variables];
-;
+useListCategoriesQuery.getKey = (variables?: ListCategoriesQueryVariables) =>
+  variables === undefined ? ['ListCategories'] : ['ListCategories', variables];
+export const UpdateCategoryDocument = `
+    mutation UpdateCategory($data: UpdateCategoryInput!, $updateCategoryId: String!) {
+  updateCategory(data: $data, id: $updateCategoryId) {
+    id
+  }
+}
+    `;
+export const useUpdateCategoryMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    UpdateCategoryMutation,
+    TError,
+    UpdateCategoryMutationVariables,
+    TContext
+  >,
+) =>
+  useMutation<
+    UpdateCategoryMutation,
+    TError,
+    UpdateCategoryMutationVariables,
+    TContext
+  >(
+    ['UpdateCategory'],
+    (variables?: UpdateCategoryMutationVariables) =>
+      fetcherWithGraphQLClient<
+        UpdateCategoryMutation,
+        UpdateCategoryMutationVariables
+      >(UpdateCategoryDocument, variables)(),
+    options,
+  );
+useUpdateCategoryMutation.getKey = () => ['UpdateCategory'];

@@ -5,8 +5,9 @@ import {
   useContext,
   useMemo,
   useState,
-} from "react";
-import { Category } from "../../../graphql";
+} from 'react';
+
+import { Category } from '@/graphql';
 
 type CategoriesActionsContextProps = {
   modalCreateCategoryIsOpen: boolean;
@@ -24,7 +25,7 @@ type CategoriesActionsContextProviderProps = {
 };
 
 const CategoriesActionsContext = createContext(
-  {} as CategoriesActionsContextProps
+  {} as CategoriesActionsContextProps,
 );
 
 export function CategoriesActionsContextProvider({
@@ -38,15 +39,15 @@ export function CategoriesActionsContextProvider({
   const [category, setCategory] = useState<Category | null>(null);
 
   const toggleModalCreateCategory = useCallback((value?: boolean) => {
-    setModalCreateCategoryIsOpen((state) => (value ? value : !state));
+    setModalCreateCategoryIsOpen(state => value || !state);
   }, []);
 
   const toggleModalDeleteCategory = useCallback((value?: boolean) => {
-    setModalDeleteCategoryIsOpen((state) => (value ? value : !state));
+    setModalDeleteCategoryIsOpen(state => value || !state);
   }, []);
 
   const toggleModalEditCategory = useCallback((value?: boolean) => {
-    setModalEditCategoryIsOpen((state) => (value ? value : !state));
+    setModalEditCategoryIsOpen(state => value || !state);
   }, []);
 
   const handleSetCategory = useCallback((value: Category | null) => {
@@ -73,7 +74,7 @@ export function CategoriesActionsContextProvider({
       toggleModalEditCategory,
       category,
       handleSetCategory,
-    ]
+    ],
   );
 
   return (
@@ -88,7 +89,7 @@ export function useCategoriesActions() {
 
   if (Object.keys(context).length === 0) {
     throw new Error(
-      "useCategoriesActions must be used within a CategoriesActionsContextProvider"
+      'useCategoriesActions must be used within a CategoriesActionsContextProvider',
     );
   }
 

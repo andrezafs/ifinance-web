@@ -5,7 +5,7 @@ import {
   useContext,
   useMemo,
   useState,
-} from "react";
+} from 'react';
 
 type CreditCardActionsContextProps = {
   modalCreateCreditCardIsOpen: boolean;
@@ -19,7 +19,7 @@ type CreditCardActionsContextProviderProps = {
 };
 
 const CreditCardActionsContext = createContext(
-  {} as CreditCardActionsContextProps
+  {} as CreditCardActionsContextProps,
 );
 
 export function CreditCardsActionsContextProvider({
@@ -34,14 +34,14 @@ export function CreditCardsActionsContextProvider({
   ] = useState(false);
 
   const toggleModalCreateCreditCard = useCallback((value?: boolean) => {
-    setModalCreateCreditCard((state) => (value ? value : !state));
+    setModalCreateCreditCard(state => value || !state);
   }, []);
 
   const toggleModalCreateNewCreditCardExpense = useCallback(
     (value?: boolean) => {
-      setModalCreateNewCreditCardExpense((state) => (value ? value : !state));
+      setModalCreateNewCreditCardExpense(state => value || !state);
     },
-    []
+    [],
   );
 
   const value = useMemo(
@@ -56,7 +56,7 @@ export function CreditCardsActionsContextProvider({
       modalCreateNewCreditCardExpenseIsOpen,
       toggleModalCreateCreditCard,
       toggleModalCreateNewCreditCardExpense,
-    ]
+    ],
   );
 
   return (
@@ -71,7 +71,7 @@ export function useCreditCardActions() {
 
   if (Object.keys(context).length === 0) {
     throw new Error(
-      "useCreditCardActions must be used within a CreditCardActionsContextProvider"
+      'useCreditCardActions must be used within a CreditCardActionsContextProvider',
     );
   }
 

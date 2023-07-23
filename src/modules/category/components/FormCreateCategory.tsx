@@ -1,11 +1,12 @@
-import { BgColorsOutlined } from "@ant-design/icons";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, Input, Radio, Row, Typography } from "antd";
-import { useController, useForm } from "react-hook-form";
-import { FormItem } from "react-hook-form-antd";
-import { z } from "zod";
-import { defaultColors } from "../constants/defaultColors";
-import { CategorieColor } from "./CategorieColor";
+import { useController, useForm } from 'react-hook-form';
+import { FormItem } from 'react-hook-form-antd';
+import { Form, Input, Radio, Row, Typography } from 'antd';
+import { z } from 'zod';
+import { BgColorsOutlined } from '@ant-design/icons';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { defaultColors } from '../constants/defaultColors';
+import { CategoryColor } from './CategoryColor';
 
 const { Title } = Typography;
 
@@ -20,25 +21,25 @@ interface FormCreateCategoryProps {
 
 const schema = z.object({
   name: z
-    .string({ required_error: "Nome é obrigatório" })
-    .nonempty("Nome é obrigatório"),
+    .string({ required_error: 'Nome é obrigatório' })
+    .nonempty('Nome é obrigatório'),
   color: z
     .string({
-      required_error: "Cor é obrigatória",
+      required_error: 'Cor é obrigatória',
     })
-    .nonempty("Cor é obrigatória"),
+    .nonempty('Cor é obrigatória'),
 });
 
 export function FormCreateCategory({ onSubmit }: FormCreateCategoryProps) {
   const { control, handleSubmit } = useForm<FormFields>({
     resolver: zodResolver(schema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
       color: defaultColors[0].color,
     },
   });
   const { field } = useController({
-    name: "color",
+    name: 'color',
     control,
   });
 
@@ -54,7 +55,7 @@ export function FormCreateCategory({ onSubmit }: FormCreateCategoryProps) {
       </FormItem>
       <Row
         style={{
-          alignItems: "center",
+          alignItems: 'center',
           gap: 12,
         }}
       >
@@ -72,13 +73,13 @@ export function FormCreateCategory({ onSubmit }: FormCreateCategoryProps) {
           buttonStyle="solid"
           value={field.value}
           style={{
-            display: "flex",
-            flexWrap: "wrap",
+            display: 'flex',
+            flexWrap: 'wrap',
             gap: 3,
           }}
         >
-          {defaultColors.map((item) => (
-            <CategorieColor
+          {defaultColors.map(item => (
+            <CategoryColor
               selectedColor={field.value}
               onColorSelected={field.onChange}
               key={item.key}
@@ -86,7 +87,7 @@ export function FormCreateCategory({ onSubmit }: FormCreateCategoryProps) {
               style={{
                 backgroundColor: item.color,
               }}
-            ></CategorieColor>
+            />
           ))}
         </Radio.Group>
       </FormItem>

@@ -1,11 +1,12 @@
-import { Space, Tag } from "antd";
-import { ColumnsType } from "antd/es/table";
+import { useMemo } from 'react';
+import { Space, Tag } from 'antd';
+import { ColumnsType } from 'antd/es/table';
+import { DeleteOutlined, EditOutlined, ReadOutlined } from '@ant-design/icons';
 
-import { DeleteOutlined, EditOutlined, ReadOutlined } from "@ant-design/icons";
-import { useMemo } from "react";
-import { Category } from "../../../graphql";
-import { ButtonAction } from "../../shared/components/ButtonAction";
-import { useCategoriesActions } from "../contexts/CategoriesActionsContext";
+import { Category } from '@/graphql';
+import { ButtonAction } from '@/modules/shared/components/ButtonAction';
+
+import { useCategoriesActions } from '../contexts/CategoriesActionsContext';
 
 type DataType = {
   key: string;
@@ -26,7 +27,7 @@ export function useCategoriesData(categories?: Category[]) {
   const data = useMemo<DataType[]>(() => {
     if (!categories) return [];
 
-    return categories.map((category) => ({
+    return categories.map(category => ({
       key: category.id,
       name: category.name,
       color: category.color,
@@ -37,37 +38,37 @@ export function useCategoriesData(categories?: Category[]) {
   const columns = useMemo<ColumnsType<DataType>>(
     () => [
       {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
       },
       {
-        title: "Color",
-        dataIndex: "color",
-        key: "color",
-        align: "center",
-        render: (color) => (
+        title: 'Color',
+        dataIndex: 'color',
+        key: 'color',
+        align: 'center',
+        render: color => (
           <Tag
             color={color}
             key={color}
             style={{
-              width: "20px",
-              height: "20px",
-              borderRadius: "50%",
+              width: '20px',
+              height: '20px',
+              borderRadius: '50%',
             }}
-          ></Tag>
+          />
         ),
       },
       {
-        title: "Actions",
-        key: "actions",
-        align: "right",
+        title: 'Actions',
+        key: 'actions',
+        align: 'right',
         render: (_, record) => (
           <Space
             size="middle"
             style={{
-              width: "100%",
-              justifyContent: "flex-end",
+              width: '100%',
+              justifyContent: 'flex-end',
             }}
           >
             <ButtonAction
@@ -79,7 +80,13 @@ export function useCategoriesData(categories?: Category[]) {
             <ButtonAction
               tooltipAction="Editar"
               icon={<EditOutlined />}
-              onClick={() => toggleModalEditCategory()}
+              onClick={() => {
+                toggleModalEditCategory();
+                handleSetCategory({
+                  ...record,
+                  id: record.key,
+                });
+              }}
             />
 
             <ButtonAction
@@ -98,10 +105,11 @@ export function useCategoriesData(categories?: Category[]) {
       },
     ],
     [
+      handleSetCategory,
       toggleModalCreateCategory,
       toggleModalDeleteCategory,
       toggleModalEditCategory,
-    ]
+    ],
   );
 
   return useMemo(() => ({ columns, data }), [columns, data]);

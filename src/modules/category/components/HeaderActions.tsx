@@ -1,20 +1,21 @@
-import { Row, Select, Input } from "antd";
+import { Row, Select, Input } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
-import { PlusOutlined } from "@ant-design/icons";
-import { useCategoriesActions } from "../contexts/CategoriesActionsContext";
-import { ButtonAction } from "../../shared/components/ButtonAction";
+import { ButtonAction } from '@/modules/shared/components/ButtonAction';
+
+import { useCategoriesActions } from '../contexts/CategoriesActionsContext';
 
 export function HeaderActions() {
-  const onSearch = (value: string) => console.log(value);
+  // const onSearch = (value: string) => console.log(value);
 
   const { toggleModalCreateCategory } = useCategoriesActions();
 
   return (
     <Row
       style={{
-        width: "100%",
-        justifyContent: "space-between",
-        alignItems: "center",
+        width: '100%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
       }}
     >
       <Select
@@ -26,16 +27,16 @@ export function HeaderActions() {
         }}
         options={[
           {
-            label: "Categoria de despesas",
-            value: "1",
+            label: 'Categoria de despesas',
+            value: '1',
           },
-          { label: "Categoria de receitas", value: "2" },
+          { label: 'Categoria de receitas', value: '2' },
         ]}
       />
 
       <Row
         style={{
-          alignItems: "center",
+          alignItems: 'center',
           gap: 20,
         }}
       >
@@ -51,7 +52,7 @@ export function HeaderActions() {
           style={{
             width: 250,
           }}
-          onSearch={onSearch}
+          // onSearch={onSearch}
         />
       </Row>
     </Row>

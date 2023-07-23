@@ -1,9 +1,9 @@
-const categories = "categories";
-const creditCards = "credit-cards";
-const planning = "planning";
-const reports = "reports";
-const home = "/";
-const creditCardId = ":creditCardId";
+const categories = 'categories';
+const creditCards = 'credit-cards';
+const planning = 'planning';
+const reports = 'reports';
+const home = '/';
+const creditCardId = ':creditCardId';
 
 export const routes = {
   goToCategories: () => `/${categories}`,

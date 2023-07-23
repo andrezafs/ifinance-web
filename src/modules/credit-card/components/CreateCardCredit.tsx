@@ -1,5 +1,5 @@
-import { Card, Typography } from "antd";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { Card, Typography } from 'antd';
+import { PlusCircleOutlined } from '@ant-design/icons';
 
 export function CreateCardCredit() {
   return (

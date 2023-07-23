@@ -1,25 +1,25 @@
+import { Avatar, Form, Input, InputNumber, Select, Typography } from 'antd';
 import {
   CalendarOutlined,
   CarryOutOutlined,
   CreditCardOutlined,
   WalletOutlined,
-} from "@ant-design/icons";
-import { Avatar, Form, Input, InputNumber, Select, Typography } from "antd";
+} from '@ant-design/icons';
 
 const { Option } = Select;
 
 const optionsBanks = [
-  { value: "nubank", label: "Nubank" },
-  { value: "itau", label: "Itaú" },
-  { value: "bradesco", label: "Bradesco" },
-  { value: "santander", label: "Santander" },
-  { value: "inter", label: "Inter" },
-  { value: "next", label: "Next" },
-  { value: "original", label: "Original" },
-  { value: "neon", label: "Neon" },
-  { value: "sicoob", label: "Sicoob" },
-  { value: "banco-do-brasil", label: "Banco do Brasil" },
-  { value: "caixa", label: "Caixa" },
+  { value: 'nubank', label: 'Nubank' },
+  { value: 'itau', label: 'Itaú' },
+  { value: 'bradesco', label: 'Bradesco' },
+  { value: 'santander', label: 'Santander' },
+  { value: 'inter', label: 'Inter' },
+  { value: 'next', label: 'Next' },
+  { value: 'original', label: 'Original' },
+  { value: 'neon', label: 'Neon' },
+  { value: 'sicoob', label: 'Sicoob' },
+  { value: 'banco-do-brasil', label: 'Banco do Brasil' },
+  { value: 'caixa', label: 'Caixa' },
 ];
 
 export function FormCreateCardCredit() {
@@ -30,7 +30,7 @@ export function FormCreateCardCredit() {
       <Form.Item name="Limite">
         <Input
           style={{
-            width: "100%",
+            width: '100%',
           }}
           placeholder="Limite do cartão"
           min={1}
@@ -43,13 +43,13 @@ export function FormCreateCardCredit() {
         <Input
           addonAfter={<CreditCardOutlined />}
           placeholder="Nome do cartão"
-          width={"100%"}
+          width="100%"
         />
       </Form.Item>
 
       <Form.Item>
         <Select placeholder="Selecione o seu Banco">
-          {optionsBanks.map((bank) => (
+          {optionsBanks.map(bank => (
             <Option value={bank.value}>
               <Avatar
                 src="/nubank.png"
@@ -66,8 +66,8 @@ export function FormCreateCardCredit() {
       <Form.Item style={{ marginBottom: 0 }}>
         <Form.Item
           style={{
-            display: "inline-block",
-            width: "calc(50% - 8px)",
+            display: 'inline-block',
+            width: 'calc(50% - 8px)',
             marginRight: 16,
           }}
         >
@@ -76,21 +76,21 @@ export function FormCreateCardCredit() {
             max={31}
             placeholder="Dia do Fechamento"
             style={{
-              width: "100%",
+              width: '100%',
             }}
             addonAfter={<CalendarOutlined />}
           />
         </Form.Item>
 
         <Form.Item
-          style={{ display: "inline-block", width: "calc(50% - 8px)" }}
+          style={{ display: 'inline-block', width: 'calc(50% - 8px)' }}
         >
           <InputNumber
             min={1}
             max={31}
             placeholder="Dia do Pagamento"
             style={{
-              width: "100%",
+              width: '100%',
             }}
             addonAfter={<CarryOutOutlined />}
           />

@@ -1,10 +1,10 @@
+import { Link } from 'react-router-dom';
+import { Avatar, Card, Col, Progress, Row, Statistic, Typography } from 'antd';
 import {
   EditOutlined,
   EllipsisOutlined,
   PieChartOutlined,
-} from "@ant-design/icons";
-import { Avatar, Card, Col, Progress, Row, Statistic, Typography } from "antd";
-import { Link } from "react-router-dom";
+} from '@ant-design/icons';
 
 type CardCreditCardProps = {
   title: string;
@@ -46,7 +46,7 @@ export function CardCreditCard({
           <EllipsisOutlined key="ellipsis" />,
         ]}
       >
-        <Row justify={"space-between"}>
+        <Row justify="space-between">
           <Card.Meta title={bank.name} avatar={<Avatar src={bank.logo} />} />
           <Statistic
             title="Fatura atual"
@@ -56,7 +56,7 @@ export function CardCreditCard({
           />
         </Row>
         <Col>
-          <Row justify={"space-between"}>
+          <Row justify="space-between">
             <Statistic
               title="Limite disponível"
               prefix="R$"
@@ -72,7 +72,7 @@ export function CardCreditCard({
             showInfo
           />
 
-          <Row justify={"space-between"}>
+          <Row justify="space-between">
             <Typography.Text>{`Vencimento em ${paymentDate}`}</Typography.Text>
             <Typography.Text>{`R$${totalLimit} de R$${usedLimit}`}</Typography.Text>
           </Row>

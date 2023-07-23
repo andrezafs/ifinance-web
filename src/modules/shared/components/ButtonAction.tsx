@@ -1,5 +1,5 @@
-import { Button, Tooltip } from "antd";
-import { ComponentProps } from "react";
+import { ComponentProps } from 'react';
+import { Button, Tooltip } from 'antd';
 
 type ButtonProps = ComponentProps<typeof Button>;
 

@@ -1,20 +1,20 @@
-import { MenuProps } from "antd";
+import { Key, ReactNode } from 'react';
+import { MenuProps } from 'antd';
 import {
   FlagOutlined,
   HomeOutlined,
   BarChartOutlined,
   CreditCardOutlined,
   PieChartOutlined,
-} from "@ant-design/icons";
-import { Key, ReactNode } from "react";
+} from '@ant-design/icons';
 
-type MenuItem = Required<MenuProps>["items"][number];
+type MenuItem = Required<MenuProps>['items'][number];
 
 function mountItem(
   label: ReactNode,
   key: Key,
   icon?: ReactNode,
-  children?: MenuItem[]
+  children?: MenuItem[],
 ): MenuItem {
   return {
     key,
@@ -25,9 +25,9 @@ function mountItem(
 }
 
 export const sideMenuRoutes: MenuItem[] = [
-  mountItem("Dashboard", "/", <HomeOutlined />),
-  mountItem("Categories", "/categories", <FlagOutlined />),
-  mountItem("Credits Card", "/credit-cards", <CreditCardOutlined />),
-  mountItem("Planning", "/planning", <BarChartOutlined />),
-  mountItem("Reports", "/reports", <PieChartOutlined />),
+  mountItem('Dashboard', '/', <HomeOutlined />),
+  mountItem('Categories', '/categories', <FlagOutlined />),
+  mountItem('Credits Card', '/credit-cards', <CreditCardOutlined />),
+  mountItem('Planning', '/planning', <BarChartOutlined />),
+  mountItem('Reports', '/reports', <PieChartOutlined />),
 ];

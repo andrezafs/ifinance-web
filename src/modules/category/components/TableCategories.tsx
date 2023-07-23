@@ -1,7 +1,9 @@
-import { Row, Skeleton, Table } from "antd";
+/* eslint-disable react/no-unstable-nested-components */
+import { Row, Skeleton, Table } from 'antd';
 
-import { useListCategoriesQuery } from "../../../graphql";
-import { useCategoriesData } from "../hooks/useCategoriesData";
+import { useListCategoriesQuery } from '@/graphql';
+
+import { useCategoriesData } from '../hooks/useCategoriesData';
 
 export function TableCategories() {
   const { data: categories, isLoading } = useListCategoriesQuery();
@@ -20,18 +22,18 @@ export function TableCategories() {
     <Table
       pagination={false}
       expandable={{
-        expandedRowRender: (record) => (
+        expandedRowRender: record => (
           <Row
             style={{
               margin: 0,
-              display: "flex",
-              flexDirection: "column",
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
             {record.subcategory}
           </Row>
         ),
-        rowExpandable: (record) => record.subcategory !== undefined,
+        rowExpandable: record => record.subcategory !== undefined,
       }}
       columns={columns}
       dataSource={data}
