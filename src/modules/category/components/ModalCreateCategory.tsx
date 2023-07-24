@@ -1,4 +1,4 @@
-import { ButtonProps, Modal, message } from 'antd';
+import { ButtonProps, Modal } from 'antd';
 
 import { useQueryClient } from '@tanstack/react-query';
 import { useCreateCategoryMutation, useListCategoriesQuery } from '@/graphql';
@@ -7,10 +7,8 @@ import { useCategoriesActions } from '../contexts/CategoriesActionsContext';
 import { FormCreateCategory } from './FormCreateCategory';
 
 export function ModalCreateCategory() {
-  const { modalCreateCategoryIsOpen, toggleModalCreateCategory } =
+  const { modalCreateCategoryIsOpen, toggleModalCreateCategory, messageApi } =
     useCategoriesActions();
-
-  const [messageApi, contextHolder] = message.useMessage();
 
   const queryClient = useQueryClient();
 
@@ -33,35 +31,34 @@ export function ModalCreateCategory() {
     },
   });
 
+  if (!modalCreateCategoryIsOpen) return null;
+
   return (
-    <>
-      {contextHolder}
-      <Modal
-        title="Cadastrar Nova Categoria"
-        centered
-        maskClosable={false}
-        width={400}
-        open={modalCreateCategoryIsOpen}
-        okText="Salvar"
-        okButtonProps={
-          {
-            htmlType: 'submit',
-            form: 'create-category',
-            loading: isLoading,
-          } as ButtonProps
-        }
-        cancelText="Cancelar"
-        onCancel={() => toggleModalCreateCategory()}
-        cancelButtonProps={{
-          disabled: isLoading,
+    <Modal
+      title="Cadastrar Nova Categoria"
+      centered
+      maskClosable={false}
+      width={400}
+      open={modalCreateCategoryIsOpen}
+      okText="Salvar"
+      okButtonProps={
+        {
+          htmlType: 'submit',
+          form: 'create-category',
+          loading: isLoading,
+        } as ButtonProps
+      }
+      cancelText="Cancelar"
+      onCancel={() => toggleModalCreateCategory()}
+      cancelButtonProps={{
+        disabled: isLoading,
+      }}
+    >
+      <FormCreateCategory
+        onSubmit={data => {
+          mutate({ data });
         }}
-      >
-        <FormCreateCategory
-          onSubmit={data => {
-            mutate({ data });
-          }}
-        />
-      </Modal>
-    </>
+      />
+    </Modal>
   );
 }

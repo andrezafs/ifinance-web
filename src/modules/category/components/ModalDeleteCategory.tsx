@@ -1,4 +1,4 @@
-import { Alert, Modal, Typography, message } from 'antd';
+import { Alert, Modal, Typography } from 'antd';
 
 import { useQueryClient } from '@tanstack/react-query';
 import { useDeleteCategoryMutation, useListCategoriesQuery } from '@/graphql';
@@ -6,7 +6,6 @@ import { useDeleteCategoryMutation, useListCategoriesQuery } from '@/graphql';
 import { useCategoriesActions } from '../contexts/CategoriesActionsContext';
 
 export function ModalDeleteCategory() {
-  const [messageApi, contextHolder] = message.useMessage();
   const queryClient = useQueryClient();
 
   const {
@@ -14,6 +13,7 @@ export function ModalDeleteCategory() {
     toggleModalDeleteCategory,
     category,
     handleSetCategory,
+    messageApi,
   } = useCategoriesActions();
 
   const { mutate, isLoading } = useDeleteCategoryMutation({
@@ -37,45 +37,47 @@ export function ModalDeleteCategory() {
     },
   });
 
+  if (!category) return null;
+
   return (
-    <>
-      {contextHolder}
-      <Modal
-        centered
-        open={modalDeleteCategoryIsOpen}
-        okText="Deletar"
-        onOk={() => {
-          mutate({
-            deleteCategoryId: category?.id as string,
-          });
-        }}
-        okButtonProps={{
-          danger: true,
-          htmlType: 'submit',
-          loading: isLoading,
-        }}
-        cancelText="Cancelar"
-        onCancel={() => toggleModalDeleteCategory()}
-        cancelButtonProps={{
-          disabled: isLoading,
-          htmlType: 'button',
-          danger: true,
-        }}
-        maskClosable={false}
-        width={350}
-      >
-        <Typography.Title level={4}>Delete Category</Typography.Title>
-        <Alert
-          description={
-            <>
-              Ao deletar a categoria <strong>{category?.name}</strong>, todas as
-              transações associadas a ela serão movidas para a categoria outros.
-              Deseja continuar?
-            </>
-          }
-          type="error"
-        />
-      </Modal>
-    </>
+    <Modal
+      centered
+      open={modalDeleteCategoryIsOpen}
+      okText="Deletar"
+      onOk={() => {
+        mutate({
+          deleteCategoryId: category?.id as string,
+        });
+      }}
+      okButtonProps={{
+        danger: true,
+        htmlType: 'submit',
+        loading: isLoading,
+      }}
+      cancelText="Cancelar"
+      onCancel={() => {
+        toggleModalDeleteCategory();
+        handleSetCategory(null);
+      }}
+      cancelButtonProps={{
+        disabled: isLoading,
+        htmlType: 'button',
+        danger: true,
+      }}
+      maskClosable={false}
+      width={350}
+    >
+      <Typography.Title level={4}>Delete Category</Typography.Title>
+      <Alert
+        description={
+          <>
+            Ao deletar a categoria <strong>{category?.name}</strong>, todas as
+            transações associadas a ela serão movidas para a categoria outros.
+            Deseja continuar?
+          </>
+        }
+        type="error"
+      />
+    </Modal>
   );
 }

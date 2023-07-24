@@ -20,7 +20,7 @@ export function CategoryColor({
   selectedColor: string;
   onColorSelected: (color: string) => void;
 }) {
-  const isSelected = value === selectedColor;
+  const isSelected = value.toLowerCase() === selectedColor.toLowerCase();
 
   const handleColorSelected = () => {
     onColorSelected(value);
