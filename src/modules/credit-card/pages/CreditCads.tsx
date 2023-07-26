@@ -1,4 +1,4 @@
-import { Row, Col } from 'antd';
+import { Col, Row, theme } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 
 import { CardCreditCard } from '../components/CardCreditCard';
@@ -6,12 +6,16 @@ import { HeaderActions } from '../components/Header';
 import { ModalCreateCreditCard } from '../components/ModalCreateCreditCard';
 
 export function CreditCads() {
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+
   return (
     <>
       <Header
         style={{
-          backgroundColor: '#fff',
           marginBottom: 16,
+          background: colorBgContainer,
         }}
       >
         <HeaderActions />

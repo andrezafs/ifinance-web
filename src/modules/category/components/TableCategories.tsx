@@ -6,7 +6,7 @@ import { useListCategoriesQuery } from '@/graphql';
 import { useCategoriesData } from '../hooks/useCategoriesData';
 
 export function TableCategories() {
-  const { data: categories, isLoading } = useListCategoriesQuery();
+  const { data: categories, isLoading, isFetching } = useListCategoriesQuery();
   const { columns, data } = useCategoriesData(categories?.listCategories);
 
   if (isLoading) {
@@ -15,6 +15,7 @@ export function TableCategories() {
 
   return (
     <Table
+      loading={isFetching}
       pagination={false}
       expandable={{
         expandedRowRender: record => (

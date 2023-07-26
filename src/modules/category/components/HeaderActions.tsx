@@ -6,8 +6,6 @@ import { ButtonAction } from '@/modules/shared/components/ButtonAction';
 import { useCategoriesActions } from '../contexts/CategoriesActionsContext';
 
 export function HeaderActions() {
-  // const onSearch = (value: string) => console.log(value);
-
   const { toggleModalCreateCategory } = useCategoriesActions();
 
   return (
