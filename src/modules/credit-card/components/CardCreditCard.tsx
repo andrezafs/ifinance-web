@@ -8,7 +8,7 @@ import {
 
 type CardCreditCardProps = {
   title: string;
-  closeDate: string;
+  closingDay: number;
   bank: {
     name: string;
     logo: string;
@@ -18,14 +18,14 @@ type CardCreditCardProps = {
   availableLimit: number;
   totalLimit: number;
   progress: number;
-  paymentDate: string;
+  paymentDate: number;
   usedLimit: number;
   id: string;
 };
 
 export function CardCreditCard({
   title,
-  closeDate,
+  closingDay,
   bank,
   currentInvoice,
   availableLimit,
@@ -39,7 +39,7 @@ export function CardCreditCard({
     <Link to={`/credit-cards/${id}`}>
       <Card
         title={title}
-        extra={`Fechamento em ${closeDate}`}
+        extra={`Fechamento em ${closingDay}`}
         actions={[
           <PieChartOutlined key="graphic" />,
           <EditOutlined key="edit" />,
@@ -74,7 +74,7 @@ export function CardCreditCard({
 
           <Row justify="space-between">
             <Typography.Text>{`Vencimento em ${paymentDate}`}</Typography.Text>
-            <Typography.Text>{`R$${totalLimit} de R$${usedLimit}`}</Typography.Text>
+            <Typography.Text>{`R$${usedLimit} de R$${totalLimit}`}</Typography.Text>
           </Row>
         </Col>
       </Card>

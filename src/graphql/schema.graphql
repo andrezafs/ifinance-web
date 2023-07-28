@@ -1,3 +1,10 @@
+type Bank {
+  color: String!
+  id: ID!
+  image: String!
+  name: String!
+}
+
 type Category {
   color: String!
   id: ID!
@@ -11,8 +18,8 @@ input CreateCategoryInput {
 }
 
 input CreateCreditCardInput {
+  bankId: String!
   closingDay: Float!
-  color: String!
   dueDay: Float!
   limit: Float!
   name: String!
@@ -25,12 +32,16 @@ input CreateUserInput {
 }
 
 type CreditCard {
+  bank: Bank!
+  bankId: String!
   closingDay: Float!
-  color: String!
   dueDay: Float!
   id: ID!
   limit: Float!
+  limitAvailable: Float!
+  limitUsed: Float!
   name: String!
+  percentLimitUsed: Float!
   userId: String!
 }
 
@@ -43,6 +54,7 @@ type Mutation {
 }
 
 type Query {
+  listBanks: [Bank!]!
   listCategories: [Category!]!
   listCreditCards: [CreditCard!]!
 }

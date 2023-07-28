@@ -5,29 +5,71 @@ import {
   CreditCardOutlined,
   WalletOutlined,
 } from '@ant-design/icons';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FormItem } from 'react-hook-form-antd';
+
+import { useListBanksQuery } from '@/graphql';
 
 const { Option } = Select;
 
-const optionsBanks = [
-  { value: 'nubank', label: 'Nubank' },
-  { value: 'itau', label: 'Itaú' },
-  { value: 'bradesco', label: 'Bradesco' },
-  { value: 'santander', label: 'Santander' },
-  { value: 'inter', label: 'Inter' },
-  { value: 'next', label: 'Next' },
-  { value: 'original', label: 'Original' },
-  { value: 'neon', label: 'Neon' },
-  { value: 'sicoob', label: 'Sicoob' },
-  { value: 'banco-do-brasil', label: 'Banco do Brasil' },
-  { value: 'caixa', label: 'Caixa' },
-];
+interface FormFields {
+  limit: number;
+  label: string;
+  bank: string;
+  closingDay: number;
+  dueDay: number;
+  name: string;
+}
 
-export function FormCreateCardCredit() {
+interface FormCreateCreditCardProps {
+  onSubmit: (data: FormFields) => void;
+}
+
+const schema = z.object({
+  label: z
+    .string({
+      required_error: 'Digite o nome do cartão',
+    })
+    .nonempty('Digite o nome do cartão'),
+  limit: z.string({
+    required_error: 'Digite o limite do cartão',
+    invalid_type_error: 'O limite deve ser um número',
+  }),
+  bank: z.string({
+    required_error: 'Selecione o banco do cartão',
+  }),
+
+  closingDay: z
+    .number({
+      required_error: 'Selecione o dia do fechamento do cartão',
+      invalid_type_error: 'O dia deve ser um número',
+    })
+    .int({
+      message: 'O número precisa ser inteiro',
+    }),
+  dueDay: z
+    .number({
+      required_error: 'Selecione o dia do pagamento do cartão',
+      invalid_type_error: 'O dia deve ser um número',
+    })
+    .int({
+      message: 'O número precisa ser inteiro',
+    }),
+});
+
+export function FormCreateCardCredit({ onSubmit }: FormCreateCreditCardProps) {
+  const { control, handleSubmit } = useForm<FormFields>({
+    resolver: zodResolver(schema),
+  });
+
+  const { data } = useListBanksQuery();
+
   return (
-    <Form>
+    <Form onFinish={handleSubmit(onSubmit)} id="create-credit-card">
       <Typography.Title level={4}>Dados do cartão</Typography.Title>
-
-      <Form.Item name="Limite">
+      <FormItem name="limit" control={control}>
         <Input
           style={{
             width: '100%',
@@ -37,65 +79,67 @@ export function FormCreateCardCredit() {
           prefix="R$"
           addonAfter={<WalletOutlined />}
         />
-      </Form.Item>
+      </FormItem>
 
-      <Form.Item>
+      <FormItem name="name" control={control}>
         <Input
           addonAfter={<CreditCardOutlined />}
           placeholder="Nome do cartão"
           width="100%"
         />
-      </Form.Item>
+      </FormItem>
 
-      <Form.Item>
+      <FormItem name="bank" control={control}>
         <Select placeholder="Selecione o seu Banco">
-          {optionsBanks.map(bank => (
-            <Option value={bank.value}>
+          {data?.listBanks.map(bank => (
+            <Option value={bank.id}>
               <Avatar
-                src="/nubank.png"
+                src={bank.image}
                 style={{
                   marginRight: 10,
                 }}
               />
-              {bank.label}
+              {bank.name}
             </Option>
           ))}
         </Select>
-      </Form.Item>
+      </FormItem>
 
-      <Form.Item style={{ marginBottom: 0 }}>
-        <Form.Item
+      <FormItem
+        name="closingDay"
+        control={control}
+        style={{
+          display: 'inline-block',
+          width: 'calc(50% - 8px)',
+          marginRight: 16,
+        }}
+      >
+        <InputNumber
+          min={1}
+          max={31}
+          placeholder="Dia do Fechamento"
           style={{
-            display: 'inline-block',
-            width: 'calc(50% - 8px)',
-            marginRight: 16,
+            width: '100%',
           }}
-        >
-          <InputNumber
-            min={1}
-            max={31}
-            placeholder="Dia do Fechamento"
-            style={{
-              width: '100%',
-            }}
-            addonAfter={<CalendarOutlined />}
-          />
-        </Form.Item>
+          addonAfter={<CalendarOutlined />}
+        />
+      </FormItem>
 
-        <Form.Item
-          style={{ display: 'inline-block', width: 'calc(50% - 8px)' }}
-        >
-          <InputNumber
-            min={1}
-            max={31}
-            placeholder="Dia do Pagamento"
-            style={{
-              width: '100%',
-            }}
-            addonAfter={<CarryOutOutlined />}
-          />
-        </Form.Item>
-      </Form.Item>
+      <FormItem
+        name="dueDay"
+        control={control}
+        style={{ display: 'inline-block', width: 'calc(50% - 8px)' }}
+      >
+        <InputNumber
+          min={1}
+          max={31}
+          placeholder="Dia do Pagamento"
+          style={{
+            width: '100%',
+          }}
+          addonAfter={<CarryOutOutlined />}
+        />
+      </FormItem>
     </Form>
   );
 }

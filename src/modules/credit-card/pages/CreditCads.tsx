@@ -1,11 +1,14 @@
 import { Col, Row, theme } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 
-import { CardCreditCard } from '../components/CardCreditCard';
+import { useListCreditCardsQuery } from '@/graphql';
+
 import { HeaderActions } from '../components/Header';
 import { ModalCreateCreditCard } from '../components/ModalCreateCreditCard';
+import { CardCreditCard } from '../components/CardCreditCard';
 
-export function CreditCads() {
+export function CreditCards() {
+  const { data } = useListCreditCardsQuery();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -20,12 +23,13 @@ export function CreditCads() {
       >
         <HeaderActions />
       </Header>
+
       <Row gutter={[16, 8]}>
-        <Col span={8}>
+        {/* <Col span={8}>
           <CardCreditCard
             id="1"
             title="Nubank Douglas"
-            closeDate="06 de Julho "
+            closingDay="06 de Julho "
             bank={{
               name: 'Nubank',
               logo: 'nubank.png',
@@ -43,7 +47,7 @@ export function CreditCads() {
           <CardCreditCard
             id="2"
             title="Nubank Andreza"
-            closeDate="01 de Julho "
+            closingDay="01 de Julho "
             bank={{
               name: 'Nubank',
               logo: 'nubank.png',
@@ -61,7 +65,7 @@ export function CreditCads() {
           <CardCreditCard
             id="3"
             title="Inter"
-            closeDate="01 de Julho "
+            closingDay="01 de Julho "
             bank={{
               name: 'Inter',
               logo: 'inter.png',
@@ -79,7 +83,7 @@ export function CreditCads() {
           <CardCreditCard
             id="4"
             title="NEO"
-            closeDate="01 de Julho "
+            closingDay="01 de Julho "
             bank={{
               name: 'NEO',
               logo: 'neo.png',
@@ -97,7 +101,7 @@ export function CreditCads() {
           <CardCreditCard
             id="5"
             title="Neon"
-            closeDate="01 de Julho "
+            closingDay="01 de Julho "
             bank={{
               name: 'Neon',
               logo: 'neon.png',
@@ -110,8 +114,30 @@ export function CreditCads() {
             paymentDate="07 de Julho"
             usedLimit={4000}
           />
-        </Col>
+        </Col> */}
+
+        {data?.listCreditCards.map(creditCards => (
+          <Col span={8} key={creditCards.id}>
+            <CardCreditCard
+              title={creditCards.name}
+              closingDay={creditCards.closingDay}
+              bank={{
+                name: creditCards.bank.name,
+                logo: creditCards.bank.image,
+                color: creditCards.bank.color,
+              }}
+              currentInvoice={0}
+              availableLimit={creditCards.limitAvailable}
+              totalLimit={creditCards.limit}
+              progress={50}
+              paymentDate={creditCards.dueDay}
+              usedLimit={creditCards.limitUsed}
+              id={creditCards.id}
+            />
+          </Col>
+        ))}
       </Row>
+
       <ModalCreateCreditCard />
     </>
   );

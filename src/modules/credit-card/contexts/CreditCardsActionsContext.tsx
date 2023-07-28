@@ -6,12 +6,15 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { message } from 'antd';
+import { MessageInstance } from 'antd/es/message/interface';
 
 type CreditCardActionsContextProps = {
   modalCreateCreditCardIsOpen: boolean;
   toggleModalCreateCreditCard: (value?: boolean) => void;
   modalCreateNewCreditCardExpenseIsOpen: boolean;
   toggleModalCreateNewCreditCardExpense: (value?: boolean) => void;
+  messageApi: MessageInstance;
 };
 
 type CreditCardActionsContextProviderProps = {
@@ -27,6 +30,7 @@ export function CreditCardsActionsContextProvider({
 }: CreditCardActionsContextProviderProps) {
   const [modalCreateCreditCardIsOpen, setModalCreateCreditCard] =
     useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
 
   const [
     modalCreateNewCreditCardExpenseIsOpen,
@@ -50,18 +54,21 @@ export function CreditCardsActionsContextProvider({
       toggleModalCreateCreditCard,
       modalCreateNewCreditCardExpenseIsOpen,
       toggleModalCreateNewCreditCardExpense,
+      messageApi,
     }),
     [
       modalCreateCreditCardIsOpen,
       modalCreateNewCreditCardExpenseIsOpen,
       toggleModalCreateCreditCard,
       toggleModalCreateNewCreditCardExpense,
+      messageApi,
     ],
   );
 
   return (
     <CreditCardActionsContext.Provider value={value}>
       {children}
+      {contextHolder}
     </CreditCardActionsContext.Provider>
   );
 }

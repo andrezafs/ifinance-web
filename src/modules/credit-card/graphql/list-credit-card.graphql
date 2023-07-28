@@ -1,0 +1,19 @@
+query ListCreditCards {
+  listCreditCards {
+    percentLimitUsed
+    name
+    limitUsed
+    limitAvailable
+    limit
+    id
+    dueDay
+    closingDay
+    bankId
+    bank {
+      name
+      image
+      id
+      color
+    }
+  }
+}
