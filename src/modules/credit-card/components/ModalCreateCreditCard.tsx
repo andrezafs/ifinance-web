@@ -15,7 +15,7 @@ export function ModalCreateCreditCard() {
 
   const queryClient = useQueryClient();
 
-  const { isLoading } = useCreateCreditCardMutation({
+  const { mutate, isLoading } = useCreateCreditCardMutation({
     onSuccess: () => {
       toggleModalCreateCreditCard();
       queryClient.invalidateQueries(useCreateCreditCardMutation.getKey());
@@ -40,6 +40,7 @@ export function ModalCreateCreditCard() {
   return (
     <Modal
       centered
+      width={450}
       maskClosable={false}
       open={modalCreateCreditCardIsOpen}
       okText="Criar"
@@ -51,17 +52,12 @@ export function ModalCreateCreditCard() {
         } as ButtonProps
       }
       cancelText="Cancelar"
+      onCancel={() => toggleModalCreateCreditCard()}
       cancelButtonProps={{
         disabled: isLoading,
       }}
-      onCancel={() => toggleModalCreateCreditCard()}
-      width={450}
     >
-      <FormCreateCardCredit
-        onSubmit={() => {
-          // mutate({ data });
-        }}
-      />
+      <FormCreateCardCredit onSubmit={data => mutate({ data })} />
     </Modal>
   );
 }

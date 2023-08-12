@@ -16,8 +16,7 @@ const { Option } = Select;
 
 interface FormFields {
   limit: number;
-  label: string;
-  bank: string;
+  bankId: string;
   closingDay: number;
   dueDay: number;
   name: string;
@@ -28,19 +27,22 @@ interface FormCreateCreditCardProps {
 }
 
 const schema = z.object({
-  label: z
+  name: z
     .string({
       required_error: 'Digite o nome do cartão',
     })
     .nonempty('Digite o nome do cartão'),
-  limit: z.string({
-    required_error: 'Digite o limite do cartão',
-    invalid_type_error: 'O limite deve ser um número',
-  }),
-  bank: z.string({
+  limit: z
+    .number({
+      required_error: 'Digite o limite do cartão',
+      invalid_type_error: 'O limite deve ser um número',
+    })
+    .min(1, 'O limite deve ser maior que 0'),
+  // .refine(value => value * 100),
+  // .transform(value => value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')),
+  bankId: z.string({
     required_error: 'Selecione o banco do cartão',
   }),
-
   closingDay: z
     .number({
       required_error: 'Selecione o dia do fechamento do cartão',
@@ -62,22 +64,34 @@ const schema = z.object({
 export function FormCreateCardCredit({ onSubmit }: FormCreateCreditCardProps) {
   const { control, handleSubmit } = useForm<FormFields>({
     resolver: zodResolver(schema),
+    mode: 'onChange',
   });
 
   const { data } = useListBanksQuery();
+
+  const formatCurrency = (value = 0) => {
+    const formattedValue = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(value / 100);
+
+    return formattedValue.substring(3); // Retorna a string sem os 3 primeiros caracteres (removendo 'R$ ')
+  };
 
   return (
     <Form onFinish={handleSubmit(onSubmit)} id="create-credit-card">
       <Typography.Title level={4}>Dados do cartão</Typography.Title>
       <FormItem name="limit" control={control}>
-        <Input
+        <InputNumber
+          formatter={formatCurrency}
           style={{
             width: '100%',
           }}
-          placeholder="Limite do cartão"
-          min={1}
+          placeholder="R$1.000,00"
+          precision={2}
           prefix="R$"
           addonAfter={<WalletOutlined />}
+          controls={false}
         />
       </FormItem>
 
@@ -89,10 +103,10 @@ export function FormCreateCardCredit({ onSubmit }: FormCreateCreditCardProps) {
         />
       </FormItem>
 
-      <FormItem name="bank" control={control}>
+      <FormItem name="bankId" control={control}>
         <Select placeholder="Selecione o seu Banco">
           {data?.listBanks.map(bank => (
-            <Option value={bank.id}>
+            <Option key={bank.id} value={bank.id}>
               <Avatar
                 src={bank.image}
                 style={{
