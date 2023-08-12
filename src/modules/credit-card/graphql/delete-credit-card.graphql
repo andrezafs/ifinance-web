@@ -1,0 +1,3 @@
+mutation DeleteCreditCard($deleteCreditCardId: String!) {
+  deleteCreditCard(id: $deleteCreditCardId)
+}
