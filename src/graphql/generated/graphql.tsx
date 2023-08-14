@@ -33,6 +33,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
+  DateTime: { input: any; output: any };
 };
 
 export type Bank = {
@@ -64,6 +65,16 @@ export type CreateCreditCardInput = {
   name: Scalars['String']['input'];
 };
 
+export type CreateExpenseInput = {
+  categoryId: Scalars['String']['input'];
+  creditCardId: Scalars['String']['input'];
+  installments?: InputMaybe<Scalars['Float']['input']>;
+  isFixed: Scalars['Boolean']['input'];
+  name: Scalars['String']['input'];
+  purchaseDate: Scalars['DateTime']['input'];
+  value: Scalars['Float']['input'];
+};
+
 export type CreateUserInput = {
   email: Scalars['String']['input'];
   name: Scalars['String']['input'];
@@ -85,12 +96,36 @@ export type CreditCard = {
   userId: Scalars['String']['output'];
 };
 
+export type Expense = {
+  __typename?: 'Expense';
+  categoryId: Scalars['String']['output'];
+  creditCardId: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  installmentsIdentifier: Scalars['String']['output'];
+  invoiceDate: Scalars['DateTime']['output'];
+  isFixed: Scalars['Boolean']['output'];
+  isIgnored: Scalars['Boolean']['output'];
+  isPaid: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  purchaseDate: Scalars['DateTime']['output'];
+  userId: Scalars['String']['output'];
+  value: Scalars['Float']['output'];
+};
+
+export type ListExpenseByCreditCardFilter = {
+  creditCardId: Scalars['String']['input'];
+  month: Scalars['Float']['input'];
+  year: Scalars['Float']['input'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createCategory: Category;
   createCreditCard: CreditCard;
+  createExpense: Expense;
   createUser: User;
   deleteCategory: Scalars['Boolean']['output'];
+  deleteCreditCard: Scalars['Boolean']['output'];
   updateCategory: Category;
 };
 
@@ -102,11 +137,19 @@ export type MutationCreateCreditCardArgs = {
   data: CreateCreditCardInput;
 };
 
+export type MutationCreateExpenseArgs = {
+  data: CreateExpenseInput;
+};
+
 export type MutationCreateUserArgs = {
   data: CreateUserInput;
 };
 
 export type MutationDeleteCategoryArgs = {
+  id: Scalars['String']['input'];
+};
+
+export type MutationDeleteCreditCardArgs = {
   id: Scalars['String']['input'];
 };
 
@@ -120,6 +163,11 @@ export type Query = {
   listBanks: Array<Bank>;
   listCategories: Array<Category>;
   listCreditCards: Array<CreditCard>;
+  listExpenseByCreditCard: Array<Expense>;
+};
+
+export type QueryListExpenseByCreditCardArgs = {
+  filter: ListExpenseByCreditCardFilter;
 };
 
 export type UpdateCategoryInput = {
@@ -182,6 +230,15 @@ export type CreateCreditCardMutationVariables = Exact<{
 export type CreateCreditCardMutation = {
   __typename?: 'Mutation';
   createCreditCard: { __typename?: 'CreditCard'; id: string };
+};
+
+export type DeleteCreditCardMutationVariables = Exact<{
+  deleteCreditCardId: Scalars['String']['input'];
+}>;
+
+export type DeleteCreditCardMutation = {
+  __typename?: 'Mutation';
+  deleteCreditCard: boolean;
 };
 
 export type ListBanksQueryVariables = Exact<{ [key: string]: never }>;
@@ -376,6 +433,38 @@ export const useCreateCreditCardMutation = <
     options,
   );
 useCreateCreditCardMutation.getKey = () => ['CreateCreditCard'];
+
+export const DeleteCreditCardDocument = `
+    mutation DeleteCreditCard($deleteCreditCardId: String!) {
+  deleteCreditCard(id: $deleteCreditCardId)
+}
+    `;
+export const useDeleteCreditCardMutation = <
+  TError = unknown,
+  TContext = unknown,
+>(
+  options?: UseMutationOptions<
+    DeleteCreditCardMutation,
+    TError,
+    DeleteCreditCardMutationVariables,
+    TContext
+  >,
+) =>
+  useMutation<
+    DeleteCreditCardMutation,
+    TError,
+    DeleteCreditCardMutationVariables,
+    TContext
+  >(
+    ['DeleteCreditCard'],
+    (variables?: DeleteCreditCardMutationVariables) =>
+      fetcherWithGraphQLClient<
+        DeleteCreditCardMutation,
+        DeleteCreditCardMutationVariables
+      >(DeleteCreditCardDocument, variables)(),
+    options,
+  );
+useDeleteCreditCardMutation.getKey = () => ['DeleteCreditCard'];
 
 export const ListBanksDocument = `
     query ListBanks {
