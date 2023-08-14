@@ -139,7 +139,6 @@ export function useCreditCardDetailsData() {
           >
             <ButtonAction tooltipAction="Relatório" icon={<ReadOutlined />} />
             <ButtonAction tooltipAction="Editar" icon={<EditOutlined />} />
-
             <ButtonAction tooltipAction="Deletar" icon={<DeleteOutlined />} />
           </Space>
         ),

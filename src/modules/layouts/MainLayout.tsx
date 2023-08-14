@@ -1,6 +1,5 @@
-import { CloudOutlined, CoffeeOutlined } from '@ant-design/icons';
-import { ConfigProvider, Layout, theme } from 'antd';
-import { CSSProperties, useState } from 'react';
+import { Layout, theme } from 'antd';
+import { CSSProperties } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { ButtonAction } from '../shared/components/ButtonAction';
@@ -13,43 +12,38 @@ const contentStyle: CSSProperties = {
 };
 
 export function MainLayout() {
-  const { defaultAlgorithm, darkAlgorithm } = theme;
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
 
   const handleClick = () => {
-    setIsDarkMode(previousValue => !previousValue);
+    // setIsDarkMode(previousValue => !previousValue);
   };
 
   return (
-    <ConfigProvider
-      theme={{
-        algorithm: isDarkMode ? darkAlgorithm : defaultAlgorithm,
-      }}
-    >
-      <Layout style={{ minHeight: '100vh' }}>
-        <SideMenu />
-        <Layout>
-          <Header
-            style={{
-              backgroundColor: 'transparent',
-            }}
-          >
-            <ButtonAction onClick={handleClick}>
-              {isDarkMode ? <CoffeeOutlined /> : <CloudOutlined />}
-            </ButtonAction>
-          </Header>
-          <Content style={contentStyle}>
-            <Outlet />
-          </Content>
-          <Footer
-            style={{
-              backgroundColor: 'transparent',
-            }}
-          >
-            Footer
-          </Footer>
-        </Layout>
+    <Layout style={{ minHeight: '100vh' }}>
+      <SideMenu />
+      <Layout>
+        <Header
+          style={{
+            backgroundColor: colorBgContainer,
+          }}
+        >
+          <ButtonAction onClick={handleClick}>
+            {/* {isDarkMode ? <CoffeeOutlined /> : <CloudOutlined />} */}
+          </ButtonAction>
+        </Header>
+        <Content style={contentStyle}>
+          <Outlet />
+        </Content>
+        <Footer
+          style={{
+            backgroundColor: 'transparent',
+          }}
+        >
+          Footer
+        </Footer>
       </Layout>
-    </ConfigProvider>
+    </Layout>
   );
 }

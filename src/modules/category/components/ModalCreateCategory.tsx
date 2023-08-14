@@ -1,7 +1,7 @@
 import { ButtonProps, Modal } from 'antd';
 
-import { useQueryClient } from '@tanstack/react-query';
 import { useCreateCategoryMutation, useListCategoriesQuery } from '@/graphql';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { useCategoriesActions } from '../contexts/CategoriesActionsContext';
 import { FormCreateCategory } from './FormCreateCategory';
@@ -12,7 +12,7 @@ export function ModalCreateCategory() {
 
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useCreateCategoryMutation({
+  const { mutate, isLoading } = useCreateCategoryMutation<any>({
     onSuccess: () => {
       toggleModalCreateCategory();
       queryClient.invalidateQueries(useListCategoriesQuery.getKey());

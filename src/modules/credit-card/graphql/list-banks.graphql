@@ -1,0 +1,8 @@
+query ListBanks {
+  listBanks {
+    name
+    image
+    id
+    color
+  }
+}

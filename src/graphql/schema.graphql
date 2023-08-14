@@ -1,3 +1,10 @@
+type Bank {
+  color: String!
+  id: ID!
+  image: String!
+  name: String!
+}
+
 type Category {
   color: String!
   id: ID!
@@ -11,11 +18,21 @@ input CreateCategoryInput {
 }
 
 input CreateCreditCardInput {
+  bankId: String!
   closingDay: Float!
-  color: String!
   dueDay: Float!
   limit: Float!
   name: String!
+}
+
+input CreateExpenseInput {
+  categoryId: String!
+  creditCardId: String!
+  installments: Float
+  isFixed: Boolean!
+  name: String!
+  purchaseDate: DateTime!
+  value: Float!
 }
 
 input CreateUserInput {
@@ -25,26 +42,60 @@ input CreateUserInput {
 }
 
 type CreditCard {
+  bank: Bank!
+  bankId: String!
   closingDay: Float!
-  color: String!
   dueDay: Float!
   id: ID!
   limit: Float!
+  limitAvailable: Float!
+  limitUsed: Float!
   name: String!
+  percentLimitUsed: Float!
   userId: String!
+}
+
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
+type Expense {
+  categoryId: String!
+  creditCardId: String!
+  id: ID!
+  installmentsIdentifier: String!
+  invoiceDate: DateTime!
+  isFixed: Boolean!
+  isIgnored: Boolean!
+  isPaid: Boolean!
+  name: String!
+  purchaseDate: DateTime!
+  userId: String!
+  value: Float!
+}
+
+input ListExpenseByCreditCardFilter {
+  creditCardId: String!
+  month: Float!
+  year: Float!
 }
 
 type Mutation {
   createCategory(data: CreateCategoryInput!): Category!
   createCreditCard(data: CreateCreditCardInput!): CreditCard!
+  createExpense(data: CreateExpenseInput!): Expense!
   createUser(data: CreateUserInput!): User!
   deleteCategory(id: String!): Boolean!
+  deleteCreditCard(id: String!): Boolean!
   updateCategory(data: UpdateCategoryInput!, id: String!): Category!
 }
 
 type Query {
+  listBanks: [Bank!]!
   listCategories: [Category!]!
   listCreditCards: [CreditCard!]!
+  listExpenseByCreditCard(filter: ListExpenseByCreditCardFilter!): [Expense!]!
 }
 
 input UpdateCategoryInput {

@@ -1,58 +1,64 @@
-import { Link } from 'react-router-dom';
-import { Avatar, Card, Col, Progress, Row, Statistic, Typography } from 'antd';
 import {
-  EditOutlined,
   EllipsisOutlined,
   PieChartOutlined,
+  PlusCircleOutlined,
 } from '@ant-design/icons';
+import {
+  Avatar,
+  Card,
+  Col,
+  Dropdown,
+  Progress,
+  Row,
+  Statistic,
+  Typography,
+} from 'antd';
+import { Link } from 'react-router-dom';
+
+import { CreditCard } from '@/graphql';
+
+import { useDropdownActions } from '../hooks/useDropdownActions';
+import { useCreditCardActions } from '../contexts/CreditCardsActionsContext';
 
 type CardCreditCardProps = {
-  title: string;
-  closeDate: string;
-  bank: {
-    name: string;
-    logo: string;
-    color: string;
-  };
-  currentInvoice: number;
-  availableLimit: number;
-  totalLimit: number;
-  progress: number;
-  paymentDate: string;
-  usedLimit: number;
-  id: string;
+  data: Partial<CreditCard>;
 };
 
-export function CardCreditCard({
-  title,
-  closeDate,
-  bank,
-  currentInvoice,
-  availableLimit,
-  totalLimit,
-  usedLimit,
-  progress,
-  paymentDate,
-  id,
-}: CardCreditCardProps) {
+export function CardCreditCard({ data }: CardCreditCardProps) {
+  const { menuProps } = useDropdownActions(data as CreditCard);
+  const { toggleModalCreateCreditCard } = useCreditCardActions();
+
   return (
-    <Link to={`/credit-cards/${id}`}>
-      <Card
-        title={title}
-        extra={`Fechamento em ${closeDate}`}
-        actions={[
-          <PieChartOutlined key="graphic" />,
-          <EditOutlined key="edit" />,
-          <EllipsisOutlined key="ellipsis" />,
-        ]}
-      >
+    <Card
+      title={data.name}
+      extra={`Fechamento em ${data.closingDay}`}
+      actions={[
+        <PlusCircleOutlined
+          key="add"
+          onClick={() => toggleModalCreateCreditCard()}
+        />,
+        <PieChartOutlined key="graphic" />,
+        <Dropdown
+          key="ellipsis"
+          menu={{
+            ...menuProps,
+          }}
+        >
+          <EllipsisOutlined />
+        </Dropdown>,
+      ]}
+    >
+      <Link to={`/credit-cards/${data.id}`}>
         <Row justify="space-between">
-          <Card.Meta title={bank.name} avatar={<Avatar src={bank.logo} />} />
+          <Card.Meta
+            title={data?.bank?.name}
+            avatar={<Avatar src={data?.bank?.image} />}
+          />
           <Statistic
             title="Fatura atual"
             prefix="R$"
             precision={2}
-            value={currentInvoice}
+            // value={data.currentInvoice}
           />
         </Row>
         <Col>
@@ -61,23 +67,23 @@ export function CardCreditCard({
               title="Limite disponível"
               prefix="R$"
               precision={2}
-              value={availableLimit}
+              value={data.limitAvailable}
             />
           </Row>
 
           <Progress
             status="normal"
-            percent={progress}
-            strokeColor={bank.color}
+            percent={data.percentLimitUsed}
+            strokeColor={data.bank?.color}
             showInfo
           />
 
           <Row justify="space-between">
-            <Typography.Text>{`Vencimento em ${paymentDate}`}</Typography.Text>
-            <Typography.Text>{`R$${totalLimit} de R$${usedLimit}`}</Typography.Text>
+            <Typography.Text>{`Vencimento em ${data.dueDay}`}</Typography.Text>
+            <Typography.Text>{`R$${data.limitUsed} de R$${data.limit}`}</Typography.Text>
           </Row>
         </Col>
-      </Card>
-    </Link>
+      </Link>
+    </Card>
   );
 }
