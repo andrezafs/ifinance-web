@@ -17,8 +17,8 @@ import { Link } from 'react-router-dom';
 
 import { CreditCard } from '@/graphql';
 
-import { useDropdownActions } from '../hooks/useDropdownActions';
 import { useCreditCardActions } from '../contexts/CreditCardsActionsContext';
+import { useDropdownActions } from '../hooks/useDropdownActions';
 
 type CardCreditCardProps = {
   data: Partial<CreditCard>;
@@ -26,7 +26,7 @@ type CardCreditCardProps = {
 
 export function CardCreditCard({ data }: CardCreditCardProps) {
   const { menuProps } = useDropdownActions(data as CreditCard);
-  const { toggleModalCreateCreditCard } = useCreditCardActions();
+  const { toggleModalCreateNewCreditCardExpense } = useCreditCardActions();
 
   return (
     <Card
@@ -35,7 +35,7 @@ export function CardCreditCard({ data }: CardCreditCardProps) {
       actions={[
         <PlusCircleOutlined
           key="add"
-          onClick={() => toggleModalCreateCreditCard()}
+          onClick={() => toggleModalCreateNewCreditCardExpense()}
         />,
         <PieChartOutlined key="graphic" />,
         <Dropdown

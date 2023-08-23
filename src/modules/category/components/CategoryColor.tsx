@@ -3,7 +3,11 @@ import { Button } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 
 type ButtonProps = ComponentProps<typeof Button>;
-
+type CategoryColorProps = ButtonProps & {
+  value: string;
+  selectedColor?: string;
+  onColorSelected?: (color: string) => void;
+};
 const categoryColor = {
   width: 30,
   height: 30,
@@ -14,16 +18,13 @@ export function CategoryColor({
   value,
   selectedColor,
   onColorSelected,
+
   ...props
-}: ButtonProps & {
-  value: string;
-  selectedColor: string;
-  onColorSelected: (color: string) => void;
-}) {
-  const isSelected = value.toLowerCase() === selectedColor.toLowerCase();
+}: CategoryColorProps) {
+  const isSelected = value.toLowerCase() === selectedColor?.toLowerCase();
 
   const handleColorSelected = () => {
-    onColorSelected(value);
+    onColorSelected?.(value);
   };
 
   return (
@@ -32,7 +33,8 @@ export function CategoryColor({
       shape="circle"
       style={{
         ...categoryColor,
-        backgroundColor: isSelected ? value : 'transparent',
+
+        backgroundColor: value,
       }}
       onClick={handleColorSelected}
       {...props}

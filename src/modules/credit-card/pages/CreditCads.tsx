@@ -7,6 +7,7 @@ import { HeaderActions } from '../components/Header';
 import { ModalCreateCreditCard } from '../components/ModalCreateCreditCard';
 import { CardCreditCard } from '../components/CardCreditCard';
 import { ModalDeleteCreditCard } from '../components/ModalDeleteCreditCard';
+import { ModalCreateNewCreditCardExpense } from '../components/ModalCreateNewCreditCardExpense';
 
 export function CreditCards() {
   const { data } = useListCreditCardsQuery();
@@ -35,6 +36,7 @@ export function CreditCards() {
 
       <ModalCreateCreditCard />
       <ModalDeleteCreditCard />
+      <ModalCreateNewCreditCardExpense />
     </>
   );
 }
