@@ -2,8 +2,12 @@ import { useMemo } from 'react';
 import { Space } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { DeleteOutlined, EditOutlined, ReadOutlined } from '@ant-design/icons';
+import { ColumnFilterItem } from 'antd/es/table/interface';
 
 import { ButtonAction } from '@/modules/shared/components/ButtonAction';
+import { Expense } from '@/graphql';
+import { formatCurrency } from '@/modules/shared/helpers/formatCurrency';
+import { formatDate } from '@/modules/shared/helpers/formatDate';
 
 type DataType = {
   key: string;
@@ -16,50 +20,44 @@ type DataType = {
   valueLabel: string;
 };
 
-const data: DataType[] = [
-  {
-    key: '1',
-    situation: 'Pago',
-    purchaseDate: 10 / 6 / 2023,
-    purchaseDateLabel: '10/06/2023',
-    description: 'Compra no mercado',
-    category: 'Supermercado',
-    value: 500,
-    valueLabel: 'R$ 500,00',
-  },
-  {
-    key: '2',
-    situation: 'Pendente',
-    purchaseDate: 8 / 5 / 2023,
-    purchaseDateLabel: '08/05/2023',
-    description: 'Compra na amazon',
-    category: 'Escritório',
-    value: 200,
-    valueLabel: 'R$ 200,00',
-  },
-  {
-    key: '3',
-    situation: 'Pago',
-    purchaseDate: 12 / 4 / 2023,
-    purchaseDateLabel: '12/04/2023',
-    description: 'Compra nas casas bahia',
-    category: 'Casa',
-    value: 1000,
-    valueLabel: 'R$ 1.000,00',
-  },
-  {
-    key: '4',
-    situation: 'Pendente',
-    purchaseDate: 9 / 5 / 2023,
-    purchaseDateLabel: '09/05/2023',
-    description: 'Compra na Boticário',
-    category: 'Higiene',
-    value: 100,
-    valueLabel: 'R$ 100,00',
-  },
-];
+export function useCreditCardDetailsData(expenses?: Expense[]) {
+  const filterCategories = useMemo(() => {
+    if (!expenses) return [];
 
-export function useCreditCardDetailsData() {
+    return Array.from(
+      new Set(
+        expenses
+          ?.map(expense => expense.category)
+          ?.flat()
+          .map(item => item?.name),
+      ),
+    ).map(
+      item =>
+        ({
+          text: item,
+          value: item,
+        } as ColumnFilterItem),
+    );
+  }, [expenses]);
+
+  const data = useMemo<DataType[]>(() => {
+    if (!expenses) return [];
+
+    return expenses.map(
+      expense =>
+        ({
+          key: expense.id,
+          category: expense?.category?.name,
+          description: expense.name,
+          value: expense.value,
+          valueLabel: formatCurrency(expense.value || 0),
+          situation: expense.isPaid ? 'Pago' : 'Pendente',
+          purchaseDate: expense.purchaseDate,
+          purchaseDateLabel: formatDate(expense.purchaseDate),
+        } as DataType),
+    );
+  }, [expenses]);
+
   const columns = useMemo<ColumnsType<DataType>>(
     () => [
       {
@@ -97,24 +95,7 @@ export function useCreditCardDetailsData() {
         title: 'Categoria',
         dataIndex: 'category',
         key: 'category',
-        filters: [
-          {
-            text: 'Supermercado',
-            value: 'Supermercado',
-          },
-          {
-            text: 'Escritório',
-            value: 'Escritório',
-          },
-          {
-            text: 'Casa',
-            value: 'Casa',
-          },
-          {
-            text: 'Higiene',
-            value: 'Higiene',
-          },
-        ],
+        filters: filterCategories,
         onFilter: (value, record) =>
           record.category.indexOf(value as string) === 0,
       },
@@ -145,10 +126,8 @@ export function useCreditCardDetailsData() {
       },
     ],
 
-    [],
+    [filterCategories],
   );
-  return {
-    columns,
-    data,
-  };
+
+  return useMemo(() => ({ columns, data }), [columns, data]);
 }

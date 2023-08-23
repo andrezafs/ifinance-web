@@ -1,0 +1,13 @@
+query ListExpenseByCreditCard($filter: ListExpenseByCreditCardFilter!) {
+  listExpenseByCreditCard(filter: $filter) {
+    value
+    purchaseDate
+    name
+    isPaid
+    id
+    category {
+      name
+      id
+    }
+  }
+}
