@@ -1,17 +1,15 @@
-import { Col, Divider, Table } from 'antd';
-import { Header } from 'antd/es/layout/layout';
 import { PlusOutlined } from '@ant-design/icons';
+import { Col, Divider } from 'antd';
+import { Header } from 'antd/es/layout/layout';
 
 import { ButtonAction } from '@/modules/shared/components/ButtonAction';
 
 import { CreditCardStatistics } from '../components/CreditCardStatistics';
 import { ModalCreateNewCreditCardExpense } from '../components/ModalCreateNewCreditCardExpense';
+import { TableExpensesCreditCard } from '../components/TableExpensesCreditCard';
 import { useCreditCardActions } from '../contexts/CreditCardsActionsContext';
-import { useCreditCardDetailsData } from '../hooks/useCreditCardDetailsData';
 
 export function CreditCardDetails() {
-  const { columns, data } = useCreditCardDetailsData();
-
   const { toggleModalCreateNewCreditCardExpense } = useCreditCardActions();
 
   return (
@@ -33,7 +31,7 @@ export function CreditCardDetails() {
 
         <CreditCardStatistics />
         <Divider />
-        <Table columns={columns} dataSource={data} />
+        <TableExpensesCreditCard />
       </Col>
       <ModalCreateNewCreditCardExpense />
     </>

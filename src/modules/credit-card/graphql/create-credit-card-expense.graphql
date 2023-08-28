@@ -1,0 +1,11 @@
+mutation CreateExpense($data: CreateExpenseInput!) {
+  createExpense(data: $data) {
+    value
+    purchaseDate
+    name
+    isFixed
+    installmentsIdentifier
+    creditCardId
+    categoryId
+  }
+}

@@ -27,14 +27,14 @@ export function ModalDeleteCreditCard() {
       queryClient.invalidateQueries(useListCreditCardsQuery.getKey());
       messageApi.open({
         type: 'success',
-        content: 'Categoria deletada com sucesso!',
+        content: 'Cartão de Crédito deletado com sucesso!',
         duration: 2,
       });
     },
     onError: () => {
       messageApi.open({
         type: 'error',
-        content: 'Erro ao deletar categoria!',
+        content: 'Erro ao deletar cartão de crédito!',
         duration: 2,
       });
     },
@@ -74,8 +74,8 @@ export function ModalDeleteCreditCard() {
       <Alert
         description={
           <>
-            Tem certeza que deseja deletar o cartão de crédito?{' '}
-            <strong>{creditCard.name}</strong> Ao deletar o cartão de crédito,
+            Tem certeza que deseja deletar o cartão de crédito
+            <strong>{creditCard.name}</strong> ? Ao deletar o cartão de crédito,
             todas as despesas relacionadas a ele serão deletadas também.
           </>
         }
