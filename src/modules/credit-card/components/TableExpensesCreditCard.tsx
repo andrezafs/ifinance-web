@@ -10,7 +10,7 @@ export function TableExpensesCreditCard() {
   const { data: expenses } = useListExpenseByCreditCardQuery({
     filter: {
       creditCardId: creditCardId as string,
-      month: 8,
+      month: 9,
       year: 2023,
     },
   });

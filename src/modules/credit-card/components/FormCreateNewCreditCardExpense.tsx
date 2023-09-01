@@ -57,6 +57,9 @@ const schema = z.object({
 
   isFixed: z.boolean().default(false),
   isIgnored: z.boolean().default(false),
+  installments: z.number({
+    coerce: true,
+  }),
   hasInstallments: z.boolean().default(false),
   creditCard: z.string(),
   category: z.string(),
