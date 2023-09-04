@@ -8,6 +8,8 @@ import {
   PieChartOutlined,
 } from '@ant-design/icons';
 
+import { routes } from './routes';
+
 type MenuItem = Required<MenuProps>['items'][number];
 
 function mountItem(
@@ -25,9 +27,9 @@ function mountItem(
 }
 
 export const sideMenuRoutes: MenuItem[] = [
-  mountItem('Dashboard', '/', <HomeOutlined />),
-  mountItem('Categories', '/categories', <FlagOutlined />),
-  mountItem('Credits Card', '/credit-cards', <CreditCardOutlined />),
-  mountItem('Planning', '/planning', <BarChartOutlined />),
-  mountItem('Reports', '/reports', <PieChartOutlined />),
+  mountItem('Dashboard', routes.goToDashboard(), <HomeOutlined />),
+  mountItem('Categories', routes.goToCategories(), <FlagOutlined />),
+  mountItem('Credits Card', routes.goToCreditCards(), <CreditCardOutlined />),
+  mountItem('Planning', routes.goToPlanning(), <BarChartOutlined />),
+  mountItem('Reports', routes.goToReports(), <PieChartOutlined />),
 ];
