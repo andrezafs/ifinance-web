@@ -122,6 +122,11 @@ export type ListExpenseByCreditCardFilter = {
   year: Scalars['Float']['input'];
 };
 
+export type ListExpenseFilter = {
+  month: Scalars['Float']['input'];
+  year: Scalars['Float']['input'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   changeExpenseInvoiceDate: Expense;
@@ -195,6 +200,7 @@ export type Query = {
   listBanks: Array<Bank>;
   listCategories: Array<Category>;
   listCreditCards: Array<CreditCard>;
+  listExpense: Array<Expense>;
   listExpenseByCreditCard: Array<Expense>;
 };
 
@@ -216,6 +222,10 @@ export type QueryFindExpenseByIdArgs = {
 
 export type QueryFindUserByIdArgs = {
   id: Scalars['String']['input'];
+};
+
+export type QueryListExpenseArgs = {
+  filter: ListExpenseFilter;
 };
 
 export type QueryListExpenseByCreditCardArgs = {
