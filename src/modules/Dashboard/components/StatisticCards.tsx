@@ -7,6 +7,7 @@ import {
 } from '@ant-design/icons';
 
 import { CardStatistic } from '@/modules/shared/components/CardStatistic';
+import { routes } from '@/routes/routes';
 
 export function StatisticCards() {
   return (
@@ -41,7 +42,7 @@ export function StatisticCards() {
         <CardStatistic
           icon={<ArrowDownOutlined />}
           title="Despesas"
-          route="/expenses"
+          route={routes.goToExpenses()}
           avatarColor="#cf1322"
           prefix="R$"
           value={9.3}
@@ -51,7 +52,7 @@ export function StatisticCards() {
         <CardStatistic
           icon={<CreditCardOutlined />}
           title="Cartões de Crédito"
-          route="/creditCards"
+          route={routes.goToCreditCards()}
           avatarColor="#1e5307"
           prefix="R$"
           value={9.3}

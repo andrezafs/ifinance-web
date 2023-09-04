@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 import { DashboardRoutes } from '@/modules/Dashboard/routes/DashboardRoutes';
+import { ExpensesRoutes } from '@/modules/expenses/routes/ExpensesRoutes';
 
 import { CategoriesRoutes } from '../modules/category/routes/CategoriesRoutes';
 import { CreditCardRoutes } from '../modules/credit-card/routes/CreditCardRoutes';
@@ -24,6 +25,7 @@ export function AppRoutes() {
         <Route path={`${routes.categories}/*`} element={<CategoriesRoutes />} />
         {/* <Route path={`${routes.planning}/*`} element={<PlanningRoutes />} /> */}
         <Route path={`${routes.reports}/*`} element={<ReportsRoutes />} />
+        <Route path={`${routes.expenses}/*`} element={<ExpensesRoutes />} />
       </Route>
     </Routes>
   );

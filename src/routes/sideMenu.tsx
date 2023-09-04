@@ -6,6 +6,7 @@ import {
   BarChartOutlined,
   CreditCardOutlined,
   PieChartOutlined,
+  StockOutlined,
 } from '@ant-design/icons';
 
 import { routes } from './routes';
@@ -32,4 +33,5 @@ export const sideMenuRoutes: MenuItem[] = [
   mountItem('Credits Card', routes.goToCreditCards(), <CreditCardOutlined />),
   mountItem('Planning', routes.goToPlanning(), <BarChartOutlined />),
   mountItem('Reports', routes.goToReports(), <PieChartOutlined />),
+  mountItem('Expenses', routes.goToExpenses(), <StockOutlined />),
 ];

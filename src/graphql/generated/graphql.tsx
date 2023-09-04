@@ -5,7 +5,6 @@ import {
   UseQueryOptions,
 } from '@tanstack/react-query';
 import { fetcherWithGraphQLClient } from '@/configurations/reactQuery/fetcher';
-
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -376,6 +375,24 @@ export type ListExpenseByCreditCardQuery = {
   }>;
 };
 
+export type ListExpensesQueryVariables = Exact<{
+  filter: ListExpenseFilter;
+}>;
+
+export type ListExpensesQuery = {
+  __typename?: 'Query';
+  listExpense: Array<{
+    __typename?: 'Expense';
+    value: number;
+    purchaseDate: any;
+    name: string;
+    isPaid: boolean;
+    id: string;
+    category: { __typename?: 'Category'; name: string; id: string };
+    creditCard: { __typename?: 'CreditCard'; name: string };
+  }>;
+};
+
 export const CreateCategoryDocument = `
     mutation CreateCategory($data: CreateCategoryInput!) {
   createCategory(data: $data) {
@@ -702,3 +719,41 @@ export const useListExpenseByCreditCardQuery = <
 useListExpenseByCreditCardQuery.getKey = (
   variables: ListExpenseByCreditCardQueryVariables,
 ) => ['ListExpenseByCreditCard', variables];
+export const ListExpensesDocument = `
+    query ListExpenses($filter: ListExpenseFilter!) {
+  listExpense(filter: $filter) {
+    value
+    purchaseDate
+    name
+    isPaid
+    id
+    category {
+      name
+      id
+    }
+    creditCard {
+      name
+    }
+  }
+}
+    `;
+export const useListExpensesQuery = <
+  TData = ListExpensesQuery,
+  TError = unknown,
+>(
+  variables: ListExpensesQueryVariables,
+  options?: UseQueryOptions<ListExpensesQuery, TError, TData>,
+) =>
+  useQuery<ListExpensesQuery, TError, TData>(
+    ['ListExpenses', variables],
+    fetcherWithGraphQLClient<ListExpensesQuery, ListExpensesQueryVariables>(
+      ListExpensesDocument,
+      variables,
+    ),
+    options,
+  );
+
+useListExpensesQuery.getKey = (variables: ListExpensesQueryVariables) => [
+  'ListExpenses',
+  variables,
+];

@@ -5,6 +5,7 @@ const reports = 'reports';
 const home = '/';
 const creditCardId = ':creditCardId';
 const dashboard = 'dashboard';
+const expenses = 'expenses';
 
 export const routes = {
   goToCategories: () => `/${categories}`,
@@ -14,6 +15,7 @@ export const routes = {
   goToReports: () => `/${reports}`,
   goToHome: () => home,
   goToDashboard: () => `/${[dashboard]}`,
+  goToExpenses: () => `/${expenses}`,
   categories,
   creditCards,
   planning,
@@ -21,4 +23,5 @@ export const routes = {
   home,
   creditCardId,
   dashboard,
+  expenses,
 };
