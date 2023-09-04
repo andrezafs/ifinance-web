@@ -1,5 +1,5 @@
-export function formatDate(date: number) {
+export function formatDate(date: Date) {
   return new Intl.DateTimeFormat('pt-BR', {
     dateStyle: 'short',
-  }).format(new Date(date));
+  }).format(new Date(new Date(date).toISOString()?.replace('.000Z', '')));
 }

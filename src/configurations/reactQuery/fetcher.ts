@@ -1,7 +1,7 @@
 import { GraphQLClient, Variables } from 'graphql-request';
 
 export const graphQLClient = new GraphQLClient(
-  'https://finance-api-dev-aqke.onrender.com/graphql',
+  'https://finance-api-jkexq.ondigitalocean.app/graphql',
 );
 
 export const fetcherWithGraphQLClient = <

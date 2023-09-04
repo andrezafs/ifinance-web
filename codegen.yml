@@ -1,6 +1,6 @@
 overwrite: true
 
-schema: "https://finance-api-dev-aqke.onrender.com/graphql"
+schema: "https://finance-api-jkexq.ondigitalocean.app/graphql"
 
 generates:
   src/graphql/generated/graphql.tsx:

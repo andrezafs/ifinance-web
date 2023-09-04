@@ -18,5 +18,5 @@ export function TableExpensesCreditCard() {
     expenses?.listExpenseByCreditCard as Expense[],
   );
 
-  return <Table columns={columns} dataSource={data} />;
+  return <Table columns={columns} dataSource={data} pagination={false} />;
 }

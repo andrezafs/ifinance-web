@@ -85,6 +85,11 @@ input ListExpenseByCreditCardFilter {
   year: Float!
 }
 
+input ListExpenseFilter {
+  month: Float!
+  year: Float!
+}
+
 type Mutation {
   changeExpenseInvoiceDate(id: String!, increaseInvoiceMonth: Float!): Expense!
   createCategory(data: CreateCategoryInput!): Category!
@@ -108,6 +113,7 @@ type Query {
   listBanks: [Bank!]!
   listCategories: [Category!]!
   listCreditCards: [CreditCard!]!
+  listExpense(filter: ListExpenseFilter!): [Expense!]!
   listExpenseByCreditCard(filter: ListExpenseByCreditCardFilter!): [Expense!]!
 }
 
