@@ -5,10 +5,26 @@ import {
   ScheduleOutlined,
   WalletOutlined,
 } from '@ant-design/icons';
+import { useMemo } from 'react';
 
 import { CardStatistic } from '@/modules/shared/components/CardStatistic';
 
+import { useGetExpensesByCreditCard } from '../hooks/useGetExpensesByCreditCard';
+
 export function CreditCardStatistics() {
+  const { data: expenses } = useGetExpensesByCreditCard();
+
+  const amountInvoice = useMemo(() => {
+    if (!expenses?.listExpenseByCreditCard) return 0;
+
+    return Math.abs(
+      expenses.listExpenseByCreditCard.reduce(
+        (acc, current) => acc + current.value,
+        0,
+      ),
+    );
+  }, [expenses]);
+
   return (
     <Row gutter={16}>
       <Col span={6}>
@@ -17,7 +33,7 @@ export function CreditCardStatistics() {
           icon={<WalletOutlined />}
           avatarColor="#1890ff"
           prefix="R$"
-          value={9.3}
+          value={amountInvoice}
         />
       </Col>
       <Col span={6}>
