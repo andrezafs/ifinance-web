@@ -5,6 +5,7 @@ import {
   UseQueryOptions,
 } from '@tanstack/react-query';
 import { fetcherWithGraphQLClient } from '@/configurations/reactQuery/fetcher';
+
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -115,6 +116,12 @@ export type Expense = {
   value: Scalars['Float']['output'];
 };
 
+export type ExpenseList = {
+  __typename?: 'ExpenseList';
+  amount: Scalars['Float']['output'];
+  expenses: Array<Expense>;
+};
+
 export type ListExpenseByCreditCardFilter = {
   creditCardId: Scalars['String']['input'];
   month: Scalars['Float']['input'];
@@ -199,8 +206,8 @@ export type Query = {
   listBanks: Array<Bank>;
   listCategories: Array<Category>;
   listCreditCards: Array<CreditCard>;
-  listExpense: Array<Expense>;
-  listExpenseByCreditCard: Array<Expense>;
+  listExpense: ExpenseList;
+  listExpenseByCreditCard: ExpenseList;
 };
 
 export type QueryFindBankByIdArgs = {
@@ -364,33 +371,40 @@ export type ListExpenseByCreditCardQueryVariables = Exact<{
 
 export type ListExpenseByCreditCardQuery = {
   __typename?: 'Query';
-  listExpenseByCreditCard: Array<{
-    __typename?: 'Expense';
-    value: number;
-    purchaseDate: any;
-    name: string;
-    isPaid: boolean;
-    id: string;
-    category: { __typename?: 'Category'; name: string; id: string };
-  }>;
+  listExpenseByCreditCard: {
+    __typename?: 'ExpenseList';
+    amount: number;
+    expenses: Array<{
+      __typename?: 'Expense';
+      name: string;
+      value: number;
+      purchaseDate: any;
+      id: string;
+      category: { __typename?: 'Category'; name: string; id: string };
+      creditCard: { __typename?: 'CreditCard'; name: string };
+    }>;
+  };
 };
 
-export type ListExpensesQueryVariables = Exact<{
+export type ListExpenseQueryVariables = Exact<{
   filter: ListExpenseFilter;
 }>;
 
-export type ListExpensesQuery = {
+export type ListExpenseQuery = {
   __typename?: 'Query';
-  listExpense: Array<{
-    __typename?: 'Expense';
-    value: number;
-    purchaseDate: any;
-    name: string;
-    isPaid: boolean;
-    id: string;
-    category: { __typename?: 'Category'; name: string; id: string };
-    creditCard: { __typename?: 'CreditCard'; name: string };
-  }>;
+  listExpense: {
+    __typename?: 'ExpenseList';
+    amount: number;
+    expenses: Array<{
+      __typename?: 'Expense';
+      name: string;
+      value: number;
+      purchaseDate: any;
+      id: string;
+      category: { __typename?: 'Category'; name: string; id: string };
+      creditCard: { __typename?: 'CreditCard'; name: string };
+    }>;
+  };
 };
 
 export const CreateCategoryDocument = `
@@ -688,14 +702,19 @@ useListCreditCardsQuery.getKey = (variables?: ListCreditCardsQueryVariables) =>
 export const ListExpenseByCreditCardDocument = `
     query ListExpenseByCreditCard($filter: ListExpenseByCreditCardFilter!) {
   listExpenseByCreditCard(filter: $filter) {
-    value
-    purchaseDate
-    name
-    isPaid
-    id
-    category {
+    amount
+    expenses {
+      category {
+        name
+        id
+      }
       name
+      value
+      purchaseDate
       id
+      creditCard {
+        name
+      }
     }
   }
 }
@@ -719,41 +738,40 @@ export const useListExpenseByCreditCardQuery = <
 useListExpenseByCreditCardQuery.getKey = (
   variables: ListExpenseByCreditCardQueryVariables,
 ) => ['ListExpenseByCreditCard', variables];
-export const ListExpensesDocument = `
-    query ListExpenses($filter: ListExpenseFilter!) {
+export const ListExpenseDocument = `
+    query ListExpense($filter: ListExpenseFilter!) {
   listExpense(filter: $filter) {
-    value
-    purchaseDate
-    name
-    isPaid
-    id
-    category {
+    amount
+    expenses {
+      category {
+        name
+        id
+      }
       name
+      value
+      purchaseDate
       id
-    }
-    creditCard {
-      name
+      creditCard {
+        name
+      }
     }
   }
 }
     `;
-export const useListExpensesQuery = <
-  TData = ListExpensesQuery,
-  TError = unknown,
->(
-  variables: ListExpensesQueryVariables,
-  options?: UseQueryOptions<ListExpensesQuery, TError, TData>,
+export const useListExpenseQuery = <TData = ListExpenseQuery, TError = unknown>(
+  variables: ListExpenseQueryVariables,
+  options?: UseQueryOptions<ListExpenseQuery, TError, TData>,
 ) =>
-  useQuery<ListExpensesQuery, TError, TData>(
-    ['ListExpenses', variables],
-    fetcherWithGraphQLClient<ListExpensesQuery, ListExpensesQueryVariables>(
-      ListExpensesDocument,
+  useQuery<ListExpenseQuery, TError, TData>(
+    ['ListExpense', variables],
+    fetcherWithGraphQLClient<ListExpenseQuery, ListExpenseQueryVariables>(
+      ListExpenseDocument,
       variables,
     ),
     options,
   );
 
-useListExpensesQuery.getKey = (variables: ListExpensesQueryVariables) => [
-  'ListExpenses',
+useListExpenseQuery.getKey = (variables: ListExpenseQueryVariables) => [
+  'ListExpense',
   variables,
 ];

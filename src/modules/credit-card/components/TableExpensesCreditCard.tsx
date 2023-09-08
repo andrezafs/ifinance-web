@@ -8,7 +8,7 @@ import { useGetExpensesByCreditCard } from '../hooks/useGetExpensesByCreditCard'
 export function TableExpensesCreditCard() {
   const { data: expenses } = useGetExpensesByCreditCard();
   const { columns, data } = useCreditCardDetailsData(
-    expenses?.listExpenseByCreditCard as Expense[],
+    expenses?.listExpenseByCreditCard.expenses as Expense[],
   );
 
   return <Table columns={columns} dataSource={data} pagination={false} />;
