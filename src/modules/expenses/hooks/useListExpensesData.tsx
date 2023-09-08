@@ -10,6 +10,7 @@ import { formatCurrency } from '@/modules/shared/helpers/formatCurrency';
 import { formatDate } from '@/modules/shared/helpers/formatDate';
 
 type DataType = {
+  color?: string;
   key: string;
   situation: string;
   purchaseDate: number;
@@ -116,9 +117,24 @@ export function useListExpenseData(expenses?: Expense[]) {
         title: 'Categoria',
         dataIndex: 'category',
         key: 'category',
+
         filters: filterCategories,
         onFilter: (value, record) =>
           record.category.indexOf(value as string) === 0,
+
+        // render: (_, record) => (
+        //   // eslint-disable-next-line react/jsx-no-useless-fragment
+        //   <>
+        //     {record.category && (
+        //       <Tag
+        //         color={record.color || 'default-color'}
+        //         key={record.category}
+        //       >
+        //         {record.category.toUpperCase()}
+        //       </Tag>
+        //     )}
+        //   </>
+        // ),
       },
       {
         title: 'Origem',

@@ -1,16 +1,18 @@
-query ListExpenses($filter: ListExpenseFilter!) {
+query ListExpense($filter: ListExpenseFilter!) {
   listExpense(filter: $filter) {
-    value
-    purchaseDate
-    name
-    isPaid
-    id
-    category {
+    amount
+    expenses {
+      category {
+        name
+        id
+      }
       name
+      value
+      purchaseDate
       id
-    }
-    creditCard {
-      name
+      creditCard {
+        name
+      }
     }
   }
 }

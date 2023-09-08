@@ -7,26 +7,30 @@ import {
 } from '@ant-design/icons';
 
 import { CardStatistic } from '@/modules/shared/components/CardStatistic';
+import { useListExpenseQuery } from '@/graphql';
 
-import { useGetExpensesByCreditCard } from '../hooks/useGetExpensesByCreditCard';
-
-export function CreditCardStatistics() {
-  const { data } = useGetExpensesByCreditCard();
+export function ExpensesStatistics() {
+  const { data } = useListExpenseQuery({
+    filter: {
+      month: 10,
+      year: 2023,
+    },
+  });
 
   return (
     <Row gutter={16}>
       <Col span={6}>
         <CardStatistic
-          title="Valor da Fatura"
+          title="Despesas do Mês"
           icon={<WalletOutlined />}
           avatarColor="#1890ff"
           prefix="R$"
-          value={data?.listExpenseByCreditCard.amount}
+          value={data?.listExpense.amount}
         />
       </Col>
       <Col span={6}>
         <CardStatistic
-          title="Status"
+          title="Despesas Pagas"
           icon={<ScheduleOutlined />}
           avatarColor="#23cf13"
           value="Aberta"
@@ -34,7 +38,7 @@ export function CreditCardStatistics() {
       </Col>
       <Col span={6}>
         <CardStatistic
-          title="Dia de Fechamento"
+          title="Despesas Pendentes"
           icon={<CalendarOutlined />}
           avatarColor="#cf1322"
           value="10 de Agosto"
@@ -42,10 +46,10 @@ export function CreditCardStatistics() {
       </Col>
       <Col span={6}>
         <CardStatistic
-          title="Data de Vencimento"
+          title="Balanço Mensal"
           icon={<CarryOutOutlined />}
-          avatarColor="#1e5307"
-          value="10 de Setembro"
+          avatarColor="#cf1322"
+          value={10000 - Number(data?.listExpense.amount)}
         />
       </Col>
     </Row>
