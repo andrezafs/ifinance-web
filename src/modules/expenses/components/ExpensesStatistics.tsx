@@ -12,7 +12,7 @@ import { useListExpenseQuery } from '@/graphql';
 export function ExpensesStatistics() {
   const { data } = useListExpenseQuery({
     filter: {
-      month: 11,
+      month: 12,
       year: 2023,
     },
   });
