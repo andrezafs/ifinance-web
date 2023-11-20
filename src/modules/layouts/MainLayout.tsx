@@ -1,9 +1,11 @@
 import { Layout, theme } from 'antd';
 import { CSSProperties } from 'react';
 import { Outlet } from 'react-router-dom';
+import { CloudOutlined, CoffeeOutlined } from '@ant-design/icons';
 
 import { ButtonAction } from '../shared/components/ButtonAction';
 import { SideMenu } from '../shared/components/SideMenu';
+import { useThemeContext } from './ThemeContext';
 
 const { Header, Footer, Content } = Layout;
 
@@ -12,13 +14,10 @@ const contentStyle: CSSProperties = {
 };
 
 export function MainLayout() {
+  const { currentTheme, changeTheme } = useThemeContext();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
-  const handleClick = () => {
-    // setIsDarkMode(previousValue => !previousValue);
-  };
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -29,8 +28,8 @@ export function MainLayout() {
             backgroundColor: colorBgContainer,
           }}
         >
-          <ButtonAction onClick={handleClick}>
-            {/* {isDarkMode ? <CoffeeOutlined /> : <CloudOutlined />} */}
+          <ButtonAction onClick={changeTheme}>
+            {currentTheme === 'dark' ? <CoffeeOutlined /> : <CloudOutlined />}
           </ButtonAction>
         </Header>
         <Content style={contentStyle}>
