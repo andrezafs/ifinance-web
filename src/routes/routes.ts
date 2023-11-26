@@ -6,6 +6,8 @@ const home = '/';
 const creditCardId = ':creditCardId';
 const dashboard = 'dashboard';
 const expenses = 'expenses';
+const login = 'login';
+const auth = 'auth';
 
 export const routes = {
   goToCategories: () => `/${categories}`,
@@ -16,6 +18,8 @@ export const routes = {
   goToHome: () => home,
   goToDashboard: () => `/${[dashboard]}`,
   goToExpenses: () => `/${expenses}`,
+  goToLogin: () => `/${login}`,
+  goToAuth: () => `/${auth}`,
   categories,
   creditCards,
   planning,
@@ -24,4 +28,6 @@ export const routes = {
   creditCardId,
   dashboard,
   expenses,
+  login,
+  auth,
 };
