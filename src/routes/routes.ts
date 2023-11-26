@@ -8,6 +8,7 @@ const dashboard = 'dashboard';
 const expenses = 'expenses';
 const login = 'login';
 const auth = 'auth';
+const create = 'create';
 
 export const routes = {
   goToCategories: () => `/${categories}`,
@@ -20,6 +21,7 @@ export const routes = {
   goToExpenses: () => `/${expenses}`,
   goToLogin: () => `/${login}`,
   goToAuth: () => `/${auth}`,
+  goToCreateAccount: () => `/${create}`,
   categories,
   creditCards,
   planning,
@@ -30,4 +32,5 @@ export const routes = {
   expenses,
   login,
   auth,
+  create,
 };
