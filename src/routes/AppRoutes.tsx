@@ -1,7 +1,8 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { DashboardRoutes } from '@/modules/Dashboard/routes/DashboardRoutes';
 import { ExpensesRoutes } from '@/modules/expenses/routes/ExpensesRoutes';
+import { AuthenticationRoutes } from '@/modules/authentication/routes';
 
 import { CategoriesRoutes } from '../modules/category/routes/CategoriesRoutes';
 import { CreditCardRoutes } from '../modules/credit-card/routes/CreditCardRoutes';
@@ -12,6 +13,9 @@ import { routes } from './routes';
 export function AppRoutes() {
   return (
     <Routes>
+      <Route path={`${routes.auth}/*`} element={<AuthenticationRoutes />} />
+      <Route path="/" element={<Navigate to={routes.auth} replace />} />
+
       <Route path={routes.home} element={<MainLayout />}>
         <Route
           index
