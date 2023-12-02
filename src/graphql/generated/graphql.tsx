@@ -305,6 +305,16 @@ export type User = {
   name: Scalars['String']['output'];
 };
 
+export type AuthenticateMutationVariables = Exact<{
+  password: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+}>;
+
+export type AuthenticateMutation = {
+  __typename?: 'Mutation';
+  authenticate: string;
+};
+
 export type CreateCategoryMutationVariables = Exact<{
   data: CreateCategoryInput;
 }>;
@@ -461,6 +471,38 @@ export type ListExpenseQuery = {
     }>;
   };
 };
+
+export const AuthenticateDocument = `
+    mutation Authenticate($password: String!, $email: String!) {
+  authenticate(password: $password, email: $email)
+}
+    `;
+
+export const useAuthenticateMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    AuthenticateMutation,
+    TError,
+    AuthenticateMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    AuthenticateMutation,
+    TError,
+    AuthenticateMutationVariables,
+    TContext
+  >(
+    ['Authenticate'],
+    (variables?: AuthenticateMutationVariables) =>
+      fetcherWithGraphQLClient<
+        AuthenticateMutation,
+        AuthenticateMutationVariables
+      >(AuthenticateDocument, variables)(),
+    options,
+  );
+};
+
+useAuthenticateMutation.getKey = () => ['Authenticate'];
 
 export const CreateCategoryDocument = `
     mutation CreateCategory($data: CreateCategoryInput!) {

@@ -1,14 +1,14 @@
-import { useController, useForm } from 'react-hook-form';
-import { FormItem } from 'react-hook-form-antd';
-import { Form, Input, Button, Row, Typography } from 'antd';
-import { z } from 'zod';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { MailOutlined, LockOutlined } from '@ant-design/icons';
+import { Button, Flex, Form, Input, Row, Typography } from 'antd';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { FormItem } from 'react-hook-form-antd';
+import { useNavigate } from 'react-router-dom';
+import { z } from 'zod';
 
-interface FormFields {
-  email: string;
-  password: string;
-}
+import { useAuthenticateMutation } from '@/graphql';
+import { useNotificationContext } from '@/modules/shared/context/NotificationContext';
+import { routes } from '@/routes/routes';
 
 const schema = z.object({
   email: z
@@ -19,45 +19,49 @@ const schema = z.object({
     .min(1, 'Senha é obrigatória'),
 });
 
+type FormFields = z.infer<typeof schema>;
+
 export function Login() {
-  const { control } = useForm<FormFields>({
+  const navigate = useNavigate();
+
+  const { api } = useNotificationContext();
+
+  const { mutate, isLoading } = useAuthenticateMutation({
+    onSuccess: () => {
+      navigate(routes.goToCategories(), { replace: true });
+    },
+    onError: () => {
+      api.open({
+        message: 'Erro ao fazer login',
+        description: 'Usuário ou senha inválidos',
+        type: 'error',
+      });
+    },
+  });
+
+  const { control, handleSubmit } = useForm<FormFields>({
     resolver: zodResolver(schema),
-    mode: 'onChange',
   });
 
-  const emailField = useController({
-    name: 'email',
-    control,
-  });
-
-  const passwordField = useController({
-    name: 'password',
-    control,
-  });
+  const onSubmit: SubmitHandler<FormFields> = data => {
+    mutate(data);
+  };
 
   return (
-    <>
+    <Flex vertical style={{ width: 327 }}>
       <Typography.Title level={1}>Login</Typography.Title>
       <Form
-        // onFinish={handleSubmit(onSubmit)}
+        onFinish={handleSubmit(onSubmit)}
         id="login-form"
         size="middle"
         layout="vertical"
       >
-        <FormItem name="email" control={control}>
-          <Input
-            placeholder="Email"
-            prefix={<MailOutlined />}
-            {...emailField.field}
-          />
+        <FormItem control={control} name="email" label="Username">
+          <Input prefix={<MailOutlined />} disabled={isLoading} />
         </FormItem>
 
-        <FormItem name="password" control={control}>
-          <Input.Password
-            placeholder="Senha"
-            prefix={<LockOutlined />}
-            {...passwordField.field}
-          />
+        <FormItem control={control} name="password" label="Password">
+          <Input.Password prefix={<LockOutlined />} disabled={isLoading} />
         </FormItem>
 
         <Row justify="space-between" align="middle">
@@ -66,6 +70,6 @@ export function Login() {
           </Button>
         </Row>
       </Form>
-    </>
+    </Flex>
   );
 }
