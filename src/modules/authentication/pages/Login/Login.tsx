@@ -16,7 +16,7 @@ const schema = z.object({
     .email('Digite um email válido'),
   password: z
     .string({ required_error: 'Senha é obrigatória' })
-    .nonempty('Senha é obrigatória'),
+    .min(1, 'Senha é obrigatória'),
 });
 
 export function Login() {
