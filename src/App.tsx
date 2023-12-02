@@ -7,14 +7,17 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { queryClient } from './configurations/reactQuery/queryClient';
 import { AppRoutes } from './routes/AppRoutes';
-import { ThemeContextProvider } from './modules/layouts/ThemeContext';
+import { NotificationProvider } from './modules/shared/context/NotificationContext';
+import { ThemeContextProvider } from './modules/shared/context/ThemeContext';
 
 export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <ThemeContextProvider>
-          <AppRoutes />
+          <NotificationProvider>
+            <AppRoutes />
+          </NotificationProvider>
         </ThemeContextProvider>
       </BrowserRouter>
 

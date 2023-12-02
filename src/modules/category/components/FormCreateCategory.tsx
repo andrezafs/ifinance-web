@@ -22,12 +22,12 @@ interface FormCreateCategoryProps {
 const schema = z.object({
   name: z
     .string({ required_error: 'Nome é obrigatório' })
-    .nonempty('Nome é obrigatório'),
+    .min(1, 'Nome é obrigatório'),
   color: z
     .string({
       required_error: 'Cor é obrigatória',
     })
-    .nonempty('Cor é obrigatória'),
+    .min(1, 'Cor é obrigatória'),
 });
 
 export function FormCreateCategory({ onSubmit }: FormCreateCategoryProps) {

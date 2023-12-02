@@ -20,7 +20,7 @@ const schema = z.object({
 
   password: z
     .string({ required_error: 'Senha é obrigatória' })
-    .nonempty('Senha é obrigatória'),
+    .min(1, 'Senha é obrigatória'),
 });
 
 export function CreateAccount() {

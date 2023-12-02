@@ -36,7 +36,7 @@ export function useCreditCardDetailsData(expenses?: Expense[]) {
         ({
           text: item,
           value: item,
-        } as ColumnFilterItem),
+        }) as ColumnFilterItem,
     );
   }, [expenses]);
 
@@ -54,7 +54,7 @@ export function useCreditCardDetailsData(expenses?: Expense[]) {
           situation: expense.isPaid ? 'Pago' : 'Pendente',
           purchaseDate: expense.purchaseDate,
           purchaseDateLabel: formatDate(expense.purchaseDate),
-        } as DataType),
+        }) as DataType,
     );
   }, [expenses]);
 
