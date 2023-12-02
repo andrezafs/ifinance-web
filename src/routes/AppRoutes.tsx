@@ -13,8 +13,9 @@ import { routes } from './routes';
 export function AppRoutes() {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to={routes.categories} replace />} />
+
       <Route path={`${routes.auth}/*`} element={<AuthenticationRoutes />} />
-      <Route path="/" element={<Navigate to={routes.auth} replace />} />
 
       <Route path={routes.home} element={<MainLayout />}>
         <Route

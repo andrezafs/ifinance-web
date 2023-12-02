@@ -31,7 +31,7 @@ const schema = z.object({
     .string({
       required_error: 'Digite o nome do cartão',
     })
-    .nonempty('Digite o nome do cartão'),
+    .min(1, 'Digite o nome do cartão'),
   limit: z
     .number({
       required_error: 'Digite o limite do cartão',

@@ -38,7 +38,7 @@ export function useListExpenseData(expenses?: Expense[]) {
         ({
           text: item,
           value: item,
-        } as ColumnFilterItem),
+        }) as ColumnFilterItem,
     );
   }, [expenses]);
 
@@ -57,7 +57,7 @@ export function useListExpenseData(expenses?: Expense[]) {
         ({
           text: item,
           value: item,
-        } as ColumnFilterItem),
+        }) as ColumnFilterItem,
     );
   }, [expenses]);
 
@@ -76,7 +76,7 @@ export function useListExpenseData(expenses?: Expense[]) {
           purchaseDate: expense.purchaseDate,
           purchaseDateLabel: formatDate(expense.purchaseDate),
           account: expense?.creditCard?.name,
-        } as DataType),
+        }) as DataType,
     );
   }, [expenses]);
 
