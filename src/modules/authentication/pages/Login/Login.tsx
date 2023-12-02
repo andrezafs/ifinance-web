@@ -8,7 +8,7 @@ import { z } from 'zod';
 
 import { useAuthenticateMutation } from '@/graphql';
 import { useNotificationContext } from '@/modules/shared/context/NotificationContext';
-import { routes } from '@/routes/routes';
+import { sessionManager } from '@/configurations/sessionManager';
 
 const schema = z.object({
   email: z
@@ -27,10 +27,12 @@ export function Login() {
   const { api } = useNotificationContext();
 
   const { mutate, isLoading } = useAuthenticateMutation({
-    onSuccess: () => {
-      navigate(routes.goToCategories(), { replace: true });
+    onSuccess: data => {
+      sessionManager.authenticate(data.authenticate);
+      navigate('/', { replace: true });
     },
     onError: () => {
+      sessionManager.logout();
       api.open({
         message: 'Erro ao fazer login',
         description: 'Usuário ou senha inválidos',
