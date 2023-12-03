@@ -1,7 +1,7 @@
 import {
   Avatar,
   DatePicker,
-  DatePickerProps,
+  Flex,
   Form,
   Input,
   InputNumber,
@@ -14,7 +14,7 @@ import { FormItem } from 'react-hook-form-antd';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreditCardOutlined, WalletOutlined } from '@ant-design/icons';
-import { useForm, useController } from 'react-hook-form';
+import { useForm, useController, Controller } from 'react-hook-form';
 
 import { useListCategoriesQuery, useListCreditCardsQuery } from '@/graphql';
 import { CategoryColor } from '@/modules/category/components/CategoryColor';
@@ -23,22 +23,6 @@ import { defaultInstallments } from '../constants/installments';
 
 const { Option } = Select;
 
-export interface FormFields {
-  value: number;
-  purchaseDate: Date;
-  name: string;
-  isFixed: boolean;
-  isIgnored: boolean;
-  installments: number;
-  hasInstallments: boolean;
-  creditCard: string;
-  category: string;
-}
-
-interface FormCreateNewCreditCardExpenseProps {
-  onSubmit: (data: FormFields) => void;
-}
-
 const schema = z.object({
   value: z
     .number({
@@ -46,15 +30,10 @@ const schema = z.object({
       invalid_type_error: 'A despesa deve ser um número',
     })
     .min(1, 'O valor da despesa deve ser maior que 0'),
-
   name: z.string({
     required_error: 'Digite a descrição da despesa',
   }),
-
-  purchaseDate: z.date({
-    required_error: 'Selecione a data',
-  }),
-
+  purchaseDate: z.date({ required_error: 'Selecione uma data' }),
   isFixed: z.boolean().default(false),
   isIgnored: z.boolean().default(false),
   installments: z.number({
@@ -64,6 +43,12 @@ const schema = z.object({
   creditCard: z.string(),
   category: z.string(),
 });
+
+export type FormFields = z.infer<typeof schema>;
+
+interface FormCreateNewCreditCardExpenseProps {
+  onSubmit: (data: FormFields) => void;
+}
 
 export function FormCreateNewCreditCardExpense({
   onSubmit,
@@ -95,22 +80,13 @@ export function FormCreateNewCreditCardExpense({
     control,
   });
 
-  const purchaseDate = useController({
-    name: 'purchaseDate',
-    control,
-  });
-
-  const onChange: DatePickerProps['onChange'] = (_, dateString) => {
-    purchaseDate.field.onChange(new Date(dateString));
-  };
-
   return (
     <Form
       onFinish={handleSubmit(onSubmit)}
       title="Nova Despesa no Cartão de Crédito"
       id="crete-credit-card-new-expense"
     >
-      <Typography.Title level={4}> Dados da Despesa </Typography.Title>
+      <Typography.Title level={4}> Dados da Despesa</Typography.Title>
       <FormItem name="value" control={control}>
         <InputNumber
           style={{
@@ -155,9 +131,27 @@ export function FormCreateNewCreditCardExpense({
           ))}
         </Select>
       </FormItem>
-      <FormItem name="purchaseDate" control={control}>
-        <DatePicker onChange={onChange} />
-      </FormItem>
+
+      <Controller
+        name="purchaseDate"
+        control={control}
+        render={({ field, fieldState }) => (
+          <Form.Item>
+            <Flex vertical>
+              <DatePicker
+                onChange={value => field.onChange(value?.toDate())}
+                status={fieldState.error?.message ? 'error' : ''}
+              />
+              {fieldState.error?.message && (
+                <Typography.Text type="danger">
+                  {fieldState.error?.message}
+                </Typography.Text>
+              )}
+            </Flex>
+          </Form.Item>
+        )}
+      />
+
       <FormItem name="isIgnored" control={control}>
         <Row justify="space-between">
           <span> Ignorar Transação</span>
