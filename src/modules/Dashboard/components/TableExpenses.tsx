@@ -14,5 +14,6 @@ export function TableExpenses() {
   const { columns, data } = useListExpenseData(
     expenses?.listExpense.expenses as Expense[],
   );
+
   return <Table columns={columns} dataSource={data} pagination={false} />;
 }

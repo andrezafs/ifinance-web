@@ -5,9 +5,14 @@ import { DeleteOutlined, EditOutlined, ReadOutlined } from '@ant-design/icons';
 import { ColumnFilterItem } from 'antd/es/table/interface';
 
 import { ButtonAction } from '@/modules/shared/components/ButtonAction';
-import { Expense } from '@/graphql';
+import {
+  Expense,
+  useDeleteExpenseMutation,
+  useListExpenseByCreditCardQuery,
+} from '@/graphql';
 import { formatCurrency } from '@/modules/shared/helpers/formatCurrency';
 import { formatDate } from '@/modules/shared/helpers/formatDate';
+import { queryClient } from '@/configurations/reactQuery/queryClient';
 
 type DataType = {
   key: string;
@@ -21,6 +26,13 @@ type DataType = {
 };
 
 export function useCreditCardDetailsData(expenses?: Expense[]) {
+  const { mutate: deleteExpense } = useDeleteExpenseMutation({
+    onSuccess: () =>
+      queryClient.invalidateQueries([
+        useListExpenseByCreditCardQuery.getKey({} as any)[0],
+      ]),
+  });
+
   const filterCategories = useMemo(() => {
     if (!expenses) return [];
 
@@ -110,7 +122,7 @@ export function useCreditCardDetailsData(expenses?: Expense[]) {
         title: 'Ações',
         dataIndex: 'actions',
         key: 'actions',
-        render: () => (
+        render: (_, record) => (
           <Space
             size="middle"
             style={{
@@ -120,13 +132,17 @@ export function useCreditCardDetailsData(expenses?: Expense[]) {
           >
             <ButtonAction tooltipAction="Relatório" icon={<ReadOutlined />} />
             <ButtonAction tooltipAction="Editar" icon={<EditOutlined />} />
-            <ButtonAction tooltipAction="Deletar" icon={<DeleteOutlined />} />
+            <ButtonAction
+              tooltipAction="Deletar"
+              icon={<DeleteOutlined />}
+              onClick={() => deleteExpense({ deleteExpenseId: record.key })}
+            />
           </Space>
         ),
       },
     ],
 
-    [filterCategories],
+    [filterCategories, deleteExpense],
   );
 
   return useMemo(() => ({ columns, data }), [columns, data]);

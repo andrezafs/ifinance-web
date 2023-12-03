@@ -430,6 +430,15 @@ export type ListCreditCardsQuery = {
   }>;
 };
 
+export type DeleteExpenseMutationVariables = Exact<{
+  deleteExpenseId: Scalars['String']['input'];
+}>;
+
+export type DeleteExpenseMutation = {
+  __typename?: 'Mutation';
+  deleteExpense: boolean;
+};
+
 export type ListExpenseByCreditCardQueryVariables = Exact<{
   filter: ListExpenseByCreditCardFilter;
 }>;
@@ -822,6 +831,38 @@ useListCreditCardsQuery.getKey = (variables?: ListCreditCardsQueryVariables) =>
   variables === undefined
     ? ['ListCreditCards']
     : ['ListCreditCards', variables];
+
+export const DeleteExpenseDocument = `
+    mutation DeleteExpense($deleteExpenseId: String!) {
+  deleteExpense(id: $deleteExpenseId)
+}
+    `;
+
+export const useDeleteExpenseMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    DeleteExpenseMutation,
+    TError,
+    DeleteExpenseMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    DeleteExpenseMutation,
+    TError,
+    DeleteExpenseMutationVariables,
+    TContext
+  >(
+    ['DeleteExpense'],
+    (variables?: DeleteExpenseMutationVariables) =>
+      fetcherWithGraphQLClient<
+        DeleteExpenseMutation,
+        DeleteExpenseMutationVariables
+      >(DeleteExpenseDocument, variables)(),
+    options,
+  );
+};
+
+useDeleteExpenseMutation.getKey = () => ['DeleteExpense'];
 
 export const ListExpenseByCreditCardDocument = `
     query ListExpenseByCreditCard($filter: ListExpenseByCreditCardFilter!) {
