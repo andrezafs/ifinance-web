@@ -8,8 +8,8 @@ export function useGetExpensesByCreditCard() {
   return useListExpenseByCreditCardQuery({
     filter: {
       creditCardId: creditCardId as string,
-      month: 12,
-      year: 2023,
+      month: 1,
+      year: 2024,
     },
   });
 }
