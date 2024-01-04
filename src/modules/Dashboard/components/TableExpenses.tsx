@@ -6,8 +6,8 @@ import { useListExpenseData } from '@/modules/expenses/hooks/useListExpensesData
 export function TableExpenses() {
   const { data: expenses } = useListExpenseQuery({
     filter: {
-      month: 12,
-      year: 2023,
+      month: 1,
+      year: 2024,
     },
   });
 
