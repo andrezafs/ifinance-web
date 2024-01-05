@@ -8,7 +8,7 @@ import { ButtonAction } from '@/modules/shared/components/ButtonAction';
 import {
   Expense,
   useDeleteExpenseMutation,
-  useListExpenseByCreditCardQuery,
+  useListExpensesByCreditCardQuery,
 } from '@/graphql';
 import { formatCurrency } from '@/modules/shared/helpers/formatCurrency';
 import { formatDate } from '@/modules/shared/helpers/formatDate';
@@ -28,9 +28,9 @@ type DataType = {
 export function useCreditCardDetailsData(expenses?: Expense[]) {
   const { mutate: deleteExpense } = useDeleteExpenseMutation({
     onSuccess: () =>
-      queryClient.invalidateQueries([
-        useListExpenseByCreditCardQuery.getKey({} as any)[0],
-      ]),
+      queryClient.invalidateQueries({
+        queryKey: useListExpensesByCreditCardQuery.getKey({} as any),
+      }),
   });
 
   const filterCategories = useMemo(() => {

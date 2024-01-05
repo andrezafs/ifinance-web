@@ -45,20 +45,24 @@ export function useListExpenseData(expenses?: Expense[]) {
   const filterAccount = useMemo(() => {
     if (!expenses) return [];
 
-    return Array.from(
+    const filters = Array.from(
       new Set(
         expenses
           ?.map(expense => expense.creditCard)
           ?.flat()
           .map(item => item?.name),
       ),
-    ).map(
-      item =>
-        ({
-          text: item,
-          value: item,
-        }) as ColumnFilterItem,
-    );
+    )
+      .map(
+        item =>
+          ({
+            text: item,
+            value: item,
+          }) as ColumnFilterItem,
+      )
+      .filter(item => item.text);
+
+    return [{ text: 'Carteira', value: 'Carteira' }, ...filters];
   }, [expenses]);
 
   const data = useMemo<DataType[]>(() => {
@@ -75,7 +79,7 @@ export function useListExpenseData(expenses?: Expense[]) {
           situation: expense.isPaid ? 'Pago' : 'Pendente',
           purchaseDate: expense.purchaseDate,
           purchaseDateLabel: formatDate(expense.purchaseDate),
-          account: expense?.creditCard?.name,
+          account: expense?.creditCard?.name ?? 'Carteira',
         }) as DataType,
     );
   }, [expenses]);
@@ -104,7 +108,9 @@ export function useListExpenseData(expenses?: Expense[]) {
         dataIndex: 'purchaseDateLabel',
         key: 'purchaseDateLabel',
         defaultSortOrder: 'descend',
-        sorter: (a, b) => a.purchaseDate - b.purchaseDate,
+        sorter: (a, b) =>
+          new Date(a.purchaseDate).getTime() -
+          new Date(b.purchaseDate).getTime(),
       },
       {
         title: 'Descrição',
@@ -121,20 +127,6 @@ export function useListExpenseData(expenses?: Expense[]) {
         filters: filterCategories,
         onFilter: (value, record) =>
           record.category.indexOf(value as string) === 0,
-
-        // render: (_, record) => (
-        //   // eslint-disable-next-line react/jsx-no-useless-fragment
-        //   <>
-        //     {record.category && (
-        //       <Tag
-        //         color={record.color || 'default-color'}
-        //         key={record.category}
-        //       >
-        //         {record.category.toUpperCase()}
-        //       </Tag>
-        //     )}
-        //   </>
-        // ),
       },
       {
         title: 'Origem',

@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
 
-import { useListExpenseByCreditCardQuery } from '@/graphql';
+import { useListExpensesByCreditCardQuery } from '@/graphql';
 
 export function useGetExpensesByCreditCard() {
   const { creditCardId } = useParams();
 
-  return useListExpenseByCreditCardQuery({
+  return useListExpensesByCreditCardQuery({
     filter: {
       creditCardId: creditCardId as string,
       month: 1,
