@@ -7,15 +7,21 @@ import {
 } from '@ant-design/icons';
 
 import { CardStatistic } from '@/modules/shared/components/CardStatistic';
-import { useListExpenseQuery } from '@/graphql';
+import { useListExpensesQuery } from '@/graphql';
 
 export function ExpensesStatistics() {
-  const { data } = useListExpenseQuery({
-    filter: {
-      month: 1,
-      year: 2024,
+  const { data } = useListExpensesQuery(
+    {
+      filter: {
+        month: 1,
+        year: 2024,
+      },
     },
-  });
+    {
+      select: data =>
+        data.listExpense.expenses.reduce((acc, curr) => acc + curr.value, 0),
+    },
+  );
 
   return (
     <Row gutter={16}>
@@ -25,7 +31,7 @@ export function ExpensesStatistics() {
           icon={<WalletOutlined />}
           avatarColor="#1890ff"
           prefix="R$"
-          value={data?.listExpense.amount}
+          value={data}
         />
       </Col>
       <Col span={6}>
@@ -49,7 +55,7 @@ export function ExpensesStatistics() {
           title="Balanço Mensal"
           icon={<CarryOutOutlined />}
           avatarColor="#cf1322"
-          value={10000 - Number(data?.listExpense.amount)}
+          value={10000 - Number(data ?? 0)}
         />
       </Col>
     </Row>

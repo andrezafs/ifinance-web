@@ -21,7 +21,10 @@ export function CreditCardStatistics() {
           icon={<WalletOutlined />}
           avatarColor="#1890ff"
           prefix="R$"
-          value={data?.listExpenseByCreditCard.amount}
+          value={data?.listExpenseByCreditCard?.expenses.reduce(
+            (acc, curr) => acc + curr.value,
+            0,
+          )}
         />
       </Col>
       <Col span={6}>

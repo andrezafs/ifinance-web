@@ -2,7 +2,7 @@ import { ButtonProps, Modal } from 'antd';
 
 import {
   useCreateExpenseMutation,
-  useListExpenseByCreditCardQuery,
+  useListExpensesByCreditCardQuery,
 } from '@/graphql';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -21,12 +21,12 @@ export function ModalCreateNewCreditCardExpense() {
 
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useCreateExpenseMutation({
+  const { mutate, isPending: isLoading } = useCreateExpenseMutation({
     onSuccess: () => {
       toggleModalCreateNewCreditCardExpense();
-      queryClient.invalidateQueries(
-        useListExpenseByCreditCardQuery.getKey({} as any),
-      );
+      queryClient.invalidateQueries({
+        queryKey: useListExpensesByCreditCardQuery.getKey({} as any),
+      });
       messageApi.open({
         type: 'success',
         content: 'Despesa criada com sucesso!',
@@ -60,6 +60,7 @@ export function ModalCreateNewCreditCardExpense() {
   }
 
   if (!modalCreateNewCreditCardExpenseIsOpen) return null;
+
   return (
     <Modal
       centered

@@ -17,11 +17,13 @@ export function ModalEditCategory() {
 
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useUpdateCategoryMutation({
+  const { mutate, isPending: isLoading } = useUpdateCategoryMutation({
     onSuccess: () => {
       handleSetCategory(null);
       toggleModalEditCategory();
-      queryClient.invalidateQueries(useListCategoriesQuery.getKey());
+      queryClient.invalidateQueries({
+        queryKey: useListCategoriesQuery.getKey(),
+      });
       messageApi.open({
         type: 'success',
         content: 'Categoria editada com sucesso',

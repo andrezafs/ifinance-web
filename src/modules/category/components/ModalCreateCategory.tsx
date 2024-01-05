@@ -12,10 +12,12 @@ export function ModalCreateCategory() {
 
   const queryClient = useQueryClient();
 
-  const { mutate, isLoading } = useCreateCategoryMutation<any>({
+  const { mutate, isPending: isLoading } = useCreateCategoryMutation<any>({
     onSuccess: () => {
       toggleModalCreateCategory();
-      queryClient.invalidateQueries(useListCategoriesQuery.getKey());
+      queryClient.invalidateQueries({
+        queryKey: useListCategoriesQuery.getKey(),
+      });
       messageApi.open({
         type: 'success',
         content: 'Categoria criada com sucesso!',

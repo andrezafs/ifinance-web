@@ -19,12 +19,14 @@ export function ModalDeleteCreditCard() {
     messageApi,
   } = useCreditCardActions();
 
-  const { mutate, isLoading } = useDeleteCreditCardMutation({
+  const { mutate, isPending: isLoading } = useDeleteCreditCardMutation({
     onSuccess: () => {
       toggleModalDeleteCreditCard();
       useDeleteCreditCardMutation.getKey();
       handleSetCreditCard(null);
-      queryClient.invalidateQueries(useListCreditCardsQuery.getKey());
+      queryClient.invalidateQueries({
+        queryKey: useListCreditCardsQuery.getKey(),
+      });
       messageApi.open({
         type: 'success',
         content: 'Cartão de Crédito deletado com sucesso!',

@@ -14,6 +14,7 @@ generates:
       exposeQueryKeys: true
       exposeMutationKeys: true
       fetcher: "@/configurations/reactQuery/fetcher#fetcherWithGraphQLClient"
+      reactQueryVersion: 5
   src/graphql/schema.graphql:
     plugins:
       - schema-ast
