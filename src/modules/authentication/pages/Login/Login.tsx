@@ -26,7 +26,7 @@ export function Login() {
 
   const { api } = useNotificationContext();
 
-  const { mutate, isLoading } = useAuthenticateMutation({
+  const { mutate, isPending: isLoading } = useAuthenticateMutation({
     onSuccess: data => {
       sessionManager.authenticate(data.authenticate);
       navigate('/', { replace: true });

@@ -16,12 +16,14 @@ export function ModalDeleteCategory() {
     messageApi,
   } = useCategoriesActions();
 
-  const { mutate, isLoading } = useDeleteCategoryMutation({
+  const { mutate, isPending: isLoading } = useDeleteCategoryMutation({
     onSuccess: () => {
       toggleModalDeleteCategory();
       useDeleteCategoryMutation.getKey();
       handleSetCategory(null);
-      queryClient.invalidateQueries(useListCategoriesQuery.getKey());
+      queryClient.invalidateQueries({
+        queryKey: useListCategoriesQuery.getKey(),
+      });
       messageApi.open({
         type: 'success',
         content: 'Categoria deletada com sucesso!',
