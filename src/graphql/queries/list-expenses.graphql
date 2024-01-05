@@ -1,6 +1,5 @@
-query ListExpense($filter: ListExpenseFilter!) {
+query ListExpenses($filter: ListExpenseFilter!) {
   listExpense(filter: $filter) {
-    amount
     expenses {
       category {
         name

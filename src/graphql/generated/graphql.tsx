@@ -67,7 +67,7 @@ export type CreateCreditCardInput = {
 
 export type CreateExpenseInput = {
   categoryId: Scalars['String']['input'];
-  creditCardId: Scalars['String']['input'];
+  creditCardId?: InputMaybe<Scalars['String']['input']>;
   installments?: InputMaybe<Scalars['Float']['input']>;
   isFixed: Scalars['Boolean']['input'];
   isIgnored: Scalars['Boolean']['input'];
@@ -101,8 +101,8 @@ export type Expense = {
   __typename?: 'Expense';
   category: Category;
   categoryId: Scalars['String']['output'];
-  creditCard: CreditCard;
-  creditCardId: Scalars['String']['output'];
+  creditCard?: Maybe<CreditCard>;
+  creditCardId?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   installmentsIdentifier: Scalars['String']['output'];
   invoiceDate: Scalars['DateTimeISO']['output'];
@@ -118,13 +118,11 @@ export type Expense = {
 
 export type ExpenseList = {
   __typename?: 'ExpenseList';
-  amount: Scalars['Float']['output'];
   expenses: Array<Expense>;
 };
 
 export type ExpenseListByCategory = {
   __typename?: 'ExpenseListByCategory';
-  amount: Scalars['Float']['output'];
   details: Array<ExpenseListByCategoryDetails>;
 };
 
@@ -249,6 +247,8 @@ export type Query = {
   listExpenseByCategory: ExpenseListByCategory;
   listExpenseByCategoryAndCreditCard: ExpenseListByCategory;
   listExpenseByCreditCard: ExpenseList;
+  listExpenseByWallet: ExpenseList;
+  listExpenseByWalletAndCategory: ExpenseListByCategory;
 };
 
 export type QueryFindBankByIdArgs = {
@@ -285,6 +285,15 @@ export type QueryListExpenseByCategoryAndCreditCardArgs = {
 
 export type QueryListExpenseByCreditCardArgs = {
   filter: ListExpenseByCreditCardFilter;
+};
+
+export type QueryListExpenseByWalletArgs = {
+  month: Scalars['Float']['input'];
+  year: Scalars['Float']['input'];
+};
+
+export type QueryListExpenseByWalletAndCategoryArgs = {
+  filter: ExpenseListByCategoryFilter;
 };
 
 export type UpdateCategoryInput = {
@@ -324,36 +333,13 @@ export type CreateCategoryMutation = {
   createCategory: { __typename?: 'Category'; id: string };
 };
 
-export type DeleteCategoryMutationVariables = Exact<{
-  deleteCategoryId: Scalars['String']['input'];
+export type CreateCreditCardMutationVariables = Exact<{
+  data: CreateCreditCardInput;
 }>;
 
-export type DeleteCategoryMutation = {
+export type CreateCreditCardMutation = {
   __typename?: 'Mutation';
-  deleteCategory: boolean;
-};
-
-export type ListCategoriesQueryVariables = Exact<{ [key: string]: never }>;
-
-export type ListCategoriesQuery = {
-  __typename?: 'Query';
-  listCategories: Array<{
-    __typename?: 'Category';
-    color: string;
-    id: string;
-    name: string;
-    userId: string;
-  }>;
-};
-
-export type UpdateCategoryMutationVariables = Exact<{
-  data: UpdateCategoryInput;
-  updateCategoryId: Scalars['String']['input'];
-}>;
-
-export type UpdateCategoryMutation = {
-  __typename?: 'Mutation';
-  updateCategory: { __typename?: 'Category'; id: string };
+  createCreditCard: { __typename?: 'CreditCard'; id: string };
 };
 
 export type CreateExpenseMutationVariables = Exact<{
@@ -369,18 +355,18 @@ export type CreateExpenseMutation = {
     name: string;
     isFixed: boolean;
     installmentsIdentifier: string;
-    creditCardId: string;
+    creditCardId?: string | null;
     categoryId: string;
   };
 };
 
-export type CreateCreditCardMutationVariables = Exact<{
-  data: CreateCreditCardInput;
+export type DeleteCategoryMutationVariables = Exact<{
+  deleteCategoryId: Scalars['String']['input'];
 }>;
 
-export type CreateCreditCardMutation = {
+export type DeleteCategoryMutation = {
   __typename?: 'Mutation';
-  createCreditCard: { __typename?: 'CreditCard'; id: string };
+  deleteCategory: boolean;
 };
 
 export type DeleteCreditCardMutationVariables = Exact<{
@@ -390,6 +376,25 @@ export type DeleteCreditCardMutationVariables = Exact<{
 export type DeleteCreditCardMutation = {
   __typename?: 'Mutation';
   deleteCreditCard: boolean;
+};
+
+export type DeleteExpenseMutationVariables = Exact<{
+  deleteExpenseId: Scalars['String']['input'];
+}>;
+
+export type DeleteExpenseMutation = {
+  __typename?: 'Mutation';
+  deleteExpense: boolean;
+};
+
+export type UpdateCategoryMutationVariables = Exact<{
+  data: UpdateCategoryInput;
+  updateCategoryId: Scalars['String']['input'];
+}>;
+
+export type UpdateCategoryMutation = {
+  __typename?: 'Mutation';
+  updateCategory: { __typename?: 'Category'; id: string };
 };
 
 export type ListBanksQueryVariables = Exact<{ [key: string]: never }>;
@@ -402,6 +407,19 @@ export type ListBanksQuery = {
     image: string;
     id: string;
     color: string;
+  }>;
+};
+
+export type ListCategoriesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type ListCategoriesQuery = {
+  __typename?: 'Query';
+  listCategories: Array<{
+    __typename?: 'Category';
+    color: string;
+    id: string;
+    name: string;
+    userId: string;
   }>;
 };
 
@@ -430,24 +448,14 @@ export type ListCreditCardsQuery = {
   }>;
 };
 
-export type DeleteExpenseMutationVariables = Exact<{
-  deleteExpenseId: Scalars['String']['input'];
-}>;
-
-export type DeleteExpenseMutation = {
-  __typename?: 'Mutation';
-  deleteExpense: boolean;
-};
-
-export type ListExpenseByCreditCardQueryVariables = Exact<{
+export type ListExpensesByCreditCardQueryVariables = Exact<{
   filter: ListExpenseByCreditCardFilter;
 }>;
 
-export type ListExpenseByCreditCardQuery = {
+export type ListExpensesByCreditCardQuery = {
   __typename?: 'Query';
   listExpenseByCreditCard: {
     __typename?: 'ExpenseList';
-    amount: number;
     expenses: Array<{
       __typename?: 'Expense';
       name: string;
@@ -455,20 +463,19 @@ export type ListExpenseByCreditCardQuery = {
       purchaseDate: any;
       id: string;
       category: { __typename?: 'Category'; name: string; id: string };
-      creditCard: { __typename?: 'CreditCard'; name: string };
+      creditCard?: { __typename?: 'CreditCard'; name: string } | null;
     }>;
   };
 };
 
-export type ListExpenseQueryVariables = Exact<{
+export type ListExpensesQueryVariables = Exact<{
   filter: ListExpenseFilter;
 }>;
 
-export type ListExpenseQuery = {
+export type ListExpensesQuery = {
   __typename?: 'Query';
   listExpense: {
     __typename?: 'ExpenseList';
-    amount: number;
     expenses: Array<{
       __typename?: 'Expense';
       name: string;
@@ -476,7 +483,7 @@ export type ListExpenseQuery = {
       purchaseDate: any;
       id: string;
       category: { __typename?: 'Category'; name: string; id: string };
-      creditCard: { __typename?: 'CreditCard'; name: string };
+      creditCard?: { __typename?: 'CreditCard'; name: string } | null;
     }>;
   };
 };
@@ -500,15 +507,15 @@ export const useAuthenticateMutation = <TError = unknown, TContext = unknown>(
     TError,
     AuthenticateMutationVariables,
     TContext
-  >(
-    ['Authenticate'],
-    (variables?: AuthenticateMutationVariables) =>
+  >({
+    mutationKey: ['Authenticate'],
+    mutationFn: (variables?: AuthenticateMutationVariables) =>
       fetcherWithGraphQLClient<
         AuthenticateMutation,
         AuthenticateMutationVariables
       >(AuthenticateDocument, variables)(),
-    options,
-  );
+    ...options,
+  });
 };
 
 useAuthenticateMutation.getKey = () => ['Authenticate'];
@@ -534,117 +541,55 @@ export const useCreateCategoryMutation = <TError = unknown, TContext = unknown>(
     TError,
     CreateCategoryMutationVariables,
     TContext
-  >(
-    ['CreateCategory'],
-    (variables?: CreateCategoryMutationVariables) =>
+  >({
+    mutationKey: ['CreateCategory'],
+    mutationFn: (variables?: CreateCategoryMutationVariables) =>
       fetcherWithGraphQLClient<
         CreateCategoryMutation,
         CreateCategoryMutationVariables
       >(CreateCategoryDocument, variables)(),
-    options,
-  );
+    ...options,
+  });
 };
 
 useCreateCategoryMutation.getKey = () => ['CreateCategory'];
 
-export const DeleteCategoryDocument = `
-    mutation deleteCategory($deleteCategoryId: String!) {
-  deleteCategory(id: $deleteCategoryId)
-}
-    `;
-
-export const useDeleteCategoryMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<
-    DeleteCategoryMutation,
-    TError,
-    DeleteCategoryMutationVariables,
-    TContext
-  >,
-) => {
-  return useMutation<
-    DeleteCategoryMutation,
-    TError,
-    DeleteCategoryMutationVariables,
-    TContext
-  >(
-    ['deleteCategory'],
-    (variables?: DeleteCategoryMutationVariables) =>
-      fetcherWithGraphQLClient<
-        DeleteCategoryMutation,
-        DeleteCategoryMutationVariables
-      >(DeleteCategoryDocument, variables)(),
-    options,
-  );
-};
-
-useDeleteCategoryMutation.getKey = () => ['deleteCategory'];
-
-export const ListCategoriesDocument = `
-    query ListCategories {
-  listCategories {
-    color
+export const CreateCreditCardDocument = `
+    mutation CreateCreditCard($data: CreateCreditCardInput!) {
+  createCreditCard(data: $data) {
     id
-    name
-    userId
   }
 }
     `;
 
-export const useListCategoriesQuery = <
-  TData = ListCategoriesQuery,
+export const useCreateCreditCardMutation = <
   TError = unknown,
+  TContext = unknown,
 >(
-  variables?: ListCategoriesQueryVariables,
-  options?: UseQueryOptions<ListCategoriesQuery, TError, TData>,
-) => {
-  return useQuery<ListCategoriesQuery, TError, TData>(
-    variables === undefined
-      ? ['ListCategories']
-      : ['ListCategories', variables],
-    fetcherWithGraphQLClient<ListCategoriesQuery, ListCategoriesQueryVariables>(
-      ListCategoriesDocument,
-      variables,
-    ),
-    options,
-  );
-};
-
-useListCategoriesQuery.getKey = (variables?: ListCategoriesQueryVariables) =>
-  variables === undefined ? ['ListCategories'] : ['ListCategories', variables];
-
-export const UpdateCategoryDocument = `
-    mutation UpdateCategory($data: UpdateCategoryInput!, $updateCategoryId: String!) {
-  updateCategory(data: $data, id: $updateCategoryId) {
-    id
-  }
-}
-    `;
-
-export const useUpdateCategoryMutation = <TError = unknown, TContext = unknown>(
   options?: UseMutationOptions<
-    UpdateCategoryMutation,
+    CreateCreditCardMutation,
     TError,
-    UpdateCategoryMutationVariables,
+    CreateCreditCardMutationVariables,
     TContext
   >,
 ) => {
   return useMutation<
-    UpdateCategoryMutation,
+    CreateCreditCardMutation,
     TError,
-    UpdateCategoryMutationVariables,
+    CreateCreditCardMutationVariables,
     TContext
-  >(
-    ['UpdateCategory'],
-    (variables?: UpdateCategoryMutationVariables) =>
+  >({
+    mutationKey: ['CreateCreditCard'],
+    mutationFn: (variables?: CreateCreditCardMutationVariables) =>
       fetcherWithGraphQLClient<
-        UpdateCategoryMutation,
-        UpdateCategoryMutationVariables
-      >(UpdateCategoryDocument, variables)(),
-    options,
-  );
+        CreateCreditCardMutation,
+        CreateCreditCardMutationVariables
+      >(CreateCreditCardDocument, variables)(),
+    ...options,
+  });
 };
 
-useUpdateCategoryMutation.getKey = () => ['UpdateCategory'];
+useCreateCreditCardMutation.getKey = () => ['CreateCreditCard'];
 
 export const CreateExpenseDocument = `
     mutation CreateExpense($data: CreateExpenseInput!) {
@@ -673,55 +618,50 @@ export const useCreateExpenseMutation = <TError = unknown, TContext = unknown>(
     TError,
     CreateExpenseMutationVariables,
     TContext
-  >(
-    ['CreateExpense'],
-    (variables?: CreateExpenseMutationVariables) =>
+  >({
+    mutationKey: ['CreateExpense'],
+    mutationFn: (variables?: CreateExpenseMutationVariables) =>
       fetcherWithGraphQLClient<
         CreateExpenseMutation,
         CreateExpenseMutationVariables
       >(CreateExpenseDocument, variables)(),
-    options,
-  );
+    ...options,
+  });
 };
 
 useCreateExpenseMutation.getKey = () => ['CreateExpense'];
 
-export const CreateCreditCardDocument = `
-    mutation CreateCreditCard($data: CreateCreditCardInput!) {
-  createCreditCard(data: $data) {
-    id
-  }
+export const DeleteCategoryDocument = `
+    mutation DeleteCategory($deleteCategoryId: String!) {
+  deleteCategory(id: $deleteCategoryId)
 }
     `;
 
-export const useCreateCreditCardMutation = <
-  TError = unknown,
-  TContext = unknown,
->(
+export const useDeleteCategoryMutation = <TError = unknown, TContext = unknown>(
   options?: UseMutationOptions<
-    CreateCreditCardMutation,
+    DeleteCategoryMutation,
     TError,
-    CreateCreditCardMutationVariables,
+    DeleteCategoryMutationVariables,
     TContext
   >,
 ) => {
   return useMutation<
-    CreateCreditCardMutation,
+    DeleteCategoryMutation,
     TError,
-    CreateCreditCardMutationVariables,
+    DeleteCategoryMutationVariables,
     TContext
-  >(
-    ['CreateCreditCard'],
-    (variables?: CreateCreditCardMutationVariables) =>
+  >({
+    mutationKey: ['DeleteCategory'],
+    mutationFn: (variables?: DeleteCategoryMutationVariables) =>
       fetcherWithGraphQLClient<
-        CreateCreditCardMutation,
-        CreateCreditCardMutationVariables
-      >(CreateCreditCardDocument, variables)(),
-    options,
-  );
+        DeleteCategoryMutation,
+        DeleteCategoryMutationVariables
+      >(DeleteCategoryDocument, variables)(),
+    ...options,
+  });
 };
 
-useCreateCreditCardMutation.getKey = () => ['CreateCreditCard'];
+useDeleteCategoryMutation.getKey = () => ['DeleteCategory'];
 
 export const DeleteCreditCardDocument = `
     mutation DeleteCreditCard($deleteCreditCardId: String!) {
@@ -745,18 +685,84 @@ export const useDeleteCreditCardMutation = <
     TError,
     DeleteCreditCardMutationVariables,
     TContext
-  >(
-    ['DeleteCreditCard'],
-    (variables?: DeleteCreditCardMutationVariables) =>
+  >({
+    mutationKey: ['DeleteCreditCard'],
+    mutationFn: (variables?: DeleteCreditCardMutationVariables) =>
       fetcherWithGraphQLClient<
         DeleteCreditCardMutation,
         DeleteCreditCardMutationVariables
       >(DeleteCreditCardDocument, variables)(),
-    options,
-  );
+    ...options,
+  });
 };
 
 useDeleteCreditCardMutation.getKey = () => ['DeleteCreditCard'];
+
+export const DeleteExpenseDocument = `
+    mutation DeleteExpense($deleteExpenseId: String!) {
+  deleteExpense(id: $deleteExpenseId)
+}
+    `;
+
+export const useDeleteExpenseMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    DeleteExpenseMutation,
+    TError,
+    DeleteExpenseMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    DeleteExpenseMutation,
+    TError,
+    DeleteExpenseMutationVariables,
+    TContext
+  >({
+    mutationKey: ['DeleteExpense'],
+    mutationFn: (variables?: DeleteExpenseMutationVariables) =>
+      fetcherWithGraphQLClient<
+        DeleteExpenseMutation,
+        DeleteExpenseMutationVariables
+      >(DeleteExpenseDocument, variables)(),
+    ...options,
+  });
+};
+
+useDeleteExpenseMutation.getKey = () => ['DeleteExpense'];
+
+export const UpdateCategoryDocument = `
+    mutation UpdateCategory($data: UpdateCategoryInput!, $updateCategoryId: String!) {
+  updateCategory(data: $data, id: $updateCategoryId) {
+    id
+  }
+}
+    `;
+
+export const useUpdateCategoryMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    UpdateCategoryMutation,
+    TError,
+    UpdateCategoryMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    UpdateCategoryMutation,
+    TError,
+    UpdateCategoryMutationVariables,
+    TContext
+  >({
+    mutationKey: ['UpdateCategory'],
+    mutationFn: (variables?: UpdateCategoryMutationVariables) =>
+      fetcherWithGraphQLClient<
+        UpdateCategoryMutation,
+        UpdateCategoryMutationVariables
+      >(UpdateCategoryDocument, variables)(),
+    ...options,
+  });
+};
+
+useUpdateCategoryMutation.getKey = () => ['UpdateCategory'];
 
 export const ListBanksDocument = `
     query ListBanks {
@@ -771,20 +777,62 @@ export const ListBanksDocument = `
 
 export const useListBanksQuery = <TData = ListBanksQuery, TError = unknown>(
   variables?: ListBanksQueryVariables,
-  options?: UseQueryOptions<ListBanksQuery, TError, TData>,
+  options?: Omit<UseQueryOptions<ListBanksQuery, TError, TData>, 'queryKey'> & {
+    queryKey?: UseQueryOptions<ListBanksQuery, TError, TData>['queryKey'];
+  },
 ) => {
-  return useQuery<ListBanksQuery, TError, TData>(
-    variables === undefined ? ['ListBanks'] : ['ListBanks', variables],
-    fetcherWithGraphQLClient<ListBanksQuery, ListBanksQueryVariables>(
+  return useQuery<ListBanksQuery, TError, TData>({
+    queryKey:
+      variables === undefined ? ['ListBanks'] : ['ListBanks', variables],
+    queryFn: fetcherWithGraphQLClient<ListBanksQuery, ListBanksQueryVariables>(
       ListBanksDocument,
       variables,
     ),
-    options,
-  );
+    ...options,
+  });
 };
 
 useListBanksQuery.getKey = (variables?: ListBanksQueryVariables) =>
   variables === undefined ? ['ListBanks'] : ['ListBanks', variables];
+
+export const ListCategoriesDocument = `
+    query ListCategories {
+  listCategories {
+    color
+    id
+    name
+    userId
+  }
+}
+    `;
+
+export const useListCategoriesQuery = <
+  TData = ListCategoriesQuery,
+  TError = unknown,
+>(
+  variables?: ListCategoriesQueryVariables,
+  options?: Omit<
+    UseQueryOptions<ListCategoriesQuery, TError, TData>,
+    'queryKey'
+  > & {
+    queryKey?: UseQueryOptions<ListCategoriesQuery, TError, TData>['queryKey'];
+  },
+) => {
+  return useQuery<ListCategoriesQuery, TError, TData>({
+    queryKey:
+      variables === undefined
+        ? ['ListCategories']
+        : ['ListCategories', variables],
+    queryFn: fetcherWithGraphQLClient<
+      ListCategoriesQuery,
+      ListCategoriesQueryVariables
+    >(ListCategoriesDocument, variables),
+    ...options,
+  });
+};
+
+useListCategoriesQuery.getKey = (variables?: ListCategoriesQueryVariables) =>
+  variables === undefined ? ['ListCategories'] : ['ListCategories', variables];
 
 export const ListCreditCardsDocument = `
     query ListCreditCards {
@@ -813,18 +861,24 @@ export const useListCreditCardsQuery = <
   TError = unknown,
 >(
   variables?: ListCreditCardsQueryVariables,
-  options?: UseQueryOptions<ListCreditCardsQuery, TError, TData>,
+  options?: Omit<
+    UseQueryOptions<ListCreditCardsQuery, TError, TData>,
+    'queryKey'
+  > & {
+    queryKey?: UseQueryOptions<ListCreditCardsQuery, TError, TData>['queryKey'];
+  },
 ) => {
-  return useQuery<ListCreditCardsQuery, TError, TData>(
-    variables === undefined
-      ? ['ListCreditCards']
-      : ['ListCreditCards', variables],
-    fetcherWithGraphQLClient<
+  return useQuery<ListCreditCardsQuery, TError, TData>({
+    queryKey:
+      variables === undefined
+        ? ['ListCreditCards']
+        : ['ListCreditCards', variables],
+    queryFn: fetcherWithGraphQLClient<
       ListCreditCardsQuery,
       ListCreditCardsQueryVariables
     >(ListCreditCardsDocument, variables),
-    options,
-  );
+    ...options,
+  });
 };
 
 useListCreditCardsQuery.getKey = (variables?: ListCreditCardsQueryVariables) =>
@@ -832,42 +886,9 @@ useListCreditCardsQuery.getKey = (variables?: ListCreditCardsQueryVariables) =>
     ? ['ListCreditCards']
     : ['ListCreditCards', variables];
 
-export const DeleteExpenseDocument = `
-    mutation DeleteExpense($deleteExpenseId: String!) {
-  deleteExpense(id: $deleteExpenseId)
-}
-    `;
-
-export const useDeleteExpenseMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<
-    DeleteExpenseMutation,
-    TError,
-    DeleteExpenseMutationVariables,
-    TContext
-  >,
-) => {
-  return useMutation<
-    DeleteExpenseMutation,
-    TError,
-    DeleteExpenseMutationVariables,
-    TContext
-  >(
-    ['DeleteExpense'],
-    (variables?: DeleteExpenseMutationVariables) =>
-      fetcherWithGraphQLClient<
-        DeleteExpenseMutation,
-        DeleteExpenseMutationVariables
-      >(DeleteExpenseDocument, variables)(),
-    options,
-  );
-};
-
-useDeleteExpenseMutation.getKey = () => ['DeleteExpense'];
-
-export const ListExpenseByCreditCardDocument = `
-    query ListExpenseByCreditCard($filter: ListExpenseByCreditCardFilter!) {
+export const ListExpensesByCreditCardDocument = `
+    query ListExpensesByCreditCard($filter: ListExpenseByCreditCardFilter!) {
   listExpenseByCreditCard(filter: $filter) {
-    amount
     expenses {
       category {
         name
@@ -885,31 +906,39 @@ export const ListExpenseByCreditCardDocument = `
 }
     `;
 
-export const useListExpenseByCreditCardQuery = <
-  TData = ListExpenseByCreditCardQuery,
+export const useListExpensesByCreditCardQuery = <
+  TData = ListExpensesByCreditCardQuery,
   TError = unknown,
 >(
-  variables: ListExpenseByCreditCardQueryVariables,
-  options?: UseQueryOptions<ListExpenseByCreditCardQuery, TError, TData>,
+  variables: ListExpensesByCreditCardQueryVariables,
+  options?: Omit<
+    UseQueryOptions<ListExpensesByCreditCardQuery, TError, TData>,
+    'queryKey'
+  > & {
+    queryKey?: UseQueryOptions<
+      ListExpensesByCreditCardQuery,
+      TError,
+      TData
+    >['queryKey'];
+  },
 ) => {
-  return useQuery<ListExpenseByCreditCardQuery, TError, TData>(
-    ['ListExpenseByCreditCard', variables],
-    fetcherWithGraphQLClient<
-      ListExpenseByCreditCardQuery,
-      ListExpenseByCreditCardQueryVariables
-    >(ListExpenseByCreditCardDocument, variables),
-    options,
-  );
+  return useQuery<ListExpensesByCreditCardQuery, TError, TData>({
+    queryKey: ['ListExpensesByCreditCard', variables],
+    queryFn: fetcherWithGraphQLClient<
+      ListExpensesByCreditCardQuery,
+      ListExpensesByCreditCardQueryVariables
+    >(ListExpensesByCreditCardDocument, variables),
+    ...options,
+  });
 };
 
-useListExpenseByCreditCardQuery.getKey = (
-  variables: ListExpenseByCreditCardQueryVariables,
-) => ['ListExpenseByCreditCard', variables];
+useListExpensesByCreditCardQuery.getKey = (
+  variables: ListExpensesByCreditCardQueryVariables,
+) => ['ListExpensesByCreditCard', variables];
 
-export const ListExpenseDocument = `
-    query ListExpense($filter: ListExpenseFilter!) {
+export const ListExpensesDocument = `
+    query ListExpenses($filter: ListExpenseFilter!) {
   listExpense(filter: $filter) {
-    amount
     expenses {
       category {
         name
@@ -927,21 +956,29 @@ export const ListExpenseDocument = `
 }
     `;
 
-export const useListExpenseQuery = <TData = ListExpenseQuery, TError = unknown>(
-  variables: ListExpenseQueryVariables,
-  options?: UseQueryOptions<ListExpenseQuery, TError, TData>,
+export const useListExpensesQuery = <
+  TData = ListExpensesQuery,
+  TError = unknown,
+>(
+  variables: ListExpensesQueryVariables,
+  options?: Omit<
+    UseQueryOptions<ListExpensesQuery, TError, TData>,
+    'queryKey'
+  > & {
+    queryKey?: UseQueryOptions<ListExpensesQuery, TError, TData>['queryKey'];
+  },
 ) => {
-  return useQuery<ListExpenseQuery, TError, TData>(
-    ['ListExpense', variables],
-    fetcherWithGraphQLClient<ListExpenseQuery, ListExpenseQueryVariables>(
-      ListExpenseDocument,
-      variables,
-    ),
-    options,
-  );
+  return useQuery<ListExpensesQuery, TError, TData>({
+    queryKey: ['ListExpenses', variables],
+    queryFn: fetcherWithGraphQLClient<
+      ListExpensesQuery,
+      ListExpensesQueryVariables
+    >(ListExpensesDocument, variables),
+    ...options,
+  });
 };
 
-useListExpenseQuery.getKey = (variables: ListExpenseQueryVariables) => [
-  'ListExpense',
+useListExpensesQuery.getKey = (variables: ListExpensesQueryVariables) => [
+  'ListExpenses',
   variables,
 ];

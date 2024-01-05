@@ -1,6 +1,5 @@
-query ListExpenseByCreditCard($filter: ListExpenseByCreditCardFilter!) {
+query ListExpensesByCreditCard($filter: ListExpenseByCreditCardFilter!) {
   listExpenseByCreditCard(filter: $filter) {
-    amount
     expenses {
       category {
         name
