@@ -360,6 +360,15 @@ export type CreateExpenseMutation = {
   };
 };
 
+export type CreateUserMutationVariables = Exact<{
+  data: CreateUserInput;
+}>;
+
+export type CreateUserMutation = {
+  __typename?: 'Mutation';
+  createUser: { __typename?: 'User'; id: string };
+};
+
 export type DeleteCategoryMutationVariables = Exact<{
   deleteCategoryId: Scalars['String']['input'];
 }>;
@@ -636,6 +645,40 @@ export const useCreateExpenseMutation = <TError = unknown, TContext = unknown>(
 };
 
 useCreateExpenseMutation.getKey = () => ['CreateExpense'];
+
+export const CreateUserDocument = `
+    mutation CreateUser($data: CreateUserInput!) {
+  createUser(data: $data) {
+    id
+  }
+}
+    `;
+
+export const useCreateUserMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    CreateUserMutation,
+    TError,
+    CreateUserMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    CreateUserMutation,
+    TError,
+    CreateUserMutationVariables,
+    TContext
+  >({
+    mutationKey: ['CreateUser'],
+    mutationFn: (variables?: CreateUserMutationVariables) =>
+      fetcherWithGraphQLClient<CreateUserMutation, CreateUserMutationVariables>(
+        CreateUserDocument,
+        variables,
+      )(),
+    ...options,
+  });
+};
+
+useCreateUserMutation.getKey = () => ['CreateUser'];
 
 export const DeleteCategoryDocument = `
     mutation DeleteCategory($deleteCategoryId: String!) {

@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 
 import { CardStatistic } from '@/modules/shared/components/CardStatistic';
-import { routes } from '@/routes/routes';
+import { routes } from '@/routes';
 
 export function StatisticCards() {
   return (
