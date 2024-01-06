@@ -8,13 +8,15 @@ import {
 
 import { CardStatistic } from '@/modules/shared/components/CardStatistic';
 import { useListExpensesQuery } from '@/graphql';
+import { useMountAndYear } from '@/modules/shared/hooks';
 
 export function ExpensesStatistics() {
+  const { month, year } = useMountAndYear();
   const { data } = useListExpensesQuery(
     {
       filter: {
-        month: 1,
-        year: 2024,
+        month,
+        year,
       },
     },
     {

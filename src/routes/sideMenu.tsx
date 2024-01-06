@@ -2,7 +2,7 @@ import { Key, ReactNode } from 'react';
 import { MenuProps } from 'antd';
 import {
   FlagOutlined,
-  // HomeOutlined,
+  HomeOutlined,
   // BarChartOutlined,
   // CreditCardOutlined,
   // PieChartOutlined,
@@ -28,8 +28,8 @@ function mountItem(
 }
 
 export const sideMenuRoutes: MenuItem[] = [
-  // mountItem('Dashboard', routes.goToDashboard(), <HomeOutlined />),
-  mountItem('Categories', routes.goToCategories(), <FlagOutlined />),
+  mountItem('Dashboard', routes.goToDashboard(), <HomeOutlined />),
+  mountItem('Categorias', routes.goToCategories(), <FlagOutlined />),
   // mountItem('Credits Card', routes.goToCreditCards(), <CreditCardOutlined />),
   // mountItem('Planning', routes.goToPlanning(), <BarChartOutlined />),
   // mountItem('Reports', routes.goToReports(), <PieChartOutlined />),

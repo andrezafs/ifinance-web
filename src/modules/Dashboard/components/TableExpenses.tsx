@@ -1,17 +1,20 @@
 import { Table } from 'antd';
 
 import { Expense, useListExpensesQuery } from '@/graphql';
-import { useListExpenseData } from '@/modules/expenses/hooks/useListExpensesData';
+import { useMountAndYear } from '@/modules/shared/hooks';
+
+import { useListExpensesDashboardData } from '../hooks/useListExpensesDashboardData';
 
 export function TableExpenses() {
+  const { month, year } = useMountAndYear();
   const { data: expenses } = useListExpensesQuery({
     filter: {
-      month: 1,
-      year: 2024,
+      month,
+      year,
     },
   });
 
-  const { columns, data } = useListExpenseData(
+  const { columns, data } = useListExpensesDashboardData(
     expenses?.listExpense.expenses as Expense[],
   );
 
