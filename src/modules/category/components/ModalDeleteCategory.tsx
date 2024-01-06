@@ -1,7 +1,12 @@
 import { Alert, Modal, Typography } from 'antd';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useDeleteCategoryMutation, useListCategoriesQuery } from '@/graphql';
+import {
+  ListCategoriesQuery,
+  useDeleteCategoryMutation,
+  useListCategoriesQuery,
+} from '@/graphql';
+import { useNotificationContext } from '@/modules/shared/context/NotificationContext';
 
 import { useCategoriesActions } from '../contexts/CategoriesActionsContext';
 
@@ -13,28 +18,42 @@ export function ModalDeleteCategory() {
     toggleModalDeleteCategory,
     category,
     handleSetCategory,
-    messageApi,
   } = useCategoriesActions();
+
+  const { api } = useNotificationContext();
 
   const { mutate, isPending: isLoading } = useDeleteCategoryMutation({
     onSuccess: () => {
       toggleModalDeleteCategory();
-      useDeleteCategoryMutation.getKey();
       handleSetCategory(null);
-      queryClient.invalidateQueries({
-        queryKey: useListCategoriesQuery.getKey(),
-      });
-      messageApi.open({
+
+      queryClient.setQueryData<ListCategoriesQuery>(
+        useListCategoriesQuery.getKey(),
+        oldData => {
+          if (!oldData) return oldData;
+
+          const newData = oldData.listCategories.filter(
+            item => item.id !== category?.id,
+          );
+
+          return {
+            ...oldData,
+            listCategories: newData,
+          };
+        },
+      );
+
+      api.open({
         type: 'success',
-        content: 'Categoria deletada com sucesso!',
-        duration: 2,
+        message: 'Sucesso!',
+        description: 'A categoria foi deletada com sucesso!',
       });
     },
     onError: () => {
-      messageApi.open({
+      api.open({
         type: 'error',
-        content: 'Erro ao deletar categoria!',
-        duration: 2,
+        message: 'Erro!',
+        description: 'Por favor, tente novamente.',
       });
     },
   });

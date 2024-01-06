@@ -12,7 +12,7 @@ import {
 } from '@/graphql';
 import { formatCurrency } from '@/modules/shared/helpers/formatCurrency';
 import { formatDate } from '@/modules/shared/helpers/formatDate';
-import { queryClient } from '@/configurations/reactQuery/queryClient';
+import { useQueryClient } from '@tanstack/react-query';
 
 type DataType = {
   key: string;
@@ -26,6 +26,8 @@ type DataType = {
 };
 
 export function useCreditCardDetailsData(expenses?: Expense[]) {
+  const queryClient = useQueryClient();
+
   const { mutate: deleteExpense } = useDeleteExpenseMutation({
     onSuccess: () =>
       queryClient.invalidateQueries({

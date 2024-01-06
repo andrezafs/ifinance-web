@@ -2,33 +2,38 @@ import { ButtonProps, Modal } from 'antd';
 
 import { useCreateCategoryMutation, useListCategoriesQuery } from '@/graphql';
 import { useQueryClient } from '@tanstack/react-query';
+import { useNotificationContext } from '@/modules/shared/context/NotificationContext';
 
 import { useCategoriesActions } from '../contexts/CategoriesActionsContext';
 import { FormCreateCategory } from './FormCreateCategory';
 
 export function ModalCreateCategory() {
-  const { modalCreateCategoryIsOpen, toggleModalCreateCategory, messageApi } =
+  const { modalCreateCategoryIsOpen, toggleModalCreateCategory } =
     useCategoriesActions();
+
+  const { api } = useNotificationContext();
 
   const queryClient = useQueryClient();
 
   const { mutate, isPending: isLoading } = useCreateCategoryMutation<any>({
     onSuccess: () => {
       toggleModalCreateCategory();
+
       queryClient.invalidateQueries({
         queryKey: useListCategoriesQuery.getKey(),
       });
-      messageApi.open({
+
+      api.open({
         type: 'success',
-        content: 'Categoria criada com sucesso!',
-        duration: 2,
+        message: 'Sucesso!',
+        description: 'A categoria foi criada com sucesso!',
       });
     },
     onError: () => {
-      messageApi.open({
+      api.open({
         type: 'error',
-        content: 'Essa categoria já existe!',
-        duration: 2,
+        message: 'Erro!',
+        description: 'Por favor, tente novamente.',
       });
     },
   });

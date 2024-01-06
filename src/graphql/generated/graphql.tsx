@@ -394,7 +394,13 @@ export type UpdateCategoryMutationVariables = Exact<{
 
 export type UpdateCategoryMutation = {
   __typename?: 'Mutation';
-  updateCategory: { __typename?: 'Category'; id: string };
+  updateCategory: {
+    __typename?: 'Category';
+    color: string;
+    id: string;
+    name: string;
+    userId: string;
+  };
 };
 
 export type ListBanksQueryVariables = Exact<{ [key: string]: never }>;
@@ -733,7 +739,10 @@ useDeleteExpenseMutation.getKey = () => ['DeleteExpense'];
 export const UpdateCategoryDocument = `
     mutation UpdateCategory($data: UpdateCategoryInput!, $updateCategoryId: String!) {
   updateCategory(data: $data, id: $updateCategoryId) {
+    color
     id
+    name
+    userId
   }
 }
     `;

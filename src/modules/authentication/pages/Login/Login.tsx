@@ -67,7 +67,7 @@ export function Login() {
         </FormItem>
 
         <Row justify="space-between" align="middle">
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={isLoading}>
             Login
           </Button>
         </Row>

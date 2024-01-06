@@ -33,4 +33,4 @@ export const routes = {
   login,
   auth,
   create,
-};
+} as const;

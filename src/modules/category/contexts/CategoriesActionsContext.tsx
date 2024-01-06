@@ -6,8 +6,6 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { message } from 'antd';
-import { MessageInstance } from 'antd/es/message/interface';
 
 import { Category } from '@/graphql';
 
@@ -20,7 +18,6 @@ type CategoriesActionsContextProps = {
   toggleModalEditCategory: (value?: boolean) => void;
   category: Category | null;
   handleSetCategory: (value: Category | null) => void;
-  messageApi: MessageInstance;
 };
 
 type CategoriesActionsContextProviderProps = {
@@ -40,7 +37,6 @@ export function CategoriesActionsContextProvider({
     useState(false);
   const [modalEditCategory, setModalEditCategoryIsOpen] = useState(false);
   const [category, setCategory] = useState<Category | null>(null);
-  const [messageApi, contextHolder] = message.useMessage();
 
   const toggleModalCreateCategory = useCallback((value?: boolean) => {
     setModalCreateCategoryIsOpen(state => value || !state);
@@ -68,7 +64,6 @@ export function CategoriesActionsContextProvider({
       toggleModalEditCategory,
       category,
       handleSetCategory,
-      messageApi,
     }),
     [
       modalCreateCategoryIsOpen,
@@ -79,16 +74,12 @@ export function CategoriesActionsContextProvider({
       toggleModalEditCategory,
       category,
       handleSetCategory,
-      messageApi,
     ],
   );
 
   return (
     <CategoriesActionsContext.Provider value={value}>
-      <>
-        {children}
-        {contextHolder}
-      </>
+      {children}
     </CategoriesActionsContext.Provider>
   );
 }

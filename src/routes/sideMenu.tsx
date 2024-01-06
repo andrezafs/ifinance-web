@@ -2,11 +2,11 @@ import { Key, ReactNode } from 'react';
 import { MenuProps } from 'antd';
 import {
   FlagOutlined,
-  HomeOutlined,
-  BarChartOutlined,
-  CreditCardOutlined,
-  PieChartOutlined,
-  StockOutlined,
+  // HomeOutlined,
+  // BarChartOutlined,
+  // CreditCardOutlined,
+  // PieChartOutlined,
+  // StockOutlined,
 } from '@ant-design/icons';
 
 import { routes } from './routes';
@@ -28,10 +28,10 @@ function mountItem(
 }
 
 export const sideMenuRoutes: MenuItem[] = [
-  mountItem('Dashboard', routes.goToDashboard(), <HomeOutlined />),
+  // mountItem('Dashboard', routes.goToDashboard(), <HomeOutlined />),
   mountItem('Categories', routes.goToCategories(), <FlagOutlined />),
-  mountItem('Credits Card', routes.goToCreditCards(), <CreditCardOutlined />),
-  mountItem('Planning', routes.goToPlanning(), <BarChartOutlined />),
-  mountItem('Reports', routes.goToReports(), <PieChartOutlined />),
-  mountItem('Expenses', routes.goToExpenses(), <StockOutlined />),
+  // mountItem('Credits Card', routes.goToCreditCards(), <CreditCardOutlined />),
+  // mountItem('Planning', routes.goToPlanning(), <BarChartOutlined />),
+  // mountItem('Reports', routes.goToReports(), <PieChartOutlined />),
+  // mountItem('Expenses', routes.goToExpenses(), <StockOutlined />),
 ];
