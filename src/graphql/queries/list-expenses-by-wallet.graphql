@@ -1,0 +1,17 @@
+query ListExpensesByWallet($year: Float!, $month: Float!) {
+  listExpenseByWallet(year: $year, month: $month) {
+    expenses {
+      category {
+        name
+        id
+      }
+      name
+      value
+      purchaseDate
+      id
+      creditCard {
+        name
+      }
+    }
+  }
+}

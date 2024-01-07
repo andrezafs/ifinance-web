@@ -21,8 +21,6 @@ import { CategoryColor } from '@/modules/category/components/CategoryColor';
 
 import { defaultInstallments } from '../constants/installments';
 
-const { Option } = Select;
-
 const schema = z.object({
   value: z
     .number({
@@ -109,17 +107,17 @@ export function FormCreateNewCreditCardExpense({
       <FormItem name="category" control={control}>
         <Select placeholder="Selecione a Categoria">
           {categories?.listCategories.map(category => (
-            <Option key={category.id}>
+            <Select.Option key={category.id}>
               <CategoryColor value={category.color} />
               {category.name}
-            </Option>
+            </Select.Option>
           ))}
         </Select>
       </FormItem>
       <FormItem name="creditCard" control={control}>
         <Select placeholder="Selecione o cartão de crédito">
           {creditCards?.listCreditCards.map(creditCard => (
-            <Option key={creditCard.id}>
+            <Select.Option key={creditCard.id}>
               <Avatar
                 src={creditCard.bank.image}
                 style={{
@@ -127,7 +125,7 @@ export function FormCreateNewCreditCardExpense({
                 }}
               />
               {creditCard.name}
-            </Option>
+            </Select.Option>
           ))}
         </Select>
       </FormItem>
@@ -179,13 +177,15 @@ export function FormCreateNewCreditCardExpense({
           />
         </Row>
       </FormItem>
-      <FormItem name="installments" control={control}>
-        <Select disabled={!hasInstallmentsField.field.value}>
-          {defaultInstallments.map(item => (
-            <Option key={item.portion}>{item.portion}</Option>
-          ))}
-        </Select>
-      </FormItem>
+      {hasInstallmentsField.field.value && (
+        <FormItem name="installments" control={control}>
+          <Select>
+            {defaultInstallments.map(item => (
+              <Select.Option key={item.portion}>{item.portion}</Select.Option>
+            ))}
+          </Select>
+        </FormItem>
+      )}
     </Form>
   );
 }

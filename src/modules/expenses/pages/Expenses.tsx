@@ -1,4 +1,4 @@
-import { TableExpenses } from '@/modules/Dashboard/components/TableExpenses';
+import { TableExpenses } from '@/modules/dashboard/components/TableExpenses';
 
 import { ExpensesStatistics } from '../components/ExpensesStatistics';
 

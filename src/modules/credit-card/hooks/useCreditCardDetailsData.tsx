@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Space } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { DeleteOutlined, EditOutlined, ReadOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 import { ColumnFilterItem } from 'antd/es/table/interface';
 
 import { ButtonAction } from '@/modules/shared/components/ButtonAction';
@@ -9,6 +9,8 @@ import {
   Expense,
   useDeleteExpenseMutation,
   useListExpensesByCreditCardQuery,
+  useListExpensesByWalletQuery,
+  useListExpensesQuery,
 } from '@/graphql';
 import { formatCurrency } from '@/modules/shared/helpers/formatCurrency';
 import { formatDate } from '@/modules/shared/helpers/formatDate';
@@ -29,10 +31,17 @@ export function useCreditCardDetailsData(expenses?: Expense[]) {
   const queryClient = useQueryClient();
 
   const { mutate: deleteExpense } = useDeleteExpenseMutation({
-    onSuccess: () =>
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: useListExpensesQuery.getKey({} as any),
+      });
       queryClient.invalidateQueries({
         queryKey: useListExpensesByCreditCardQuery.getKey({} as any),
-      }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: useListExpensesByWalletQuery.getKey({} as any),
+      });
+    },
   });
 
   const filterCategories = useMemo(() => {
@@ -132,8 +141,8 @@ export function useCreditCardDetailsData(expenses?: Expense[]) {
               justifyContent: 'flex-end',
             }}
           >
-            <ButtonAction tooltipAction="Relatório" icon={<ReadOutlined />} />
-            <ButtonAction tooltipAction="Editar" icon={<EditOutlined />} />
+            {/* <ButtonAction tooltipAction="Relatório" icon={<ReadOutlined />} /> */}
+            {/* <ButtonAction tooltipAction="Editar" icon={<EditOutlined />} /> */}
             <ButtonAction
               tooltipAction="Deletar"
               icon={<DeleteOutlined />}

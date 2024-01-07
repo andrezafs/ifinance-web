@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Col, Divider } from 'antd';
+import { Col, theme } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 
 import { ButtonAction } from '@/modules/shared/components/ButtonAction';
@@ -10,14 +10,22 @@ import { TableExpensesCreditCard } from '../components/TableExpensesCreditCard';
 import { useCreditCardActions } from '../contexts/CreditCardsActionsContext';
 
 export function CreditCardDetails() {
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+
   const { toggleModalCreateNewCreditCardExpense } = useCreditCardActions();
 
   return (
     <>
-      <Col span={30}>
+      <Col>
         <Header
           style={{
-            backgroundColor: '#fff',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            display: 'flex',
+            width: '100%',
+            background: colorBgContainer,
           }}
         >
           <ButtonAction
@@ -28,9 +36,10 @@ export function CreditCardDetails() {
             }}
           />
         </Header>
+        <br />
 
         <CreditCardStatistics />
-        <Divider />
+        <br />
         <TableExpensesCreditCard />
       </Col>
       <ModalCreateNewCreditCardExpense />

@@ -24,9 +24,11 @@ export function ModalCreateNewCreditCardExpense() {
   const { mutate, isPending: isLoading } = useCreateExpenseMutation({
     onSuccess: () => {
       toggleModalCreateNewCreditCardExpense();
+
       queryClient.invalidateQueries({
         queryKey: useListExpensesByCreditCardQuery.getKey({} as any),
       });
+
       messageApi.open({
         type: 'success',
         content: 'Despesa criada com sucesso!',

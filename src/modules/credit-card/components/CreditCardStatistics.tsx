@@ -5,13 +5,22 @@ import {
   ScheduleOutlined,
   WalletOutlined,
 } from '@ant-design/icons';
+import { useParams } from 'react-router-dom';
 
 import { CardStatistic } from '@/modules/shared/components/CardStatistic';
-
-import { useGetExpensesByCreditCard } from '../hooks/useGetExpensesByCreditCard';
+import { useListExpensesByCreditCardQuery } from '@/graphql';
+import { useMountAndYear } from '@/modules/shared/hooks';
 
 export function CreditCardStatistics() {
-  const { data } = useGetExpensesByCreditCard();
+  const { creditCardId } = useParams<{ creditCardId: string }>();
+  const { month, year } = useMountAndYear();
+  const { data } = useListExpensesByCreditCardQuery({
+    filter: {
+      creditCardId: creditCardId as string,
+      month,
+      year,
+    },
+  });
 
   return (
     <Row gutter={16}>

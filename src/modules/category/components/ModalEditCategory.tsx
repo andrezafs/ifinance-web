@@ -1,5 +1,7 @@
 import { ButtonProps, Modal } from 'antd';
 
+import { produce } from 'immer';
+
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ListCategoriesQuery,
@@ -33,21 +35,18 @@ export function ModalEditCategory() {
         oldData => {
           if (!oldData) return oldData;
 
-          const newData = oldData.listCategories.map(item => {
-            if (item.id === updateCategory?.id) {
-              return {
-                ...item,
-                ...updateCategory,
-              };
-            }
+          return produce(oldData, draft => {
+            draft.listCategories = draft.listCategories.map(item => {
+              if (item.id === updateCategory?.id) {
+                return {
+                  ...item,
+                  ...updateCategory,
+                };
+              }
 
-            return item;
+              return item;
+            });
           });
-
-          return {
-            ...oldData,
-            listCategories: newData,
-          };
         },
       );
 

@@ -1,13 +1,13 @@
 import { generatePath } from 'react-router-dom';
 
-const categories = 'categories';
-const creditCards = 'credit-cards';
+const categories = 'category';
+const creditCards = 'credit-card';
 const planning = 'planning';
-const reports = 'reports';
+const reports = 'report';
 const home = '/';
 const creditCardId = ':creditCardId';
 const dashboard = 'dashboard';
-const expenses = 'expenses';
+const expenses = 'expense';
 const login = 'login';
 const auth = 'auth';
 const create = 'create';

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Space, Tag } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { DeleteOutlined, EditOutlined, ReadOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 import { Category } from '@/graphql';
 import { ButtonAction } from '@/modules/shared/components/ButtonAction';
@@ -18,7 +18,6 @@ type DataType = {
 
 export function useCategoriesData(categories?: Category[]) {
   const {
-    toggleModalCreateCategory,
     toggleModalDeleteCategory,
     toggleModalEditCategory,
     handleSetCategory,
@@ -38,12 +37,12 @@ export function useCategoriesData(categories?: Category[]) {
   const columns = useMemo<ColumnsType<DataType>>(
     () => [
       {
-        title: 'Name',
+        title: 'Nome',
         dataIndex: 'name',
         key: 'name',
       },
       {
-        title: 'Color',
+        title: 'Cor',
         dataIndex: 'color',
         key: 'color',
         align: 'center',
@@ -60,7 +59,7 @@ export function useCategoriesData(categories?: Category[]) {
         ),
       },
       {
-        title: 'Actions',
+        title: 'Ações',
         key: 'actions',
         align: 'right',
         render: (_, record) => (
@@ -71,11 +70,7 @@ export function useCategoriesData(categories?: Category[]) {
               justifyContent: 'flex-end',
             }}
           >
-            <ButtonAction
-              tooltipAction="Relatório"
-              icon={<ReadOutlined />}
-              onClick={() => toggleModalCreateCategory()}
-            />
+            {/* <ButtonAction tooltipAction="Relatório" icon={<ReadOutlined />} /> */}
 
             <ButtonAction
               tooltipAction="Editar"
@@ -104,12 +99,7 @@ export function useCategoriesData(categories?: Category[]) {
         ),
       },
     ],
-    [
-      handleSetCategory,
-      toggleModalCreateCategory,
-      toggleModalDeleteCategory,
-      toggleModalEditCategory,
-    ],
+    [handleSetCategory, toggleModalDeleteCategory, toggleModalEditCategory],
   );
 
   return useMemo(() => ({ columns, data }), [columns, data]);

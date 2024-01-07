@@ -1,17 +1,13 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { Row, Skeleton, Table } from 'antd';
+import { Row, Table } from 'antd';
 
 import { useListCategoriesQuery } from '@/graphql';
 
 import { useCategoriesData } from '../hooks/useCategoriesData';
 
 export function TableCategories() {
-  const { data: categories, isLoading, isFetching } = useListCategoriesQuery();
+  const { data: categories, isFetching } = useListCategoriesQuery();
   const { columns, data } = useCategoriesData(categories?.listCategories);
-
-  if (isLoading) {
-    return <Skeleton active />;
-  }
 
   return (
     <Table

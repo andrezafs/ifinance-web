@@ -483,6 +483,27 @@ export type ListExpensesByCreditCardQuery = {
   };
 };
 
+export type ListExpensesByWalletQueryVariables = Exact<{
+  year: Scalars['Float']['input'];
+  month: Scalars['Float']['input'];
+}>;
+
+export type ListExpensesByWalletQuery = {
+  __typename?: 'Query';
+  listExpenseByWallet: {
+    __typename?: 'ExpenseList';
+    expenses: Array<{
+      __typename?: 'Expense';
+      name: string;
+      value: number;
+      purchaseDate: any;
+      id: string;
+      category: { __typename?: 'Category'; name: string; id: string };
+      creditCard?: { __typename?: 'CreditCard'; name: string } | null;
+    }>;
+  };
+};
+
 export type ListExpensesQueryVariables = Exact<{
   filter: ListExpenseFilter;
 }>;
@@ -987,6 +1008,56 @@ export const useListExpensesByCreditCardQuery = <
 useListExpensesByCreditCardQuery.getKey = (
   variables: ListExpensesByCreditCardQueryVariables,
 ) => ['ListExpensesByCreditCard', variables];
+
+export const ListExpensesByWalletDocument = `
+    query ListExpensesByWallet($year: Float!, $month: Float!) {
+  listExpenseByWallet(year: $year, month: $month) {
+    expenses {
+      category {
+        name
+        id
+      }
+      name
+      value
+      purchaseDate
+      id
+      creditCard {
+        name
+      }
+    }
+  }
+}
+    `;
+
+export const useListExpensesByWalletQuery = <
+  TData = ListExpensesByWalletQuery,
+  TError = unknown,
+>(
+  variables: ListExpensesByWalletQueryVariables,
+  options?: Omit<
+    UseQueryOptions<ListExpensesByWalletQuery, TError, TData>,
+    'queryKey'
+  > & {
+    queryKey?: UseQueryOptions<
+      ListExpensesByWalletQuery,
+      TError,
+      TData
+    >['queryKey'];
+  },
+) => {
+  return useQuery<ListExpensesByWalletQuery, TError, TData>({
+    queryKey: ['ListExpensesByWallet', variables],
+    queryFn: fetcherWithGraphQLClient<
+      ListExpensesByWalletQuery,
+      ListExpensesByWalletQueryVariables
+    >(ListExpensesByWalletDocument, variables),
+    ...options,
+  });
+};
+
+useListExpensesByWalletQuery.getKey = (
+  variables: ListExpensesByWalletQueryVariables,
+) => ['ListExpensesByWallet', variables];
 
 export const ListExpensesDocument = `
     query ListExpenses($filter: ListExpenseFilter!) {

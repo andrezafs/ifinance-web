@@ -7,7 +7,7 @@ import { useListExpensesDashboardData } from '../hooks/useListExpensesDashboardD
 
 export function TableExpenses() {
   const { month, year } = useMountAndYear();
-  const { data: expenses } = useListExpensesQuery({
+  const { data: expenses, isFetching } = useListExpensesQuery({
     filter: {
       month,
       year,
@@ -18,5 +18,12 @@ export function TableExpenses() {
     expenses?.listExpense.expenses as Expense[],
   );
 
-  return <Table columns={columns} dataSource={data} pagination={false} />;
+  return (
+    <Table
+      loading={isFetching}
+      pagination={false}
+      columns={columns}
+      dataSource={data}
+    />
+  );
 }

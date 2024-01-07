@@ -1,5 +1,7 @@
 import { Alert, Modal, Typography } from 'antd';
 
+import { produce } from 'immer';
+
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ListCategoriesQuery,
@@ -32,14 +34,11 @@ export function ModalDeleteCategory() {
         oldData => {
           if (!oldData) return oldData;
 
-          const newData = oldData.listCategories.filter(
-            item => item.id !== category?.id,
-          );
-
-          return {
-            ...oldData,
-            listCategories: newData,
-          };
+          return produce(oldData, draft => {
+            draft.listCategories = draft.listCategories.filter(
+              item => item.id !== category?.id,
+            );
+          });
         },
       );
 
