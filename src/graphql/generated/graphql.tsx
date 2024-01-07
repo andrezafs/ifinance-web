@@ -288,8 +288,7 @@ export type QueryListExpenseByCreditCardArgs = {
 };
 
 export type QueryListExpenseByWalletArgs = {
-  month: Scalars['Float']['input'];
-  year: Scalars['Float']['input'];
+  filter: ListExpenseFilter;
 };
 
 export type QueryListExpenseByWalletAndCategoryArgs = {
@@ -477,6 +476,7 @@ export type ListExpensesByCreditCardQuery = {
       value: number;
       purchaseDate: any;
       id: string;
+      isIgnored: boolean;
       category: { __typename?: 'Category'; name: string; id: string };
       creditCard?: { __typename?: 'CreditCard'; name: string } | null;
     }>;
@@ -484,8 +484,7 @@ export type ListExpensesByCreditCardQuery = {
 };
 
 export type ListExpensesByWalletQueryVariables = Exact<{
-  year: Scalars['Float']['input'];
-  month: Scalars['Float']['input'];
+  filter: ListExpenseFilter;
 }>;
 
 export type ListExpensesByWalletQuery = {
@@ -498,6 +497,7 @@ export type ListExpensesByWalletQuery = {
       value: number;
       purchaseDate: any;
       id: string;
+      isIgnored: boolean;
       category: { __typename?: 'Category'; name: string; id: string };
       creditCard?: { __typename?: 'CreditCard'; name: string } | null;
     }>;
@@ -518,6 +518,7 @@ export type ListExpensesQuery = {
       value: number;
       purchaseDate: any;
       id: string;
+      isIgnored: boolean;
       category: { __typename?: 'Category'; name: string; id: string };
       creditCard?: { __typename?: 'CreditCard'; name: string } | null;
     }>;
@@ -971,6 +972,7 @@ export const ListExpensesByCreditCardDocument = `
       value
       purchaseDate
       id
+      isIgnored
       creditCard {
         name
       }
@@ -1010,8 +1012,8 @@ useListExpensesByCreditCardQuery.getKey = (
 ) => ['ListExpensesByCreditCard', variables];
 
 export const ListExpensesByWalletDocument = `
-    query ListExpensesByWallet($year: Float!, $month: Float!) {
-  listExpenseByWallet(year: $year, month: $month) {
+    query ListExpensesByWallet($filter: ListExpenseFilter!) {
+  listExpenseByWallet(filter: $filter) {
     expenses {
       category {
         name
@@ -1021,6 +1023,7 @@ export const ListExpensesByWalletDocument = `
       value
       purchaseDate
       id
+      isIgnored
       creditCard {
         name
       }
@@ -1071,6 +1074,7 @@ export const ListExpensesDocument = `
       value
       purchaseDate
       id
+      isIgnored
       creditCard {
         name
       }

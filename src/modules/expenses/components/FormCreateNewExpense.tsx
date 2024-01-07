@@ -1,5 +1,4 @@
 import {
-  Avatar,
   DatePicker,
   Flex,
   Form,
@@ -16,7 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CreditCardOutlined, WalletOutlined } from '@ant-design/icons';
 import { useForm, useController, Controller } from 'react-hook-form';
 
-import { useListCategoriesQuery, useListCreditCardsQuery } from '@/graphql';
+import { useListCategoriesQuery } from '@/graphql';
 import { CategoryColor } from '@/modules/category/components/CategoryColor';
 import { defaultInstallments } from '@/modules/shared/constants';
 
@@ -37,28 +36,23 @@ const schema = z.object({
     coerce: true,
   }),
   hasInstallments: z.boolean().default(false),
-  creditCard: z.string(),
   category: z.string(),
 });
 
 export type FormFields = z.infer<typeof schema>;
 
-interface FormCreateNewCreditCardExpenseProps {
+interface FormCreateNewExpenseProps {
   onSubmit: (data: FormFields) => void;
 }
 
-export function FormCreateNewCreditCardExpense({
-  onSubmit,
-}: FormCreateNewCreditCardExpenseProps) {
+export function FormCreateNewExpense({ onSubmit }: FormCreateNewExpenseProps) {
   const { data: categories } = useListCategoriesQuery();
-  const { data: creditCards } = useListCreditCardsQuery();
 
   const { control, handleSubmit } = useForm<FormFields>({
     resolver: zodResolver(schema),
     mode: 'onChange',
     defaultValues: {
       category: categories?.listCategories[0].id,
-      creditCard: creditCards?.listCreditCards[0].id,
       installments: defaultInstallments[0].portion,
     },
   });
@@ -80,7 +74,7 @@ export function FormCreateNewCreditCardExpense({
   return (
     <Form
       onFinish={handleSubmit(onSubmit)}
-      title="Nova Despesa no Cartão de Crédito"
+      title="Nova Despesa na Carteira"
       id="crete-credit-card-new-expense"
     >
       <Typography.Title level={4}> Dados da Despesa</Typography.Title>
@@ -109,21 +103,6 @@ export function FormCreateNewCreditCardExpense({
             <Select.Option key={category.id}>
               <CategoryColor value={category.color} />
               {category.name}
-            </Select.Option>
-          ))}
-        </Select>
-      </FormItem>
-      <FormItem name="creditCard" control={control}>
-        <Select placeholder="Selecione o cartão de crédito">
-          {creditCards?.listCreditCards.map(creditCard => (
-            <Select.Option key={creditCard.id}>
-              <Avatar
-                src={creditCard.bank.image}
-                style={{
-                  marginRight: 10,
-                }}
-              />
-              {creditCard.name}
             </Select.Option>
           ))}
         </Select>

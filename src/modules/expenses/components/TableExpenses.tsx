@@ -1,12 +1,12 @@
 import { Table } from 'antd';
 
-import { Expense, useListExpensesQuery } from '@/graphql';
+import { Expense, useListExpensesByWalletQuery } from '@/graphql';
 import { useMountAndYear } from '@/modules/shared/hooks';
 import { useMountExpensesTableData } from '@/modules/shared/hooks/useMountExpensesTableData';
 
 export function TableExpenses() {
   const { month, year } = useMountAndYear();
-  const { data: expenses, isFetching } = useListExpensesQuery({
+  const { data: expenses, isFetching } = useListExpensesByWalletQuery({
     filter: {
       month,
       year,
@@ -14,7 +14,7 @@ export function TableExpenses() {
   });
 
   const { columns, data } = useMountExpensesTableData(
-    expenses?.listExpense.expenses as Expense[],
+    expenses?.listExpenseByWallet.expenses as Expense[],
   );
 
   return (

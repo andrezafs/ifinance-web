@@ -1,5 +1,5 @@
-query ListExpensesByWallet($year: Float!, $month: Float!) {
-  listExpenseByWallet(year: $year, month: $month) {
+query ListExpensesByWallet($filter: ListExpenseFilter!) {
+  listExpenseByWallet(filter: $filter) {
     expenses {
       category {
         name
@@ -9,6 +9,7 @@ query ListExpensesByWallet($year: Float!, $month: Float!) {
       value
       purchaseDate
       id
+      isIgnored
       creditCard {
         name
       }

@@ -10,6 +10,7 @@ import { AuthenticationRoutes } from '@/modules/authentication/routes';
 import { MainLayout } from '@/modules/layouts/MainLayout';
 import { DashboardRoutes } from '@/modules/dashboard/routes/DashboardRoutes';
 import { CreditCardRoutes } from '@/modules/credit-card/routes/CreditCardRoutes';
+import { ExpensesRoutes } from '@/modules/expenses/routes/ExpensesRoutes';
 
 import { CategoriesRoutes } from '../modules/category/routes/CategoriesRoutes';
 import { routes } from './routes';
@@ -31,6 +32,7 @@ const router = createBrowserRouter(
           path={`${routes.creditCards}/*`}
           element={<CreditCardRoutes />}
         />
+        <Route path={`${routes.expenses}/*`} element={<ExpensesRoutes />} />
       </Route>
     </Route>,
   ),

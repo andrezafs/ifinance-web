@@ -3,8 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import { Expense, useListExpensesByCreditCardQuery } from '@/graphql';
 import { useMountAndYear } from '@/modules/shared/hooks';
-
-import { useCreditCardDetailsData } from '../hooks/useCreditCardDetailsData';
+import { useMountExpensesTableData } from '@/modules/shared/hooks/useMountExpensesTableData';
 
 export function TableExpensesCreditCard() {
   const { creditCardId } = useParams<{ creditCardId: string }>();
@@ -17,7 +16,7 @@ export function TableExpensesCreditCard() {
     },
   });
 
-  const { columns, data } = useCreditCardDetailsData(
+  const { columns, data } = useMountExpensesTableData(
     expenses?.listExpenseByCreditCard.expenses as Expense[],
   );
 

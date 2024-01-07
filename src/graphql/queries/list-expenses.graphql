@@ -9,6 +9,7 @@ query ListExpenses($filter: ListExpenseFilter!) {
       value
       purchaseDate
       id
+      isIgnored
       creditCard {
         name
       }

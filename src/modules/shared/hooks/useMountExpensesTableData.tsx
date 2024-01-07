@@ -1,12 +1,22 @@
-import { ColumnsType } from 'antd/es/table';
-import { ColumnFilterItem } from 'antd/es/table/interface';
 import { useMemo } from 'react';
+import { Space } from 'antd';
+import { ColumnsType } from 'antd/es/table';
+import { DeleteOutlined } from '@ant-design/icons';
+import { ColumnFilterItem } from 'antd/es/table/interface';
 
-import { Expense } from '@/graphql';
+import { ButtonAction } from '@/modules/shared/components/ButtonAction';
+import {
+  Expense,
+  useDeleteExpenseMutation,
+  useListExpensesByCreditCardQuery,
+  useListExpensesByWalletQuery,
+  useListExpensesQuery,
+} from '@/graphql';
 import { formatCurrency } from '@/modules/shared/helpers/formatCurrency';
 import { formatDate } from '@/modules/shared/helpers/formatDate';
+import { useQueryClient } from '@tanstack/react-query';
 
-type DataType = {
+export type ExpensesTableDataType = {
   color?: string;
   key: string;
   situation: string;
@@ -19,7 +29,23 @@ type DataType = {
   account: string;
 };
 
-export function useListExpensesDashboardData(expenses?: Expense[]) {
+export function useMountExpensesTableData(expenses?: Expense[]) {
+  const queryClient = useQueryClient();
+
+  const { mutate: deleteExpense } = useDeleteExpenseMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: useListExpensesQuery.getKey({} as any),
+      });
+      queryClient.invalidateQueries({
+        queryKey: useListExpensesByCreditCardQuery.getKey({} as any),
+      });
+      queryClient.invalidateQueries({
+        queryKey: useListExpensesByWalletQuery.getKey({} as any),
+      });
+    },
+  });
+
   const filterCategories = useMemo(() => {
     if (!expenses) return [];
 
@@ -62,26 +88,24 @@ export function useListExpensesDashboardData(expenses?: Expense[]) {
     return [{ text: 'Carteira', value: 'Carteira' }, ...filters];
   }, [expenses]);
 
-  const data = useMemo<DataType[]>(() => {
+  const data = useMemo<ExpensesTableDataType[]>(() => {
     if (!expenses) return [];
 
-    return expenses.map(
-      expense =>
-        ({
-          key: expense.id,
-          category: expense?.category?.name,
-          description: expense.name,
-          value: expense.value,
-          valueLabel: formatCurrency(expense.value || 0),
-          situation: expense.isPaid ? 'Pago' : 'Pendente',
-          purchaseDate: expense.purchaseDate,
-          purchaseDateLabel: formatDate(expense.purchaseDate),
-          account: expense?.creditCard?.name ?? 'Carteira',
-        }) as DataType,
-    );
+    return expenses.map(expense => ({
+      key: expense.id,
+      category: expense?.category?.name,
+      description: expense.name,
+      value: expense.value,
+      valueLabel: formatCurrency(expense.value || 0),
+      situation: expense.isPaid ? 'Pago' : 'Pendente',
+      purchaseDate: expense.purchaseDate,
+      purchaseDateLabel: formatDate(expense.purchaseDate),
+      account: expense?.creditCard?.name ?? 'Carteira',
+      color: expense?.category?.color,
+    }));
   }, [expenses]);
 
-  const columns = useMemo<ColumnsType<DataType>>(
+  const columns = useMemo<ColumnsType<ExpensesTableDataType>>(
     () => [
       {
         title: 'Situação',
@@ -105,9 +129,7 @@ export function useListExpensesDashboardData(expenses?: Expense[]) {
         dataIndex: 'purchaseDateLabel',
         key: 'purchaseDateLabel',
         defaultSortOrder: 'descend',
-        sorter: (a, b) =>
-          new Date(a.purchaseDate).getTime() -
-          new Date(b.purchaseDate).getTime(),
+        sorter: (a, b) => a.purchaseDate - b.purchaseDate,
       },
       {
         title: 'Descrição',
@@ -120,7 +142,6 @@ export function useListExpensesDashboardData(expenses?: Expense[]) {
         title: 'Categoria',
         dataIndex: 'category',
         key: 'category',
-
         filters: filterCategories,
         onFilter: (value, record) =>
           record.category.indexOf(value as string) === 0,
@@ -140,9 +161,31 @@ export function useListExpensesDashboardData(expenses?: Expense[]) {
         defaultSortOrder: 'descend',
         sorter: (a, b) => a.value - b.value,
       },
+      {
+        title: 'Ações',
+        dataIndex: 'actions',
+        key: 'actions',
+        render: (_, record) => (
+          <Space
+            size="middle"
+            style={{
+              width: '100%',
+              justifyContent: 'flex-end',
+            }}
+          >
+            {/* <ButtonAction tooltipAction="Relatório" icon={<ReadOutlined />} /> */}
+            {/* <ButtonAction tooltipAction="Editar" icon={<EditOutlined />} /> */}
+            <ButtonAction
+              tooltipAction="Deletar"
+              icon={<DeleteOutlined />}
+              onClick={() => deleteExpense({ deleteExpenseId: record.key })}
+            />
+          </Space>
+        ),
+      },
     ],
 
-    [filterAccount, filterCategories],
+    [filterCategories, filterAccount, deleteExpense],
   );
 
   return useMemo(() => ({ columns, data }), [columns, data]);
