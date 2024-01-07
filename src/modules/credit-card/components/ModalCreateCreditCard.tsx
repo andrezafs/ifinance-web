@@ -18,9 +18,11 @@ export function ModalCreateCreditCard() {
   const { mutate, isPending: isLoading } = useCreateCreditCardMutation({
     onSuccess: () => {
       toggleModalCreateCreditCard();
+
       queryClient.invalidateQueries({
         queryKey: useCreateCreditCardMutation.getKey(),
       });
+
       messageApi.open({
         type: 'success',
         content: 'Cartão de crédito criado com sucesso!',

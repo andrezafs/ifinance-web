@@ -3,12 +3,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Flex, Form, Input, Row, Typography } from 'antd';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormItem } from 'react-hook-form-antd';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { useAuthenticateMutation } from '@/graphql';
 import { useNotificationContext } from '@/modules/shared/context/NotificationContext';
 import { sessionManager } from '@/configurations/sessionManager';
+import { routes } from '@/routes';
 
 const schema = z.object({
   email: z
@@ -58,20 +59,29 @@ export function Login() {
         size="middle"
         layout="vertical"
       >
-        <FormItem control={control} name="email" label="Username">
+        <FormItem control={control} name="email" label="E-mail">
           <Input prefix={<MailOutlined />} disabled={isLoading} />
         </FormItem>
 
-        <FormItem control={control} name="password" label="Password">
+        <FormItem control={control} name="password" label="Senha">
           <Input.Password prefix={<LockOutlined />} disabled={isLoading} />
         </FormItem>
 
         <Row justify="space-between" align="middle">
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={isLoading}>
             Login
           </Button>
         </Row>
       </Form>
+
+      <br />
+
+      <Flex>
+        <Typography.Text>
+          Ainda não possui uma conta?
+          <Link to={routes.goToCreateAccount()}> Criar conta</Link>
+        </Typography.Text>
+      </Flex>
     </Flex>
   );
 }

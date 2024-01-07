@@ -1,7 +1,14 @@
 import { ButtonProps, Modal } from 'antd';
 
+import { produce } from 'immer';
+
 import { useQueryClient } from '@tanstack/react-query';
-import { useListCategoriesQuery, useUpdateCategoryMutation } from '@/graphql';
+import {
+  ListCategoriesQuery,
+  useListCategoriesQuery,
+  useUpdateCategoryMutation,
+} from '@/graphql';
+import { useNotificationContext } from '@/modules/shared/context/NotificationContext';
 
 import { useCategoriesActions } from '../contexts/CategoriesActionsContext';
 import { FormEditCategory, FormFields } from './FormEditCategory';
@@ -12,29 +19,48 @@ export function ModalEditCategory() {
     toggleModalEditCategory,
     category,
     handleSetCategory,
-    messageApi,
   } = useCategoriesActions();
 
   const queryClient = useQueryClient();
 
+  const { api } = useNotificationContext();
+
   const { mutate, isPending: isLoading } = useUpdateCategoryMutation({
-    onSuccess: () => {
+    onSuccess: ({ updateCategory }) => {
       handleSetCategory(null);
       toggleModalEditCategory();
-      queryClient.invalidateQueries({
-        queryKey: useListCategoriesQuery.getKey(),
-      });
-      messageApi.open({
+
+      queryClient.setQueryData<ListCategoriesQuery>(
+        useListCategoriesQuery.getKey(),
+        oldData => {
+          if (!oldData) return oldData;
+
+          return produce(oldData, draft => {
+            draft.listCategories = draft.listCategories.map(item => {
+              if (item.id === updateCategory?.id) {
+                return {
+                  ...item,
+                  ...updateCategory,
+                };
+              }
+
+              return item;
+            });
+          });
+        },
+      );
+
+      api.open({
         type: 'success',
-        content: 'Categoria editada com sucesso',
-        duration: 2,
+        message: 'Sucesso!',
+        description: 'A categoria foi editada com sucesso!',
       });
     },
     onError: () => {
-      messageApi.open({
+      api.open({
         type: 'error',
-        content: 'Erro ao editar a categoria',
-        duration: 2,
+        message: 'Erro!',
+        description: 'Por favor, tente novamente.',
       });
     },
   });

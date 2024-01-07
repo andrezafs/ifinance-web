@@ -2,31 +2,25 @@ import { ButtonProps, Modal } from 'antd';
 
 import {
   useCreateExpenseMutation,
-  useListExpensesByCreditCardQuery,
+  useListExpensesByWalletQuery,
 } from '@/graphql';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { useCreditCardActions } from '../contexts/CreditCardsActionsContext';
-import {
-  FormCreateNewCreditCardExpense,
-  FormFields,
-} from './FormCreateNewCreditCardExpense';
+import { useExpenseActions } from '../contexts/ExpensesActionsContext';
+import { FormCreateNewExpense, FormFields } from './FormCreateNewExpense';
 
-export function ModalCreateNewCreditCardExpense() {
-  const {
-    modalCreateNewCreditCardExpenseIsOpen,
-    toggleModalCreateNewCreditCardExpense,
-    messageApi,
-  } = useCreditCardActions();
+export function ModalCreateNewExpense() {
+  const { modalCreateExpenseIsOpen, toggleModalCreateExpense, messageApi } =
+    useExpenseActions();
 
   const queryClient = useQueryClient();
 
   const { mutate, isPending: isLoading } = useCreateExpenseMutation({
     onSuccess: () => {
-      toggleModalCreateNewCreditCardExpense();
+      toggleModalCreateExpense();
 
       queryClient.invalidateQueries({
-        queryKey: useListExpensesByCreditCardQuery.getKey({} as any),
+        queryKey: useListExpensesByWalletQuery.getKey({} as any),
       });
 
       messageApi.open({
@@ -44,13 +38,12 @@ export function ModalCreateNewCreditCardExpense() {
     },
   });
 
-  function createNewCreditCardExpense(formExpense: FormFields) {
+  function createNewExpense(formExpense: FormFields) {
     mutate({
       data: {
         name: formExpense.name,
         value: formExpense.value,
         categoryId: formExpense.category,
-        creditCardId: formExpense.creditCard,
         isFixed: formExpense.isFixed,
         isIgnored: formExpense.isIgnored,
         purchaseDate: formExpense.purchaseDate,
@@ -61,14 +54,14 @@ export function ModalCreateNewCreditCardExpense() {
     });
   }
 
-  if (!modalCreateNewCreditCardExpenseIsOpen) return null;
+  if (!modalCreateExpenseIsOpen) return null;
 
   return (
     <Modal
       centered
       width={450}
       maskClosable={false}
-      open={modalCreateNewCreditCardExpenseIsOpen}
+      open={modalCreateExpenseIsOpen}
       okText="Adicionar"
       okButtonProps={
         {
@@ -78,12 +71,12 @@ export function ModalCreateNewCreditCardExpense() {
         } as ButtonProps
       }
       cancelText="Cancelar"
-      onCancel={() => toggleModalCreateNewCreditCardExpense()}
+      onCancel={() => toggleModalCreateExpense()}
       cancelButtonProps={{
         disabled: isLoading,
       }}
     >
-      <FormCreateNewCreditCardExpense onSubmit={createNewCreditCardExpense} />
+      <FormCreateNewExpense onSubmit={createNewExpense} />
     </Modal>
   );
 }

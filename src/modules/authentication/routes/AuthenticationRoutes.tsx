@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import { routes } from '@/routes/routes';
+import { routes } from '@/routes';
 
 import { AuthenticationLayout } from '../layouts/AuthenticationLayout';
 import { Login } from '../pages/Login/Login';

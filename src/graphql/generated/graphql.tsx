@@ -288,8 +288,7 @@ export type QueryListExpenseByCreditCardArgs = {
 };
 
 export type QueryListExpenseByWalletArgs = {
-  month: Scalars['Float']['input'];
-  year: Scalars['Float']['input'];
+  filter: ListExpenseFilter;
 };
 
 export type QueryListExpenseByWalletAndCategoryArgs = {
@@ -360,6 +359,15 @@ export type CreateExpenseMutation = {
   };
 };
 
+export type CreateUserMutationVariables = Exact<{
+  data: CreateUserInput;
+}>;
+
+export type CreateUserMutation = {
+  __typename?: 'Mutation';
+  createUser: { __typename?: 'User'; id: string };
+};
+
 export type DeleteCategoryMutationVariables = Exact<{
   deleteCategoryId: Scalars['String']['input'];
 }>;
@@ -394,7 +402,13 @@ export type UpdateCategoryMutationVariables = Exact<{
 
 export type UpdateCategoryMutation = {
   __typename?: 'Mutation';
-  updateCategory: { __typename?: 'Category'; id: string };
+  updateCategory: {
+    __typename?: 'Category';
+    color: string;
+    id: string;
+    name: string;
+    userId: string;
+  };
 };
 
 export type ListBanksQueryVariables = Exact<{ [key: string]: never }>;
@@ -462,6 +476,28 @@ export type ListExpensesByCreditCardQuery = {
       value: number;
       purchaseDate: any;
       id: string;
+      isIgnored: boolean;
+      category: { __typename?: 'Category'; name: string; id: string };
+      creditCard?: { __typename?: 'CreditCard'; name: string } | null;
+    }>;
+  };
+};
+
+export type ListExpensesByWalletQueryVariables = Exact<{
+  filter: ListExpenseFilter;
+}>;
+
+export type ListExpensesByWalletQuery = {
+  __typename?: 'Query';
+  listExpenseByWallet: {
+    __typename?: 'ExpenseList';
+    expenses: Array<{
+      __typename?: 'Expense';
+      name: string;
+      value: number;
+      purchaseDate: any;
+      id: string;
+      isIgnored: boolean;
       category: { __typename?: 'Category'; name: string; id: string };
       creditCard?: { __typename?: 'CreditCard'; name: string } | null;
     }>;
@@ -482,6 +518,7 @@ export type ListExpensesQuery = {
       value: number;
       purchaseDate: any;
       id: string;
+      isIgnored: boolean;
       category: { __typename?: 'Category'; name: string; id: string };
       creditCard?: { __typename?: 'CreditCard'; name: string } | null;
     }>;
@@ -631,6 +668,40 @@ export const useCreateExpenseMutation = <TError = unknown, TContext = unknown>(
 
 useCreateExpenseMutation.getKey = () => ['CreateExpense'];
 
+export const CreateUserDocument = `
+    mutation CreateUser($data: CreateUserInput!) {
+  createUser(data: $data) {
+    id
+  }
+}
+    `;
+
+export const useCreateUserMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<
+    CreateUserMutation,
+    TError,
+    CreateUserMutationVariables,
+    TContext
+  >,
+) => {
+  return useMutation<
+    CreateUserMutation,
+    TError,
+    CreateUserMutationVariables,
+    TContext
+  >({
+    mutationKey: ['CreateUser'],
+    mutationFn: (variables?: CreateUserMutationVariables) =>
+      fetcherWithGraphQLClient<CreateUserMutation, CreateUserMutationVariables>(
+        CreateUserDocument,
+        variables,
+      )(),
+    ...options,
+  });
+};
+
+useCreateUserMutation.getKey = () => ['CreateUser'];
+
 export const DeleteCategoryDocument = `
     mutation DeleteCategory($deleteCategoryId: String!) {
   deleteCategory(id: $deleteCategoryId)
@@ -733,7 +804,10 @@ useDeleteExpenseMutation.getKey = () => ['DeleteExpense'];
 export const UpdateCategoryDocument = `
     mutation UpdateCategory($data: UpdateCategoryInput!, $updateCategoryId: String!) {
   updateCategory(data: $data, id: $updateCategoryId) {
+    color
     id
+    name
+    userId
   }
 }
     `;
@@ -898,6 +972,7 @@ export const ListExpensesByCreditCardDocument = `
       value
       purchaseDate
       id
+      isIgnored
       creditCard {
         name
       }
@@ -936,6 +1011,57 @@ useListExpensesByCreditCardQuery.getKey = (
   variables: ListExpensesByCreditCardQueryVariables,
 ) => ['ListExpensesByCreditCard', variables];
 
+export const ListExpensesByWalletDocument = `
+    query ListExpensesByWallet($filter: ListExpenseFilter!) {
+  listExpenseByWallet(filter: $filter) {
+    expenses {
+      category {
+        name
+        id
+      }
+      name
+      value
+      purchaseDate
+      id
+      isIgnored
+      creditCard {
+        name
+      }
+    }
+  }
+}
+    `;
+
+export const useListExpensesByWalletQuery = <
+  TData = ListExpensesByWalletQuery,
+  TError = unknown,
+>(
+  variables: ListExpensesByWalletQueryVariables,
+  options?: Omit<
+    UseQueryOptions<ListExpensesByWalletQuery, TError, TData>,
+    'queryKey'
+  > & {
+    queryKey?: UseQueryOptions<
+      ListExpensesByWalletQuery,
+      TError,
+      TData
+    >['queryKey'];
+  },
+) => {
+  return useQuery<ListExpensesByWalletQuery, TError, TData>({
+    queryKey: ['ListExpensesByWallet', variables],
+    queryFn: fetcherWithGraphQLClient<
+      ListExpensesByWalletQuery,
+      ListExpensesByWalletQueryVariables
+    >(ListExpensesByWalletDocument, variables),
+    ...options,
+  });
+};
+
+useListExpensesByWalletQuery.getKey = (
+  variables: ListExpensesByWalletQueryVariables,
+) => ['ListExpensesByWallet', variables];
+
 export const ListExpensesDocument = `
     query ListExpenses($filter: ListExpenseFilter!) {
   listExpense(filter: $filter) {
@@ -948,6 +1074,7 @@ export const ListExpensesDocument = `
       value
       purchaseDate
       id
+      isIgnored
       creditCard {
         name
       }

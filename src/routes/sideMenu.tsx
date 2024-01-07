@@ -3,10 +3,8 @@ import { MenuProps } from 'antd';
 import {
   FlagOutlined,
   HomeOutlined,
-  BarChartOutlined,
   CreditCardOutlined,
-  PieChartOutlined,
-  StockOutlined,
+  WalletOutlined,
 } from '@ant-design/icons';
 
 import { routes } from './routes';
@@ -29,9 +27,7 @@ function mountItem(
 
 export const sideMenuRoutes: MenuItem[] = [
   mountItem('Dashboard', routes.goToDashboard(), <HomeOutlined />),
-  mountItem('Categories', routes.goToCategories(), <FlagOutlined />),
-  mountItem('Credits Card', routes.goToCreditCards(), <CreditCardOutlined />),
-  mountItem('Planning', routes.goToPlanning(), <BarChartOutlined />),
-  mountItem('Reports', routes.goToReports(), <PieChartOutlined />),
-  mountItem('Expenses', routes.goToExpenses(), <StockOutlined />),
+  mountItem('Categorias', routes.goToCategories(), <FlagOutlined />),
+  mountItem('Cartões', routes.goToCreditCards(), <CreditCardOutlined />),
+  mountItem('Carteira', routes.goToExpenses(), <WalletOutlined />),
 ];

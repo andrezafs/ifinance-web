@@ -12,8 +12,6 @@ import { FormItem } from 'react-hook-form-antd';
 
 import { useListBanksQuery } from '@/graphql';
 
-const { Option } = Select;
-
 interface FormFields {
   limit: number;
   bankId: string;
@@ -94,7 +92,7 @@ export function FormCreateCardCredit({ onSubmit }: FormCreateCreditCardProps) {
       <FormItem name="bankId" control={control}>
         <Select placeholder="Selecione o seu Banco">
           {data?.listBanks.map(bank => (
-            <Option key={bank.id} value={bank.id}>
+            <Select.Option key={bank.id} value={bank.id}>
               <Avatar
                 src={bank.image}
                 style={{
@@ -102,7 +100,7 @@ export function FormCreateCardCredit({ onSubmit }: FormCreateCreditCardProps) {
                 }}
               />
               {bank.name}
-            </Option>
+            </Select.Option>
           ))}
         </Select>
       </FormItem>

@@ -1,6 +1,6 @@
 import { Outlet, Route, Routes } from 'react-router-dom';
 
-import { routes } from '@/routes/routes';
+import { routes } from '@/routes';
 
 import { CreditCards } from '../pages/CreditCads';
 import { CreditCardDetails } from '../pages/CreditCardDetails';

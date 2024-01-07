@@ -1,27 +1,48 @@
-const categories = 'categories';
-const creditCards = 'credit-cards';
+import { generatePath } from 'react-router-dom';
+
+const categories = 'category';
+const creditCards = 'credit-card';
 const planning = 'planning';
-const reports = 'reports';
+const reports = 'report';
 const home = '/';
 const creditCardId = ':creditCardId';
 const dashboard = 'dashboard';
-const expenses = 'expenses';
+const expenses = 'expense';
 const login = 'login';
 const auth = 'auth';
 const create = 'create';
 
 export const routes = {
-  goToCategories: () => `/${categories}`,
-  goToCreditCards: () => `/${creditCards}`,
-  goToCreditCardDetails: (id: string) => `/${creditCards}/${id}`,
-  goToPlanning: () => `/${planning}`,
-  goToReports: () => `/${reports}`,
-  goToHome: () => home,
-  goToDashboard: () => `/${[dashboard]}`,
-  goToExpenses: () => `/${expenses}`,
-  goToLogin: () => `/${login}`,
-  goToAuth: () => `/${auth}`,
-  goToCreateAccount: () => `/${create}`,
+  goToCategories: () => {
+    return generatePath(`/${categories}`);
+  },
+  goToCreditCards: () => {
+    return generatePath(`/${creditCards}`);
+  },
+  goToCreditCardDetails: (creditCardId: string) => {
+    return generatePath(`/${creditCards}/${creditCardId}`, { creditCardId });
+  },
+  goToPlanning: () => {
+    return generatePath(`/${planning}`);
+  },
+  goToReports: () => {
+    return generatePath(`/${reports}`);
+  },
+  goToHome: () => {
+    return generatePath(home);
+  },
+  goToDashboard: () => {
+    return generatePath(`/${dashboard}`);
+  },
+  goToExpenses: () => {
+    return generatePath(`/${expenses}`);
+  },
+  goToLogin: () => {
+    return generatePath(`/${auth}/${login}`);
+  },
+  goToCreateAccount: () => {
+    return generatePath(`/${auth}/${create}`);
+  },
   categories,
   creditCards,
   planning,
@@ -33,4 +54,4 @@ export const routes = {
   login,
   auth,
   create,
-};
+} as const;

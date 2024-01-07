@@ -3,6 +3,9 @@ mutation UpdateCategory(
   $updateCategoryId: String!
 ) {
   updateCategory(data: $data, id: $updateCategoryId) {
+    color
     id
+    name
+    userId
   }
 }

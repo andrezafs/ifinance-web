@@ -1,23 +1,20 @@
 import { Table } from 'antd';
-import { useParams } from 'react-router-dom';
 
-import { Expense, useListExpensesByCreditCardQuery } from '@/graphql';
+import { Expense, useListExpensesQuery } from '@/graphql';
 import { useMountAndYear } from '@/modules/shared/hooks';
 import { useMountExpensesTableData } from '@/modules/shared/hooks/useMountExpensesTableData';
 
-export function TableExpensesCreditCard() {
-  const { creditCardId } = useParams<{ creditCardId: string }>();
+export function TableExpenses() {
   const { month, year } = useMountAndYear();
-  const { data: expenses, isFetching } = useListExpensesByCreditCardQuery({
+  const { data: expenses, isFetching } = useListExpensesQuery({
     filter: {
-      creditCardId: creditCardId as string,
       month,
       year,
     },
   });
 
   const { columns, data } = useMountExpensesTableData(
-    expenses?.listExpenseByCreditCard.expenses as Expense[],
+    expenses?.listExpense.expenses as Expense[],
   );
 
   return (

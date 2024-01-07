@@ -6,8 +6,6 @@ import { BgColorsOutlined } from '@ant-design/icons';
 import { defaultColors } from '../constants/defaultColors';
 import { CategoryColor } from './CategoryColor';
 
-const { Title } = Typography;
-
 export interface FormFields {
   name: string;
   color: string;
@@ -53,7 +51,7 @@ export function FormEditCategory({
             color: field.value,
           }}
         />
-        <Title level={5}>Selecione uma cor</Title>
+        <Typography.Title level={5}>Selecione uma cor</Typography.Title>
       </Row>
       <FormItem name="color" control={control}>
         <Radio.Group

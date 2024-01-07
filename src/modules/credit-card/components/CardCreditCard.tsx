@@ -16,6 +16,7 @@ import {
 import { Link } from 'react-router-dom';
 
 import { CreditCard } from '@/graphql';
+import { routes } from '@/routes';
 
 import { useCreditCardActions } from '../contexts/CreditCardsActionsContext';
 import { useDropdownActions } from '../hooks/useDropdownActions';
@@ -48,7 +49,7 @@ export function CardCreditCard({ data }: CardCreditCardProps) {
         </Dropdown>,
       ]}
     >
-      <Link to={`/credit-cards/${data.id}`}>
+      <Link to={routes.goToCreditCardDetails(data.id ?? '')}>
         <Row justify="space-between">
           <Card.Meta
             title={data?.bank?.name}

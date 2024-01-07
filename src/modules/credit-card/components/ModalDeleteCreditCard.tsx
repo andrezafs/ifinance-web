@@ -1,6 +1,9 @@
 import { Alert, Modal, Typography } from 'antd';
 
+import { produce } from 'immer';
+
 import {
+  ListCreditCardsQuery,
   useDeleteCreditCardMutation,
   useListCreditCardsQuery,
 } from '@/graphql';
@@ -22,11 +25,21 @@ export function ModalDeleteCreditCard() {
   const { mutate, isPending: isLoading } = useDeleteCreditCardMutation({
     onSuccess: () => {
       toggleModalDeleteCreditCard();
-      useDeleteCreditCardMutation.getKey();
       handleSetCreditCard(null);
-      queryClient.invalidateQueries({
-        queryKey: useListCreditCardsQuery.getKey(),
-      });
+
+      queryClient.setQueryData<ListCreditCardsQuery>(
+        useListCreditCardsQuery.getKey(),
+        oldData => {
+          if (!oldData) return oldData;
+
+          return produce(oldData, draft => {
+            draft.listCreditCards = draft.listCreditCards.filter(
+              item => item.id !== creditCard?.id,
+            );
+          });
+        },
+      );
+
       messageApi.open({
         type: 'success',
         content: 'Cartão de Crédito deletado com sucesso!',

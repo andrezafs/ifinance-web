@@ -14,13 +14,7 @@ export function Categories() {
 
   return (
     <>
-      <Col
-        style={{
-          maxWidth: '100%',
-          margin: '0 auto',
-          padding: '0 20px',
-        }}
-      >
+      <Col>
         <Header
           style={{
             justifyContent: 'space-between',
@@ -32,6 +26,7 @@ export function Categories() {
         >
           <HeaderActions />
         </Header>
+        <br />
         <TableCategories />
       </Col>
 
