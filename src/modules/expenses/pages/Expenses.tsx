@@ -3,6 +3,7 @@ import { Header } from 'antd/es/layout/layout';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { ButtonAction } from '@/modules/shared/components/ButtonAction';
+import { SelectMonthExpense } from '@/modules/shared/components/SelectMonthExpense';
 
 import { TableExpenses } from '../components/TableExpenses';
 import { useExpenseActions } from '../contexts/ExpensesActionsContext';
@@ -20,13 +21,15 @@ export function Expenses() {
       <Col>
         <Header
           style={{
-            justifyContent: 'flex-end',
+            justifyContent: 'space-between',
             alignItems: 'center',
             display: 'flex',
             width: '100%',
             background: colorBgContainer,
           }}
         >
+          <SelectMonthExpense />
+
           <ButtonAction
             icon={<PlusOutlined />}
             size="large"

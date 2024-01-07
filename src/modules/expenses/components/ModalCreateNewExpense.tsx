@@ -3,6 +3,7 @@ import { ButtonProps, Modal } from 'antd';
 import {
   useCreateExpenseMutation,
   useListExpensesByWalletQuery,
+  useListExpensesQuery,
 } from '@/graphql';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -21,6 +22,9 @@ export function ModalCreateNewExpense() {
 
       queryClient.invalidateQueries({
         queryKey: useListExpensesByWalletQuery.getKey({} as any),
+      });
+      queryClient.invalidateQueries({
+        queryKey: useListExpensesQuery.getKey({} as any),
       });
 
       messageApi.open({

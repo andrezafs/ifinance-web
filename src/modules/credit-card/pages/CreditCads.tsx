@@ -2,6 +2,7 @@ import { Col, Row, theme } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 
 import { useListCreditCardsQuery } from '@/graphql';
+import { SelectMonthExpense } from '@/modules/shared/components/SelectMonthExpense';
 
 import { HeaderActions } from '../components/Header';
 import { ModalCreateCreditCard } from '../components/ModalCreateCreditCard';
@@ -19,13 +20,19 @@ export function CreditCards() {
     <>
       <Header
         style={{
-          marginBottom: 16,
           background: colorBgContainer,
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          display: 'flex',
+          width: '100%',
         }}
       >
+        <SelectMonthExpense />
+
         <HeaderActions />
       </Header>
 
+      <br />
       <Row gutter={[16, 8]}>
         {data?.listCreditCards.map(creditCard => (
           <Col span={8} key={creditCard.id}>
