@@ -129,7 +129,9 @@ export function useMountExpensesTableData(expenses?: Expense[]) {
         dataIndex: 'purchaseDateLabel',
         key: 'purchaseDateLabel',
         defaultSortOrder: 'descend',
-        sorter: (a, b) => a.purchaseDate - b.purchaseDate,
+        sorter: (a, b) =>
+          new Date(a.purchaseDate).getTime() -
+          new Date(b.purchaseDate).getTime(),
       },
       {
         title: 'Descrição',
