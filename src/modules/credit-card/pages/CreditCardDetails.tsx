@@ -3,6 +3,7 @@ import { Col, theme } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 
 import { ButtonAction } from '@/modules/shared/components/ButtonAction';
+import { SelectMonthExpense } from '@/modules/shared/components/SelectMonthExpense';
 
 import { CreditCardStatistics } from '../components/CreditCardStatistics';
 import { ModalCreateNewCreditCardExpense } from '../components/ModalCreateNewCreditCardExpense';
@@ -21,13 +22,15 @@ export function CreditCardDetails() {
       <Col>
         <Header
           style={{
-            justifyContent: 'flex-end',
+            justifyContent: 'space-between',
             alignItems: 'center',
             display: 'flex',
             width: '100%',
             background: colorBgContainer,
           }}
         >
+          <SelectMonthExpense />
+
           <ButtonAction
             icon={<PlusOutlined />}
             size="large"

@@ -15,8 +15,9 @@ import {
 } from 'antd';
 import { Link } from 'react-router-dom';
 
-import { CreditCard } from '@/graphql';
+import { CreditCard, useListExpensesByCreditCardQuery } from '@/graphql';
 import { routes } from '@/routes';
+import { useMountAndYear } from '@/modules/shared/hooks';
 
 import { useCreditCardActions } from '../contexts/CreditCardsActionsContext';
 import { useDropdownActions } from '../hooks/useDropdownActions';
@@ -28,6 +29,24 @@ type CardCreditCardProps = {
 export function CardCreditCard({ data }: CardCreditCardProps) {
   const { menuProps } = useDropdownActions(data as CreditCard);
   const { toggleModalCreateNewCreditCardExpense } = useCreditCardActions();
+
+  const { month, year } = useMountAndYear();
+  const { data: currentInvoice } = useListExpensesByCreditCardQuery(
+    {
+      filter: {
+        creditCardId: data.id as string,
+        month,
+        year,
+      },
+    },
+    {
+      select: data =>
+        data.listExpenseByCreditCard.expenses.reduce(
+          (acc, expense) => acc + expense.value,
+          0,
+        ),
+    },
+  );
 
   return (
     <Card
@@ -59,7 +78,7 @@ export function CardCreditCard({ data }: CardCreditCardProps) {
             title="Fatura atual"
             prefix="R$"
             precision={2}
-            // value={data.currentInvoice}
+            value={currentInvoice}
           />
         </Row>
         <Col>
