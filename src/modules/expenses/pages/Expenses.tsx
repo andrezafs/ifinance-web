@@ -1,13 +1,13 @@
+import { PlusOutlined } from '@ant-design/icons';
 import { Col, theme } from 'antd';
 import { Header } from 'antd/es/layout/layout';
-import { PlusOutlined } from '@ant-design/icons';
 
 import { ButtonAction } from '@/modules/shared/components/ButtonAction';
 import { SelectMonthExpense } from '@/modules/shared/components/SelectMonthExpense';
 
+import { ModalCreateNewExpense } from '../components/ModalCreateNewExpense';
 import { TableExpenses } from '../components/TableExpenses';
 import { useExpenseActions } from '../contexts/ExpensesActionsContext';
-import { ModalCreateNewExpense } from '../components/ModalCreateNewExpense';
 
 export function Expenses() {
   const {
@@ -39,7 +39,7 @@ export function Expenses() {
           />
         </Header>
         <br />
-        <TableExpenses />;
+        <TableExpenses />
       </Col>
 
       <ModalCreateNewExpense />
