@@ -1,10 +1,9 @@
-import { useMemo } from 'react';
+import { DeleteOutlined } from '@ant-design/icons';
 import { Space } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { DeleteOutlined } from '@ant-design/icons';
 import { ColumnFilterItem } from 'antd/es/table/interface';
+import { useMemo } from 'react';
 
-import { ButtonAction } from '@/modules/shared/components/ButtonAction';
 import {
   Expense,
   useDeleteExpenseMutation,
@@ -12,6 +11,7 @@ import {
   useListExpensesByWalletQuery,
   useListExpensesQuery,
 } from '@/graphql';
+import { ButtonAction } from '@/modules/shared/components/ButtonAction';
 import { formatCurrency } from '@/modules/shared/helpers/formatCurrency';
 import { formatDate } from '@/modules/shared/helpers/formatDate';
 import { useQueryClient } from '@tanstack/react-query';
@@ -22,6 +22,7 @@ export type ExpensesTableDataType = {
   situation: string;
   purchaseDate: number;
   purchaseDateLabel: string;
+  isIgnored: string;
   description: string;
   category: string;
   value: number;
@@ -65,6 +66,21 @@ export function useMountExpensesTableData(expenses?: Expense[]) {
     );
   }, [expenses]);
 
+  const filterIsIgnored = useMemo(() => {
+    if (!expenses) return [];
+
+    return [
+      {
+        text: 'Sim',
+        value: 'Sim',
+      },
+      {
+        text: 'Não',
+        value: 'Não',
+      },
+    ];
+  }, [expenses]);
+
   const filterAccount = useMemo(() => {
     if (!expenses) return [];
 
@@ -95,6 +111,7 @@ export function useMountExpensesTableData(expenses?: Expense[]) {
       key: expense.id,
       category: expense?.category?.name,
       description: expense.name,
+      isIgnored: expense.isIgnored ? 'Sim' : 'Não',
       value: expense.value,
       valueLabel: formatCurrency(expense.value || 0),
       situation: expense.isPaid ? 'Pago' : 'Pendente',
@@ -139,6 +156,14 @@ export function useMountExpensesTableData(expenses?: Expense[]) {
         key: 'description',
         defaultSortOrder: 'descend',
         sorter: (a, b) => a.description.length - b.description.length,
+      },
+      {
+        title: 'Ignorado',
+        dataIndex: 'isIgnored',
+        key: 'isIgnored',
+        filters: filterIsIgnored,
+        onFilter: (value, record) =>
+          record.isIgnored.indexOf(value as string) === 0,
       },
       {
         title: 'Categoria',
@@ -187,7 +212,7 @@ export function useMountExpensesTableData(expenses?: Expense[]) {
       },
     ],
 
-    [filterCategories, filterAccount, deleteExpense],
+    [filterIsIgnored, filterCategories, filterAccount, deleteExpense],
   );
 
   return useMemo(() => ({ columns, data }), [columns, data]);
